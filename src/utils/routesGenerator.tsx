@@ -1,8 +1,7 @@
 import { TRoute, TRoutes } from "../types/index.type";
 
-
-export const routesGenerator = (adminPaths: TRoutes[]): TRoute[] => {
-  return adminPaths.reduce((acc: TRoute[], item) => {
+export const routesGenerator = (paths: TRoutes[]): TRoute[] => {
+  return paths.reduce((acc: TRoute[], item) => {
     if (item.name && item.path && !item.children) {
       acc.push({
         path: item.path,

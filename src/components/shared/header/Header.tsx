@@ -90,7 +90,7 @@ const Header = ({}) => {
 
   return (
     <>
-      <section className="shadow-sm  py-2 sticky top-0 !z-[5000000] bg-primary">
+      <section className="shadow-sm  py-1 sticky top-0 !z-[5000000] bg-primary">
         <Container>
           <div className="navbar-container">
             <Row align="middle" gutter={[16, 16]}>

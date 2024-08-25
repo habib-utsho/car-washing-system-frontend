@@ -138,9 +138,7 @@ body::-webkit-scrollbar-thumb,
 }
 
 /* Swiper carousel dots */
-.swiper-pagination-bullet {
-  @apply !rounded-none !h-[3px] !w-[18px];
-}
-.swiper-pagination-bullet-active {
-  @apply !bg-primary;
+.swiper-button-next,
+.swiper-button-prev {
+  @apply !rounded-full !text-primary !h-[60px] !w-[60px] bg-primary-50;
 }

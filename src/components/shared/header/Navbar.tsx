@@ -13,8 +13,8 @@ const items = [
     icon: <ShopOutlined />,
   },
   {
-    label: "Products",
-    path: "/products",
+    label: "Services",
+    path: "/services",
     icon: <ProductOutlined />,
   },
   {
@@ -60,7 +60,7 @@ const items = [
 ];
 const Navbar = () => {
   const [current, setCurrent] = useState("mail");
-  const onClick = (e) => {
+  const onClick = (e: any) => {
     // console.log("click ", e);
     setCurrent(e.key);
   };
@@ -84,9 +84,11 @@ const Navbar = () => {
               </Menu.Item>
             ))}
           </Menu>
-          <Button className="" block size="large" type="primary">
-          Book now
-        </Button>
+          <div className="flex items-center py-1">
+            <Button className="!w-[200px]" block size="large" type="primary">
+              Book now
+            </Button>
+          </div>
         </div>
       </Container>
     </section>
