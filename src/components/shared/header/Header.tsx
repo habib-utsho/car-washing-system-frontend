@@ -4,7 +4,6 @@ import { Menu, Dropdown, Col, Row, Skeleton } from "antd";
 import {
   UserOutlined,
   DashboardOutlined,
-  ShoppingOutlined,
   LogoutOutlined,
   GiftOutlined,
 } from "@ant-design/icons";
@@ -12,14 +11,15 @@ import { Link } from "react-router-dom";
 import logo from "../../../assets/img/logo.png";
 import Container from "../../ui/Container";
 import { BsWhatsapp } from "react-icons/bs";
+import { useAppDispatch, useAppSelector } from "../../../redux/hook";
+import { signOut } from "../../../redux/features/auth/authSlice";
 
 const Header = ({}) => {
   const [cartDrawerVisible, setCartDrawerVisible] = useState(false);
 
-  const authData = {
-    user: null,
-    isAuthLoading: false,
-  };
+  const { user, isAuthLoading } = useAppSelector((state) => state.auth);
+
+  const dispatch = useAppDispatch();
 
   const handleCartDrawerOpen = () => {
     setCartDrawerVisible(true);
@@ -32,19 +32,19 @@ const Header = ({}) => {
   const authenticatedRoutes = [
     {
       key: "1",
-      label: <Link to="/dashboard/orders">Dashboard</Link>,
+      label: <Link to={`/${user?.role}/dashboard`}>Dashboard</Link>,
       icon: <DashboardOutlined />,
     },
     {
       key: "2",
-      label: <Link to="/dashboard/orders">My orders</Link>,
-      icon: <ShoppingOutlined />,
+      label: <Link to={`/${user?.role}/dashboard/profile`}>My profile</Link>,
+      icon: <UserOutlined />,
     },
     {
       key: "4",
       label: "Sign Out",
       icon: <LogoutOutlined />,
-      // onClick: () => dispatch(signOut()),
+      onClick: () => dispatch(signOut()),
     },
   ];
 
@@ -65,11 +65,11 @@ const Header = ({}) => {
       <Menu.Item key="offer" icon={<GiftOutlined />}></Menu.Item>
       <Menu.Item key="Whats app" icon={<BsWhatsapp />}></Menu.Item>
 
-      {authData?.isAuthLoading ? (
+      {isAuthLoading ? (
         <div className="flex items-center justify-center w-[70px] pr-[25px]">
           <Skeleton.Button active className="!h-6 !w-10" />
         </div>
-      ) : authData?.user ? (
+      ) : user ? (
         <Menu.Item key="account" icon={<UserOutlined />}>
           <Dropdown
             menu={{ items: authenticatedRoutes }}

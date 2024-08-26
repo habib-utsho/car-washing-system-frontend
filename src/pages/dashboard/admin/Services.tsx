@@ -3,27 +3,26 @@ import { Button, Empty, message, Popconfirm, Skeleton, Table } from "antd";
 import { DeleteFilled, EditFilled } from "@ant-design/icons";
 import { useState } from "react";
 import { TQueryParam, TResponse } from "../../../types/index.type";
-import AcademicDepartmentModal from "../../../components/modal/admin/academicManagement/AcademicDepartmentModal";
-import { TAcademicDepartment } from "../../../types/academicDepartment.types";
-import { TAcademicFaculty } from "../../../types/academicFaculty.types";
 import {
-  useDeleteAcademicDepartmentMutation,
-  useGetAllAcademicDepartmentQuery,
-} from "../../../redux/features/admin/academicManagementApi";
+  useDeleteServiceMutation,
+  useGetAllServicesQuery,
+} from "../../../redux/features/servicesApi";
+import { TService } from "../../../types/service.type";
+import ServicesModal from "../../../components/modal/admin/ServicesModal";
 
-const AcademicDepartment = () => {
+const Services = () => {
   const [pagination, setPagination] = useState({ limit: 10, page: 1 });
   const [params, setParams] = useState<TQueryParam[]>([]);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [editingAcademicDepartment, setEditingAcademicDepartment] =
-    useState<Partial<TAcademicDepartment> | null>(null);
-  const { data: academicDepartment, isLoading: isLoadingAcademicDepartment } =
-    useGetAllAcademicDepartmentQuery([
+  const [editingService, setEditingService] =
+    useState<Partial<TService> | null>(null);
+  const { data: services, isLoading: isLoadingServices } =
+    useGetAllServicesQuery([
       { name: "limit", value: pagination.limit },
       { name: "page", value: pagination.page },
       ...params,
     ]);
-  const [deleteAcademicDepartment] = useDeleteAcademicDepartmentMutation();
+  const [deleteService] = useDeleteServiceMutation();
   const [isLoadingDeleteId, setIsLoadingDeleteId] = useState<string | null>(
     null
   );
@@ -34,26 +33,20 @@ const AcademicDepartment = () => {
       dataIndex: "name",
     },
     {
-      title: "Short name",
-      dataIndex: "shortName",
+      title: "Description",
+      dataIndex: "description",
     },
     {
-      title: "Academic faculty",
-      dataIndex: "academicFaculty",
-      render: (academicFaculty: Partial<TAcademicFaculty>) =>
-        academicFaculty?.name,
+      title: "Price",
+      dataIndex: "price",
     },
     {
-      title: "Students",
-      dataIndex: "totalStudent",
-    },
-    {
-      title: "Faculties",
-      dataIndex: "totalFaculty",
+      title: "Duration",
+      dataIndex: "duration",
     },
     {
       title: "Actions",
-      render: (_: TAcademicDepartment, record: TAcademicDepartment) => {
+      render: (_: TService, record: TService) => {
         return (
           <div className="flex gap-2">
             <Button
@@ -61,15 +54,15 @@ const AcademicDepartment = () => {
               icon={<EditFilled />}
               onClick={() => {
                 setModalVisible(true);
-                setEditingAcademicDepartment(record);
+                setEditingService(record);
               }}
             >
               Edit
             </Button>
             <Popconfirm
-              title="Delete the academic department"
-              description="Are you sure to delete this academic department?"
-              onConfirm={() => handleDeleteAcademicDepartment(record._id)}
+              title="Delete the service"
+              description="Are you sure to delete this service?"
+              onConfirm={() => handleDeleteService(record._id)}
               okText="Yes"
               cancelText="No"
             >
@@ -88,12 +81,10 @@ const AcademicDepartment = () => {
     },
   ];
 
-  const handleDeleteAcademicDepartment = async (id: string) => {
+  const handleDeleteService = async (id: string) => {
     setIsLoadingDeleteId(id);
     try {
-      const result = (await deleteAcademicDepartment(
-        id
-      ).unwrap()) as TResponse<TAcademicDepartment>;
+      const result = (await deleteService(id).unwrap()) as TResponse<TService>;
       if (result?.success) {
         message.success(result?.message);
       } else {
@@ -101,7 +92,7 @@ const AcademicDepartment = () => {
       }
     } catch (e: any) {
       message.error(
-        e?.data?.message || e?.message || "Failed to delete academic department"
+        e?.data?.message || e?.message || "Failed to delete service!"
       );
     } finally {
       setIsLoadingDeleteId(null);
@@ -111,13 +102,13 @@ const AcademicDepartment = () => {
   return (
     <div className="">
       <div className="flex gap-4 justify-between mb-4">
-        <h2 className="font-bold text-xl md:text-2xl">Academic department</h2>
+        <h2 className="font-bold text-xl md:text-2xl">Services</h2>
         <Button type="primary" onClick={() => setModalVisible(true)}>
-          Add academic dept
+          Add service
         </Button>
       </div>
 
-      {isLoadingAcademicDepartment ? (
+      {isLoadingServices ? (
         <>
           <Skeleton active />
           <Skeleton active />
@@ -125,12 +116,12 @@ const AcademicDepartment = () => {
           <Skeleton active />
           <Skeleton active />
         </>
-      ) : academicDepartment?.meta?.total === 0 ? (
+      ) : services?.meta?.total === 0 ? (
         <Empty description="No academic dept found!" />
       ) : (
         <Table
           columns={columns}
-          dataSource={academicDepartment?.data}
+          dataSource={services?.data}
           rowClassName={(record) =>
             record.isDeleted ? "opacity-50 pointer-events-none" : ""
           }
@@ -139,14 +130,14 @@ const AcademicDepartment = () => {
       )}
 
       {/* Create academic department modal*/}
-      <AcademicDepartmentModal
+      <ServicesModal
         open={modalVisible}
         setModalVisible={setModalVisible}
-        setEditingAcademicDepartment={setEditingAcademicDepartment}
-        editingAcademicDepartment={editingAcademicDepartment}
+        setEditingService={setEditingService}
+        editingService={editingService}
       />
     </div>
   );
 };
 
-export default AcademicDepartment;
+export default Services;

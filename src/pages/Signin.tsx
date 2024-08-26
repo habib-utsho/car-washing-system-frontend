@@ -1,4 +1,11 @@
-
+import { Button, Form, FormProps, message, Typography } from "antd";
+import { useSigninMutation } from "../redux/features/auth/authApi";
+import { useAppDispatch, useAppSelector } from "../redux/hook";
+import { Navigate, useNavigate } from "react-router-dom";
+import { TDecodedUser } from "../types/index.type";
+import verifyJwtToken from "../utils/verifyJwtToken";
+import { setUser } from "../redux/features/auth/authSlice";
+import MyInp from "../components/ui/Form/MyInp";
 
 type TSigninFieldType = {
   id?: string;
@@ -6,7 +13,7 @@ type TSigninFieldType = {
 };
 
 const Signin = () => {
-  const [signin, { isLoading }] = useSigninMutation();
+  const [signin, { isLoading: isLoadingSignin }] = useSigninMutation();
   const dispatch = useAppDispatch();
   const [form] = Form.useForm();
   const { token, user } = useAppSelector((state) => state.auth);
@@ -15,7 +22,7 @@ const Signin = () => {
   const { role } = (user as TDecodedUser) || {};
 
   if (token && role) {
-    return <Navigate to={`/${role}/dashboard`} replace />; //TODO back to location history
+    return <Navigate to={`/`} replace />; //TODO back to location history
   }
 
   const handleSignin: FormProps<TSigninFieldType>["onFinish"] = async (
@@ -24,10 +31,11 @@ const Signin = () => {
     try {
       const result = await signin(data).unwrap();
       if (result.success) {
+        console.log(result, "result");
         const user = verifyJwtToken(result?.data?.accessToken) as TDecodedUser;
         dispatch(setUser({ token: result.data?.accessToken, user: user }));
         message.success(result?.message);
-        navigate(`/${user.role}/dashboard`);
+        navigate(`/`);
       }
     } catch (e: any) {
       message.error(e?.message || e?.data?.message);
@@ -35,13 +43,13 @@ const Signin = () => {
   };
 
   return (
-    <div className="min-h-screen flex mx-auto justify-center items-center bg-slate-50">
+    <div className="min-h-[88vh] flex mx-auto justify-center items-center bg-slate-50">
       <div className="p-8 md:p-10 my-shadow-1 rounded-md w-5/6 sm:w-4/6 md:3/6 lg:w-2/6 bg-white">
         <Typography.Title level={3} className="!mb-0">
-          UMS Login
+          Car washing system
         </Typography.Title>
         <Typography.Text type="secondary" className="text-normal-desc">
-          To manage university account
+          To take a service
         </Typography.Text>
         <Form
           onFinish={handleSignin}
@@ -53,14 +61,14 @@ const Signin = () => {
         >
           <MyInp
             type="text"
-            name="id"
-            label="Id"
+            name="email"
+            label="Email"
             size="large"
-            placeholder="Input your id"
+            placeholder="Input your email"
             rules={[
               {
                 required: true,
-                message: "Id is required!",
+                message: "Email is required!",
               },
             ]}
           />
@@ -82,7 +90,7 @@ const Signin = () => {
             type="primary"
             size="large"
             className="w-full !mt-8"
-            loading={isLoading}
+            loading={isLoadingSignin}
           >
             Sign in
           </Button>

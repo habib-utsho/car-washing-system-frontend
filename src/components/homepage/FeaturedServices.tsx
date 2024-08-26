@@ -80,7 +80,7 @@ const FeaturedServices = () => {
   };
 
   return (
-    <div className="py-8 md:py-10">
+    <div className="py-8 md:py-10 my-[100px]">
       <Container>
         <div className="bg-white my-shadow-1 rounded-md p-4 space-y-6">
           <div className="flex justify-between flex-wrap items-center">

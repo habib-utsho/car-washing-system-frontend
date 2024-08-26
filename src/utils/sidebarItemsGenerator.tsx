@@ -1,9 +1,7 @@
 import { NavLink } from "react-router-dom";
-import { TRoutes, TSidebarRoute } from "../types/index.type";
+import { TRole, TRoutes, TSidebarRoute } from "../types/index.type";
 
-type TRole = 'student' | 'faculty' | 'admin'
-
-export const sidebarItemsGenerator = (items: TRoutes[], role:TRole) => {
+export const sidebarItemsGenerator = (items: TRoutes[], role: TRole) => {
   return items.reduce((acc: TSidebarRoute[], item) => {
     if (item.name && item.path && !item.children) {
       acc.push({

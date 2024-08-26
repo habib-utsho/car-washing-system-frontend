@@ -107,10 +107,7 @@ body::-webkit-scrollbar-thumb,
 
 /* Overwrite antd message css */
 .ant-message {
-  top: auto !important;
-  bottom: 10px;
-  left: auto;
-  right: auto !important;
+  z-index: 10000000000000;
 }
 /* Overwrite antd carousel dots */
 .slick-dots li button {
@@ -137,8 +134,33 @@ body::-webkit-scrollbar-thumb,
   @apply bg-primary;
 }
 
-/* Swiper carousel dots */
-.swiper-button-next,
-.swiper-button-prev {
-  @apply !rounded-full !text-primary !h-[60px] !w-[60px] bg-primary-50;
+/* Swiper carousel arrows */
+
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  @apply !text-[0px] !text-white !bg-white my-shadow-1 !pt-6 !pl-6 rounded-full;
+}
+
+.slick-arrow.slick-prev,
+.slick-arrow.slick-next {
+  @apply !opacity-[0.65] hover:!opacity-100;
+}
+
+.swiper-button-prev::after {
+  @apply bg-[url("/src/assets/img/icon-arrow-left.svg")];
+  transform: rotate(180deg);
+}
+
+.swiper-button-next::after {
+  @apply bg-[url("/src/assets/img/icon-arrow-left.svg")];
+}
+
+.swiper-pagination-bullet-active {
+  @apply !bg-primary;
+}
+
+/* Hover effect: Icon white, background primary color */
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  @apply cursor-pointer !bg-opacity-100;
 }

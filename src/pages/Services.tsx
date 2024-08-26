@@ -1,109 +1,59 @@
-import { Row, Col, Pagination, Spin, Skeleton } from "antd";
-import { useState } from "react";
+import {  Pagination, Skeleton, Empty } from "antd";
 import ServiceCard from "../components/services/ServicesCard";
 import { TService } from "../types/service.type";
 import Container from "../components/ui/Container";
+import { useGetAllServicesQuery } from "../redux/features/servicesApi";
+import { useState } from "react";
 
 const Services = () => {
-  const { data: products, isLoading } = {
-    isLoading: false,
-    data: {
-      meta: {
-        total: 5,
-      },
-      data: [
-        {
-          _id: "001",
-          name: "Basic Wash",
-          description: "A quick exterior wash to make your car shine.",
-          price: 1000,
-          duration: 20,
-          isDeleted: false,
-          createdAt: "2024-07-01T08:00:00.000Z",
-          updatedAt: "2024-07-01T08:00:00.000Z",
-          __v: 0,
-        },
-        {
-          _id: "002",
-          name: "Deluxe Wash",
-          description: "Includes an exterior wash with a protective wax coat.",
-          price: 2000,
-          duration: 45,
-          isDeleted: false,
-          createdAt: "2024-07-02T08:00:00.000Z",
-          updatedAt: "2024-07-02T08:00:00.000Z",
-          __v: 0,
-        },
-        {
-          _id: "003",
-          name: "Interior Detailing",
-          description: "Complete interior vacuum and detailing service.",
-          price: 3000,
-          duration: 60,
-          isDeleted: false,
-          createdAt: "2024-07-03T08:00:00.000Z",
-          updatedAt: "2024-07-03T08:00:00.000Z",
-          __v: 0,
-        },
-        {
-          _id: "004",
-          name: "Full Service Wash",
-          description: "Complete exterior wash and interior detailing.",
-          price: 5000,
-          duration: 90,
-          isDeleted: false,
-          createdAt: "2024-07-04T08:00:00.000Z",
-          updatedAt: "2024-07-04T08:00:00.000Z",
-          __v: 0,
-        },
-        {
-          _id: "005",
-          name: "Eco Wash",
-          description: "Eco-friendly wash using biodegradable products.",
-          price: 2500,
-          duration: 40,
-          isDeleted: false,
-          createdAt: "2024-07-05T08:00:00.000Z",
-          updatedAt: "2024-07-05T08:00:00.000Z",
-          __v: 0,
-        },
-      ],
-    },
-  };
+  const [pagination, setPagination] = useState<{ page: number; limit: number }>(
+    { page: 1, limit: 10 }
+  );
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 2;
+  const { data: servicesData, isLoading: isLoadingServices } =
+    useGetAllServicesQuery([
+      { name: "page", value: pagination.page },
+      { name: "limit", value: pagination.limit },
+    ]);
 
-  const onChangePage = (page) => {
-    setCurrentPage(page);
-  };
+  console.log(servicesData, "servicesData");
 
   return (
     <div>
       <Container className="my-10">
-        {isLoading ? (
-          <>
-            <Skeleton active />
-            <Skeleton active />
-            <Skeleton active />
-            <Skeleton active />
-          </>
+        {isLoadingServices ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Skeleton.Button active className="!h-[250px] !w-full" />
+            <Skeleton.Button active className="!h-[250px] !w-full" />
+            <Skeleton.Button active className="!h-[250px] !w-full" />
+          </div>
+        ) : servicesData?.meta?.total === 0 ? (
+          <Empty />
         ) : (
           <>
-            <Row gutter={[16, 16]}>
-              {products?.data?.map((service: TService) => (
-                <Col xs={24} sm={12} md={8} lg={6} key={service._id}>
-                  <ServiceCard service={service} />
-                </Col>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {servicesData?.data?.map((service: TService) => (
+                <ServiceCard service={service} />
               ))}
-            </Row>
+            </div>
 
             <div className="text-center">
+              {/* pagination={{
+            total: orderData?.meta?.total,
+            onChange: (page, pageSize) => {
+              setPagination({ page, limit: pageSize });
+            },
+          }} */}
               <Pagination
-                current={currentPage}
-                pageSize={pageSize}
-                total={products.meta.total}
-                onChange={onChangePage}
+                // current={currentPage}
+                // pageSize={pageSize}
+                total={servicesData?.meta?.total}
+                // onChange: (page, pageSize) => {
+                //   setPagination({ page, limit: pageSize })
+                // }
+                onChange={(page, pageSize) =>
+                  setPagination({ page, limit: pageSize })
+                }
                 style={{ textAlign: "center", marginTop: "20px" }}
                 className="bg-primary-50 rounded-md p-4 inline-flex"
               />

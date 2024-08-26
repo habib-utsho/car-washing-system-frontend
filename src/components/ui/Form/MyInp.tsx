@@ -1,3 +1,4 @@
+import { LockOutlined } from "@ant-design/icons";
 import { Form, Input, InputNumber, Select } from "antd";
 import React from "react";
 
@@ -43,11 +44,13 @@ const MyInp: React.FC<MyInpProps> = ({
           size={size}
           placeholder={placeholder}
           disabled={disabled}
+          className="w-full"
         />
       ) : type === "password" ? (
         <Input.Password
           size={size}
           placeholder={placeholder}
+          prefix={<LockOutlined />}
           disabled={disabled}
         />
       ) : type === "select" ? (

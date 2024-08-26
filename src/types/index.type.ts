@@ -1,30 +1,24 @@
 import { ReactNode } from "react";
 
-export type TBloodGroup =
-  | "A+"
-  | "A-"
-  | "B+"
-  | "B-"
-  | "AB+"
-  | "AB-"
-  | "O+"
-  | "O-";
 export type TGender = "male" | "female" | "other";
 
-export type TRole = "student" | "faculty" | "admin";
+export type TRole = "user" | "admin";
 
 export type TUser = {
   _id: string;
-  id: string;
-  password: string;
-  needsPasswordChange: boolean;
+  name: string;
+  email: string;
+  phone: string;
   role: TRole;
-  status: string;
+  address: string;
   isDeleted: boolean;
 };
 export type TDecodedUser = {
-  id: string;
-  role: string;
+  name: string;
+  email: string;
+  phone: string;
+  role: TRole;
+  address: string;
   iat: number;
   exp: number;
 };

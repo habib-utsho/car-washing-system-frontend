@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import router from "./routes/routes.tsx";
-import { ConfigProvider } from "antd";
+import router from "./routes/router.tsx";
+import { ConfigProvider, message } from "antd";
 import { RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./redux/store.ts";
@@ -11,6 +11,10 @@ import { store } from "./redux/store.ts";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+
+message.config({
+  top: 70, // Set the position 50px from the top
+});
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

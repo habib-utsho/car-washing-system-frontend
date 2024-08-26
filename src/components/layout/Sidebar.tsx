@@ -2,10 +2,9 @@ import { Layout, Menu } from "antd";
 import React, { ReactNode } from "react";
 import { adminPaths } from "../../routes/paths/adminPaths";
 import { sidebarItemsGenerator } from "../../utils/sidebarItemsGenerator";
-import { facultyPaths } from "../../routes/paths/facultyPaths";
-import { studentPaths } from "../../routes/paths/studentPaths";
-import { role } from "../../constant/index.constant";
 import { useAppSelector } from "../../redux/hook";
+import { role } from "../../constant/index.constant";
+import { userPaths } from "../../routes/paths/userPaths";
 
 const { Sider } = Layout;
 
@@ -24,13 +23,10 @@ const Sidebar: React.FC = () => {
 
   let sidebarItems: TSidebarItems[] = [];
   if (user?.role === role.ADMIN) {
-    sidebarItems = sidebarItemsGenerator(adminPaths, user.role);
+    sidebarItems = sidebarItemsGenerator(adminPaths, user?.role);
   }
-  if (user?.role === role.FACULTY) {
-    sidebarItems = sidebarItemsGenerator(facultyPaths, user.role);
-  }
-  if (user?.role === role.STUDENT) {
-    sidebarItems = sidebarItemsGenerator(studentPaths, user.role);
+  if (user?.role === role.USER) {
+    sidebarItems = sidebarItemsGenerator(userPaths, user?.role);
   }
 
   return (
@@ -47,7 +43,7 @@ const Sidebar: React.FC = () => {
       className="!h-screen !sticky !top-0"
     >
       <div className="demo-logo-vertical" />
-      <h2 className="text-xl md:text-2xl text-white text-center py-2">UMS</h2>
+      <h2 className="text-xl md:text-2xl text-white text-center py-2">Car washing system</h2>
       <Menu
         // onClick={({ key }) => {
         //   key ? navigate(key) : navigate("/dashboard");
@@ -59,6 +55,6 @@ const Sidebar: React.FC = () => {
       />
     </Sider>
   );
-};
+}; 
 
 export default Sidebar;

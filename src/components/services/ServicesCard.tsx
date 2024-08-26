@@ -35,7 +35,10 @@ const ServiceCard: React.FC<TServiceCard> = ({ service }) => {
         cover={
           <img
             style={{ height: 200, objectFit: "cover" }}
-            src="/path/to/your/image.jpg"
+            src={
+              service?.img ||
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw3OdJ3nAPLc94ubUz-4AvNAz_0IzTkNBSqQ&s" // TODO
+            }
             alt={service?.name}
           />
         }

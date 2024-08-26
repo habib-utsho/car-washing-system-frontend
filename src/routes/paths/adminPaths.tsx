@@ -1,15 +1,15 @@
+import Services from "../../pages/dashboard/admin/Services";
 
 export const adminPaths = [
-  { name: "Dashboard", path: "dashboard", element: 'Admin home' },
+  { name: "Dashboard", path: "dashboard", element: "Admin home" },
   {
-    name: "Academic management",
-    children: [
-      {
-        name: "Academic department",
-        path: "academic-department",
-        element:  'test',
-      },
-   
-    ],
+    name: "Services",
+    path: "services",
+    element: <Services />,
+  },
+  {
+    name: "Booking",
+    path: "booking",
+    element: "Booking",
   },
 ];
