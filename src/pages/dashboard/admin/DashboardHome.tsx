@@ -1,4 +1,3 @@
-import React from "react";
 import { useGetAdminStatsQuery } from "../../../redux/features/statsApi";
 
 const DashboardHome = () => {

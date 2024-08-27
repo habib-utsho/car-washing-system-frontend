@@ -39,7 +39,7 @@ const ServicesModal = ({
     }
   }, [form, editingService]);
 
-  const handleCreateAcademicDepartment = async (values: TService) => {
+  const handleCreateService = async (values: TService) => {
     try {
       const result = (await createService(
         values
@@ -52,7 +52,6 @@ const ServicesModal = ({
     } catch (e: any) {
       message.error(e?.data?.message || e?.message || "Failed to add service!");
     } finally {
-      setEditingService(null);
       setModalVisible(false);
       form.resetFields();
     }
@@ -94,86 +93,81 @@ const ServicesModal = ({
       <h2 className="font-bold text-xl mb-4">
         {editingService ? "Update service" : "Add service"}
       </h2>
-       
-        <Form
-          layout="vertical"
-          form={form}
-          onFinish={
-            editingService
-              ? handleUpdateService
-              : handleCreateAcademicDepartment
-          }
-        >
-          {/* service name */}
-          <MyInp
-            name="name"
-            rules={[
-              {
-                required: true,
-                message: "Please input service name!",
-              },
-            ]}
-            label="Service Name"
-            placeholder="Enter service name"
-            type="text"
-            size="large"
-          />
-          <MyInp
-            name="description"
-            rules={[
-              {
-                required: true,
-                message: "Please input service description!",
-              },
-            ]}
-            label="Service description"
-            placeholder="Enter service description"
-            type="textarea"
-            size="large"
-          />
-          <MyInp
-            name="price"
-            rules={[
-              {
-                required: true,
-                message: "Please input price!",
-              },
-            ]}
-            label="Price"
-            placeholder="Enter price"
-            type="number"
-            size="large"
-          />
-          <MyInp
-            name="duration"
-            rules={[
-              {
-                required: true,
-                message: "Please input duration!",
-              },
-            ]}
-            label="Duration"
-            placeholder="Enter duration!"
-            type="number"
-            size="large"
-          />
 
-          {/* Submit button */}
-          <Form.Item>
-            <Button
-              type="primary"
-              loading={
-                editingService ? isLoadingUpdateService : isLoadingCreateService
-              }
-              htmlType="submit"
-              block
-              size="large"
-            >
-              {editingService ? "Update service" : "Insert service"}
-            </Button>
-          </Form.Item>
-        </Form>
-      
+      <Form
+        layout="vertical"
+        form={form}
+        onFinish={editingService ? handleUpdateService : handleCreateService}
+      >
+        {/* service name */}
+        <MyInp
+          name="name"
+          rules={[
+            {
+              required: true,
+              message: "Please input service name!",
+            },
+          ]}
+          label="Service Name"
+          placeholder="Enter service name"
+          type="text"
+          size="large"
+        />
+        <MyInp
+          name="description"
+          rules={[
+            {
+              required: true,
+              message: "Please input service description!",
+            },
+          ]}
+          label="Service description"
+          placeholder="Enter service description"
+          type="textarea"
+          size="large"
+        />
+        <MyInp
+          name="price"
+          rules={[
+            {
+              required: true,
+              message: "Please input price!",
+            },
+          ]}
+          label="Price"
+          placeholder="Enter price"
+          type="number"
+          size="large"
+        />
+        <MyInp
+          name="duration"
+          rules={[
+            {
+              required: true,
+              message: "Please input duration!",
+            },
+          ]}
+          label="Duration"
+          placeholder="Enter duration!"
+          type="number"
+          size="large"
+        />
+
+        {/* Submit button */}
+        <Form.Item>
+          <Button
+            type="primary"
+            loading={
+              editingService ? isLoadingUpdateService : isLoadingCreateService
+            }
+            htmlType="submit"
+            block
+            size="large"
+          >
+            {editingService ? "Update service" : "Insert service"}
+          </Button>
+        </Form.Item>
+      </Form>
     </Modal>
   );
 };

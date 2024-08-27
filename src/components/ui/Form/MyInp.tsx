@@ -14,7 +14,8 @@ type MyInpProps = {
     | "radio"
     | "select"
     | "textarea"
-    | "date";
+    | "date"
+    | "time";
   rules?: any[];
   disabled?: boolean;
   placeholder: string;
@@ -58,6 +59,13 @@ const MyInp: React.FC<MyInpProps> = ({
           size={size}
           placeholder={placeholder}
           options={options}
+          disabled={disabled}
+        />
+      ) : type === "time" ? (
+        <Input
+          type="time"
+          size={size}
+          placeholder={placeholder}
           disabled={disabled}
         />
       ) : type === "date" ? (

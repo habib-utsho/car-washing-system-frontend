@@ -3,6 +3,16 @@ import { baseApi } from "../baseApi";
 
 const slotApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    createSlot: builder.mutation({
+      query: (payload) => {
+        return {
+          url: "/services/slots",
+          method: "POST",
+          body: payload,
+        };
+      },
+      invalidatesTags: ["slot"],
+    }),
     getAllSlot: builder.query({
       query: (filters) => {
         const params = new URLSearchParams();
@@ -45,6 +55,7 @@ const slotApi = baseApi.injectEndpoints({
 });
 
 export const {
+  useCreateSlotMutation,
   useGetAllSlotQuery,
   useGetAvailableSlotQuery,
   useToggleStatusMutation,

@@ -134,7 +134,6 @@ const Services = () => {
         </Button>
       </div>
 
-
       {isLoadingServices ? (
         <>
           <Skeleton active />
@@ -166,7 +165,7 @@ const Services = () => {
         />
       )}
 
-      {/* Create academic department modal*/}
+      {/* Create services modal*/}
       <ServicesModal
         open={modalVisible}
         setModalVisible={setModalVisible}

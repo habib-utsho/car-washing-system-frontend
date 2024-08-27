@@ -1,4 +1,4 @@
-import { Empty, Input, message, Select, Skeleton, Table } from "antd";
+import { Button, Empty, message, Select, Skeleton, Table } from "antd";
 import { useState } from "react";
 import moment from "moment";
 import { TQueryParam } from "../../../types/index.type";
@@ -8,12 +8,12 @@ import {
 } from "../../../redux/features/slotApi";
 import { TSlot } from "../../../types/slot.type";
 import { TService } from "../../../types/service.type";
-
-const { Search } = Input;
+import SlotModal from "../../../components/modal/admin/SlotModal";
 
 const Slots = () => {
   const [pagination, setPagination] = useState({ limit: 10, page: 1 });
   const [params, setParams] = useState<TQueryParam[]>([]);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const {
     data: slots,
     isLoading: isLoadingSlot,
@@ -139,6 +139,10 @@ const Slots = () => {
             { label: "Canceled", value: "canceled" },
           ]}
         />
+
+        <Button type="primary" onClick={() => setModalVisible(true)}>
+          Create slot
+        </Button>
       </div>
 
       {isLoadingSlot ? (
@@ -168,6 +172,9 @@ const Slots = () => {
           scroll={{ x: 1000 }}
         />
       )}
+
+      {/* Create slot  modal*/}
+      <SlotModal open={modalVisible} setModalVisible={setModalVisible} />
     </div>
   );
 };
