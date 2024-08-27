@@ -19,8 +19,9 @@ import {
 import {
   useDeleteUserMutation,
   useGetAllUserQuery,
-  useUserToAdminMutation,
+  useToggleUserRoleMutation,
 } from "../../../../redux/features/auth/authApi";
+import { useAppSelector } from "../../../../redux/hook";
 
 const { Search } = Input;
 const User = () => {
@@ -39,13 +40,14 @@ const User = () => {
     ...params,
   ]);
   const [deleteUser] = useDeleteUserMutation();
-  const [makeAdmin] = useUserToAdminMutation();
+  const [toggleUserRole] = useToggleUserRoleMutation();
   const [isLoadingDeleteId, setIsLoadingDeleteId] = useState<string | null>(
     null
   );
-  const [isLoadingMakeAdminId, setIsLoadingMakeAdminId] = useState<
+  const [isLoadingToggleRoleId, setIsLoadingToggleRoleId] = useState<
     string | null
   >(null);
+  const { user } = useAppSelector((state) => state.auth);
 
   const columns = [
     {
@@ -86,11 +88,11 @@ const User = () => {
             <Button
               type="primary"
               // icon={<Ed />}
-              loading={isLoadingMakeAdminId === record._id}
-              onClick={() => handleUserToAdmin(record?._id)}
-              disabled={record.role === "admin"}
+              loading={isLoadingToggleRoleId === record._id}
+              onClick={() => handleToggleUserRole(record?._id)}
+              disabled={record.email === user?.email}
             >
-              Make admin
+              Make {record.role === "admin" ? "user" : "admin"}
             </Button>
             <Popconfirm
               title="Delete the student"
@@ -128,20 +130,20 @@ const User = () => {
     }
   };
 
-  const handleUserToAdmin = async (id: string) => {
-    setIsLoadingMakeAdminId(id);
+  const handleToggleUserRole = async (id: string) => {
+    setIsLoadingToggleRoleId(id);
 
     try {
-      const result = (await makeAdmin(id).unwrap()) as TResponse<TUser>;
+      const result = (await toggleUserRole(id).unwrap()) as TResponse<TUser>;
       if (result?.success) {
         message.success(result?.message);
       } else {
         message.error(result?.message);
       }
     } catch (e: any) {
-      message.error(e?.data?.message || e?.message || "Failed to make admin");
+      message.error(e?.data?.message || e?.message || "Failed to toggle role!");
     } finally {
-      setIsLoadingMakeAdminId(null);
+      setIsLoadingToggleRoleId(null);
     }
   };
 

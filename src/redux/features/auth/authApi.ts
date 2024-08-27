@@ -41,10 +41,10 @@ const authApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ["user"],
     }),
-    userToAdmin: builder.mutation({
+    toggleUserRole: builder.mutation({
       query: (id: string) => {
         return {
-          url: `/auth/users/make-admin/${id}`,
+          url: `/auth/users/toggle-role/${id}`,
           method: "PATCH",
         };
       },
@@ -58,5 +58,5 @@ export const {
   useSignupMutation,
   useGetAllUserQuery,
   useDeleteUserMutation,
-  useUserToAdminMutation,
+  useToggleUserRoleMutation,
 } = authApi;
