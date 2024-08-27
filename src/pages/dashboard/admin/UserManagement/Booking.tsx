@@ -1,24 +1,26 @@
-import { Button, Empty, message, Popconfirm, Skeleton, Table } from "antd";
-import { DeleteFilled, EditFilled } from "@ant-design/icons";
+import { Empty, Input, Skeleton, Table } from "antd";
 import { useState } from "react";
 import { useGetAllBookingQuery } from "../../../../redux/features/bookingApi";
 import moment from "moment";
-import { TBooking } from "../../../../types/booking.type";
 import { TSlot } from "../../../../types/slot.type";
+import { TQueryParam } from "../../../../types/index.type";
+
+const { Search } = Input;
 
 const Booking = () => {
   const [pagination, setPagination] = useState({ limit: 10, page: 1 });
+  const [searchTerm, setSearchTerm] = useState<string | null>(null);
   const [params, setParams] = useState<TQueryParam[]>([]);
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [editingBooking, setEditingBooking] =
-    useState<Partial<TBooking> | null>(null);
-  const { data: bookings, isLoading: isLoadingBooking } = useGetAllBookingQuery(
-    [
-      { name: "limit", value: pagination.limit },
-      { name: "page", value: pagination.page },
-      ...params,
-    ]
-  );
+  const {
+    data: bookings,
+    isLoading: isLoadingBooking,
+    isFetching: isFetchingBooking,
+  } = useGetAllBookingQuery([
+    { name: "limit", value: pagination.limit },
+    { name: "page", value: pagination.page },
+    ...(searchTerm ? [{ name: "searchTerm", value: searchTerm }] : []),
+    ...params,
+  ]);
 
   const columns = [
     {
@@ -84,6 +86,15 @@ const Booking = () => {
     <div className="">
       <div className="flex gap-4 justify-between mb-4">
         <h2 className="font-bold text-xl md:text-2xl">Bookings</h2>
+
+        <Search
+          placeholder="Search by vehicle model, brand and type"
+          onSearch={(value) => setSearchTerm(value)}
+          size="large"
+          allowClear
+          enterButton
+          className="w-full max-w-full md:max-w-[280px] lg:max-w-[420px] "
+        />
       </div>
 
       {isLoadingBooking ? (
@@ -100,8 +111,10 @@ const Booking = () => {
         <Table
           columns={columns}
           dataSource={bookings?.data}
+          loading={isLoadingBooking || isFetchingBooking}
           rowKey={(record) => record._id}
           pagination={{
+            position: ["bottomCenter"],
             current: pagination.page,
             pageSize: pagination.limit,
             total: bookings?.meta?.total,

@@ -21,10 +21,9 @@ import {
   useGetAllUserQuery,
   useUserToAdminMutation,
 } from "../../../../redux/features/auth/authApi";
-import { TBooking } from "../../../../types/booking.type";
 
+const { Search } = Input;
 const User = () => {
-  const { Search } = Input;
   const [pagination, setPagination] = useState({ limit: 10, page: 1 });
   const [params, setParams] = useState<TQueryParam[]>([]);
   const [searchTerm, setSearchTerm] = useState<string | null>(null);
@@ -151,7 +150,7 @@ const User = () => {
       <div className="flex flex-wrap gap-4 justify-between mb-4">
         <h2 className="font-bold text-xl md:text-2xl">User</h2>
         <Search
-          placeholder="Search student"
+          placeholder="Search user"
           onSearch={(value) => setSearchTerm(value)}
           size="large"
           allowClear
@@ -180,6 +179,9 @@ const User = () => {
           scroll={{ x: 800 }}
           loading={isLoadingUser || isFetching}
           pagination={{
+            position: ["bottomCenter"],
+            current: pagination.page,
+            pageSize: pagination.limit,
             total: users?.meta?.total,
             onChange: (page, pageSize) => {
               setPagination({ page, limit: pageSize });

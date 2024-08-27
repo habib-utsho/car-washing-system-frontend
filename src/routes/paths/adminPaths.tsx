@@ -1,4 +1,5 @@
 import Services from "../../pages/dashboard/admin/Services";
+import Slots from "../../pages/dashboard/admin/Slots";
 import Booking from "../../pages/dashboard/admin/UserManagement/Booking";
 import User from "../../pages/dashboard/admin/UserManagement/User";
 
@@ -10,10 +11,15 @@ export const adminPaths = [
     element: <Services />,
   },
   {
+    name: "Slots",
+    path: "slots",
+    element: <Slots />,
+  },
+  {
     name: "User management",
     children: [
-      { name: "User bookings", path: "bookings", element: <Booking /> },
       { name: "Users", path: "users", element: <User /> },
+      { name: "User bookings", path: "bookings", element: <Booking /> },
     ],
   },
 ];

@@ -1,4 +1,12 @@
-import { Button, Empty, message, Popconfirm, Skeleton, Table } from "antd";
+import {
+  Button,
+  Empty,
+  Input,
+  message,
+  Popconfirm,
+  Skeleton,
+  Table,
+} from "antd";
 
 import { DeleteFilled, EditFilled } from "@ant-design/icons";
 import { useState } from "react";
@@ -10,18 +18,27 @@ import {
 import { TService } from "../../../types/service.type";
 import ServicesModal from "../../../components/modal/admin/ServicesModal";
 
+const { Search } = Input;
+
 const Services = () => {
   const [pagination, setPagination] = useState({ limit: 10, page: 1 });
+  const [searchTerm, setSearchTerm] = useState<string | null>(null);
+
   const [params, setParams] = useState<TQueryParam[]>([]);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [editingService, setEditingService] =
     useState<Partial<TService> | null>(null);
-  const { data: services, isLoading: isLoadingServices } =
-    useGetAllServicesQuery([
-      { name: "limit", value: pagination.limit },
-      { name: "page", value: pagination.page },
-      ...params,
-    ]);
+  const {
+    data: services,
+    isLoading: isLoadingServices,
+    isFetching: isFetchingServices,
+  } = useGetAllServicesQuery([
+    { name: "limit", value: pagination.limit },
+    { name: "page", value: pagination.page },
+    ...(searchTerm ? [{ name: "searchTerm", value: searchTerm }] : []),
+
+    ...params,
+  ]);
   const [deleteService] = useDeleteServiceMutation();
   const [isLoadingDeleteId, setIsLoadingDeleteId] = useState<string | null>(
     null
@@ -103,9 +120,22 @@ const Services = () => {
     <div className="">
       <div className="flex gap-4 justify-between mb-4">
         <h2 className="font-bold text-xl md:text-2xl">Services</h2>
+
+        <Search
+          placeholder="Search service"
+          onSearch={(value) => setSearchTerm(value)}
+          size="large"
+          allowClear
+          enterButton
+          className="w-full max-w-full md:max-w-[280px] lg:max-w-[420px] "
+        />
         <Button type="primary" onClick={() => setModalVisible(true)}>
           Add service
         </Button>
+      </div>
+
+      <div className="flex flex-wrap gap-4 justify-between mb-4">
+        <h2 className="font-bold text-xl md:text-2xl">User</h2>
       </div>
 
       {isLoadingServices ? (
@@ -117,15 +147,25 @@ const Services = () => {
           <Skeleton active />
         </>
       ) : services?.meta?.total === 0 ? (
-        <Empty description="No academic dept found!" />
+        <Empty description="No services found!" />
       ) : (
         <Table
           columns={columns}
           dataSource={services?.data}
+          loading={isLoadingServices || isFetchingServices}
           rowClassName={(record) =>
             record.isDeleted ? "opacity-50 pointer-events-none" : ""
           }
           scroll={{ x: 800 }}
+          pagination={{
+            position: ["bottomCenter"],
+            total: services?.meta?.total,
+            current: pagination.page,
+            pageSize: pagination.limit,
+            onChange: (page, pageSize) => {
+              setPagination({ page, limit: pageSize });
+            },
+          }}
         />
       )}
 

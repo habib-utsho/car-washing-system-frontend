@@ -7,5 +7,4 @@ export type TService = {
   isDeleted: boolean;
   createdAt: string;
   updatedAt: string;
-  __v: number;
 };
