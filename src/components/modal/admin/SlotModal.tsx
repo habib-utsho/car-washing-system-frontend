@@ -1,13 +1,11 @@
 import { Button, Form, message, Modal, Skeleton } from "antd";
 import React from "react";
 import { TService } from "../../../types/service.type";
-import {
-  useCreateServiceMutation,
-  useGetAllServicesQuery,
-} from "../../../redux/features/servicesApi";
+import { useGetAllServicesQuery } from "../../../redux/features/servicesApi";
 import { TResponse } from "../../../types/index.type";
 import MyInp from "../../ui/Form/MyInp";
 import { useCreateSlotMutation } from "../../../redux/features/slotApi";
+import { TSlot } from "../../../types/slot.type";
 
 type TProps = {
   open: boolean;
@@ -22,12 +20,12 @@ const SlotModal = ({ open, setModalVisible }: TProps) => {
   const { data: services, isLoading: isLoadingServices } =
     useGetAllServicesQuery([{ name: "limit", value: 1500 }]);
 
-  const handleCreateSlot = async (values: TService) => {
-
+  const handleCreateSlot = async (values: TSlot) => {
     try {
-      const result = (await createService(
-        values
-      ).unwrap()) as TResponse<TService>;
+      const result = (await createService({
+        ...values,
+        date: new Date(values.date),
+      }).unwrap()) as TResponse<TService>;
       if (result?.success) {
         message.success(result?.message);
       } else {

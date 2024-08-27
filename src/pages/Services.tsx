@@ -1,14 +1,26 @@
-import { Pagination, Skeleton, Empty } from "antd";
+import { Pagination, Skeleton, Empty, Select, Input, Button } from "antd";
 import ServiceCard from "../components/services/ServicesCard";
 import { TService } from "../types/service.type";
 import Container from "../components/ui/Container";
 import { useGetAllServicesQuery } from "../redux/features/servicesApi";
 import { useState } from "react";
+import { TQueryParam } from "../types/index.type";
+import {
+  SortAscendingOutlined,
+  SortDescendingOutlined,
+} from "@ant-design/icons";
 
+const { Search } = Input;
 const Services = () => {
+  const [priceRange, setPriceRange] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string | null>(null);
   const [pagination, setPagination] = useState<{ page: number; limit: number }>(
     { page: 1, limit: 10 }
   );
+  const [isPriceSort, setIsPriceSort] = useState<string | null>(null);
+  const [isDurationSort, setIsDurationSort] = useState<string | null>(null);
+
+  const [params, setParams] = useState<TQueryParam[]>([]);
 
   const {
     data: servicesData,
@@ -17,11 +29,93 @@ const Services = () => {
   } = useGetAllServicesQuery([
     { name: "page", value: pagination.page },
     { name: "limit", value: pagination.limit },
+    ...(priceRange ? [{ name: "priceRange", value: priceRange }] : []),
+    ...(searchTerm ? [{ name: "searchTerm", value: searchTerm }] : []),
+    ...(isPriceSort ? [{ name: "sort", value: isPriceSort }] : []),
+    ...(isDurationSort ? [{ name: "sort", value: isDurationSort }] : []),
+    ...params,
   ]);
 
   return (
     <div>
       <Container className="my-10">
+        {/* Filtering and sorting */}
+        <div className="mb-8 flex gap-4">
+          {/* Price range */}
+          <Select
+            className="w-[200px]"
+            onChange={(value) => {
+              // const newParams = params.filter(
+              //   (param) => param.name !== "priceRange"
+              // );
+              // setParams([...newParams, { name: "priceRange", value }]);
+              setPriceRange(value);
+            }}
+            value={priceRange}
+            options={[
+              { min: 0, max: 500 },
+              { min: 500, max: 1000 },
+              { min: 1000, max: 20000 },
+              { min: 2000, max: 4000 },
+              { min: 4000, max: 8000 },
+              { min: "All price", max: "All price" },
+            ].map((item) => {
+              if (item.min === "All price") {
+                return {
+                  label: item.min,
+                  value: null,
+                };
+              }
+              return {
+                label: `${item.min} - ${item.max}`,
+                value: `${item.min},${item.max}`,
+              };
+            })}
+            placeholder="Filter by price range"
+            // style={{ width: "100%" }}
+          />
+          {/* Search */}
+          <Search
+            placeholder="Search service"
+            onSearch={(value) => setSearchTerm(value)}
+            allowClear
+            enterButton
+            className="w-[200px] "
+          />
+
+          <div className="flex items-center gap-2">
+            <span className="text-normal-desc pr-1 border-r border-r-slate-200">
+              Sort by
+            </span>
+            <Button
+              onClick={() =>
+                setIsPriceSort(isPriceSort === "price" ? "-price" : "price")
+              }
+            >
+              {isPriceSort === "-price" ? (
+                <SortAscendingOutlined />
+              ) : (
+                isPriceSort === "price" && <SortDescendingOutlined />
+              )}{" "}
+              Price
+            </Button>
+            <Button
+              onClick={() =>
+                setIsPriceSort(
+                  isPriceSort === "duration" ? "-duration" : "duration"
+                )
+              }
+            >
+              {isPriceSort === "-duration" ? (
+                <SortAscendingOutlined />
+              ) : (
+                isPriceSort === "duration" && <SortDescendingOutlined />
+              )}{" "}
+              Duration
+            </Button>
+          </div>
+        </div>
+
         {isLoadingServices || isFetching ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <Skeleton.Button active className="!h-[250px] !w-full" />
@@ -29,7 +123,9 @@ const Services = () => {
             <Skeleton.Button active className="!h-[250px] !w-full" />
           </div>
         ) : servicesData?.meta?.total === 0 ? (
-          <Empty />
+          <div className="h-[75vh] flex items-center justify-center">
+            <Empty />
+          </div>
         ) : (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -38,7 +134,7 @@ const Services = () => {
               ))}
             </div>
 
-            <div className="text-center">
+            <div className="rounded-md p-4 bg-primary bg-opacity-5 my-10 flex justify-center">
               <Pagination
                 current={pagination.page}
                 pageSize={pagination.limit}
@@ -46,8 +142,7 @@ const Services = () => {
                 onChange={(page, pageSize) =>
                   setPagination({ page, limit: pageSize })
                 }
-                style={{ textAlign: "center", marginTop: "20px" }}
-                className="bg-primary-50 rounded-md p-4 inline-flex"
+                className=""
               />
             </div>
           </>

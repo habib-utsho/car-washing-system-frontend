@@ -130,9 +130,12 @@ const Slots = () => {
           className="w-[250px]"
           size="large"
           placeholder="Filter by status"
-          onChange={(value) =>
-            setParams([...params, { name: "isBooked", value }])
-          }
+          onChange={(value) => {
+            const newParams = params.filter(
+              (param) => param.name !== "isBooked"
+            );
+            setParams([...newParams, { name: "isBooked", value }]);
+          }}
           options={[
             { label: "Available", value: "available" },
             { label: "Booked", value: "booked" },

@@ -1,5 +1,5 @@
 import { LockOutlined } from "@ant-design/icons";
-import { Form, Input, InputNumber, Select } from "antd";
+import { DatePicker, Form, Input, InputNumber, Select, TimePicker } from "antd";
 import React from "react";
 
 type MyInpProps = {
@@ -69,11 +69,14 @@ const MyInp: React.FC<MyInpProps> = ({
           disabled={disabled}
         />
       ) : type === "date" ? (
-        <Input
-          type="date"
-          size={size}
+        <DatePicker
           placeholder={placeholder}
+          size="large"
           disabled={disabled}
+          className="w-full"
+          // defaultValue={dayjs('2019-09-03', dateFormat)}
+          // minDate={dayjs('2019-08-01', dateFormat)}
+          // maxDate={dayjs('2020-10-31', dateFormat)}
         />
       ) : (
         <Input size={size} placeholder={placeholder} disabled={disabled} />
