@@ -33,7 +33,7 @@ const Signin = () => {
       if (result.success) {
         console.log(result, "result");
         const user = verifyJwtToken(result?.data?.accessToken) as TDecodedUser;
-        dispatch(setUser({ token: result.data?.accessToken, user: user }));
+        dispatch( ({ token: result.data?.accessToken, user: user }));
         message.success(result?.message);
         navigate(`/`);
       }
