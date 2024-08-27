@@ -40,6 +40,8 @@ const ServicesModal = ({
   }, [form, editingService]);
 
   const handleCreateService = async (values: TService) => {
+
+
     try {
       const result = (await createService(
         values
@@ -148,7 +150,7 @@ const ServicesModal = ({
             },
           ]}
           label="Duration"
-          placeholder="Enter duration!"
+          placeholder="Enter duration in minutes"
           type="number"
           size="large"
         />

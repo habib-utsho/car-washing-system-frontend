@@ -10,6 +10,7 @@ import { routesGenerator } from "../utils/routesGenerator";
 import { adminPaths } from "./paths/adminPaths";
 import { userPaths } from "./paths/userPaths";
 import UserRoute from "./PrivateRoutes/UserRoute";
+import Service from "../pages/Service";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "/services",
         element: <Services />,
+      },
+      {
+        path: "/services/:id",
+        element: <Service />,
       },
     ],
   },

@@ -27,6 +27,7 @@ const servicesApi = baseApi.injectEndpoints({
           params: params,
         };
       },
+      providesTags: ["services"],
     }),
 
     getSingleService: builder.query({

@@ -44,7 +44,7 @@ const ServiceCard: React.FC<TServiceCard> = ({ service }) => {
         }
       >
         <Link
-          to={`/service/${service?._id}`}
+          to={`/services/${service?._id}`}
           className="font-bold text-xl inline-block mb-2 hover:text-primary-2 truncate w-full hover:text-primary"
         >
           {service?.name}
