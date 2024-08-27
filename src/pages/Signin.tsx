@@ -33,7 +33,7 @@ const Signin = () => {
       if (result.success) {
         console.log(result, "result");
         const user = verifyJwtToken(result?.data?.accessToken) as TDecodedUser;
-        dispatch( ({ token: result.data?.accessToken, user: user }));
+        dispatch(setUser({ token: result.data?.accessToken, user: user }));
         message.success(result?.message);
         navigate(`/`);
       }
@@ -46,10 +46,10 @@ const Signin = () => {
     <div className="min-h-[88vh] flex mx-auto justify-center items-center bg-slate-50">
       <div className="p-8 md:p-10 my-shadow-1 rounded-md w-5/6 sm:w-4/6 md:3/6 lg:w-2/6 bg-white">
         <Typography.Title level={3} className="!mb-0">
-          Car washing system
+          Cleanify
         </Typography.Title>
         <Typography.Text type="secondary" className="text-normal-desc">
-          To take a service
+          To clean your car always
         </Typography.Text>
         <Form
           onFinish={handleSignin}

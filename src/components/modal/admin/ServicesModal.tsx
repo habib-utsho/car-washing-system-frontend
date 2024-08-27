@@ -1,9 +1,8 @@
-import { Button, Form, message, Modal, Skeleton } from "antd";
+import { Button, Form, message, Modal } from "antd";
 import React, { useEffect } from "react";
 import { TService } from "../../../types/service.type";
 import {
   useCreateServiceMutation,
-  useGetAllServicesQuery,
   useUpdateServiceMutation,
 } from "../../../redux/features/servicesApi";
 import { TResponse } from "../../../types/index.type";
@@ -24,8 +23,6 @@ const ServicesModal = ({
   setEditingService,
 }: TProps) => {
   const [form] = Form.useForm();
-  const { data: services, isLoading: isLoadingServices } =
-    useGetAllServicesQuery([]);
   const [createService, { isLoading: isLoadingCreateService }] =
     useCreateServiceMutation();
   const [updateService, { isLoading: isLoadingUpdateService }] =
@@ -97,13 +94,7 @@ const ServicesModal = ({
       <h2 className="font-bold text-xl mb-4">
         {editingService ? "Update service" : "Add service"}
       </h2>
-      {isLoadingServices ? (
-        <>
-          <Skeleton active />
-          <Skeleton active />
-          <Skeleton active />
-        </>
-      ) : (
+       
         <Form
           layout="vertical"
           form={form}
@@ -182,7 +173,7 @@ const ServicesModal = ({
             </Button>
           </Form.Item>
         </Form>
-      )}
+      
     </Modal>
   );
 };
