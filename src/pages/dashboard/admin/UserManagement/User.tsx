@@ -10,11 +10,18 @@ import {
 
 import { DeleteFilled } from "@ant-design/icons";
 import { useState } from "react";
-import { TQueryParam, TResponse, TUser } from "../../../../types/index.type";
+import {
+  TQueryParam,
+  TResponse,
+  TRole,
+  TUser,
+} from "../../../../types/index.type";
 import {
   useDeleteUserMutation,
   useGetAllUserQuery,
+  useUserToAdminMutation,
 } from "../../../../redux/features/auth/authApi";
+import { TBooking } from "../../../../types/booking.type";
 
 const User = () => {
   const { Search } = Input;
@@ -33,9 +40,13 @@ const User = () => {
     ...params,
   ]);
   const [deleteUser] = useDeleteUserMutation();
+  const [makeAdmin] = useUserToAdminMutation();
   const [isLoadingDeleteId, setIsLoadingDeleteId] = useState<string | null>(
     null
   );
+  const [isLoadingMakeAdminId, setIsLoadingMakeAdminId] = useState<
+    string | null
+  >(null);
 
   const columns = [
     {
@@ -49,6 +60,15 @@ const User = () => {
     {
       title: "role",
       dataIndex: "role",
+      render: (role: TRole) => (
+        <div
+          className={`font-semibold ${
+            role === "admin" ? "text-primary" : "text-slate-700"
+          }`}
+        >
+          {role}
+        </div>
+      ),
     },
     {
       title: "Address",
@@ -64,6 +84,15 @@ const User = () => {
       render: (_: TUser, record: TUser) => {
         return (
           <div className="flex gap-2">
+            <Button
+              type="primary"
+              // icon={<Ed />}
+              loading={isLoadingMakeAdminId === record._id}
+              onClick={() => handleUserToAdmin(record?._id)}
+              disabled={record.role === "admin"}
+            >
+              Make admin
+            </Button>
             <Popconfirm
               title="Delete the student"
               description="Are you sure to delete this student?"
@@ -76,9 +105,7 @@ const User = () => {
                 danger
                 icon={<DeleteFilled />}
                 loading={isLoadingDeleteId === record._id}
-              >
-                Delete
-              </Button>
+              ></Button>
             </Popconfirm>
           </div>
         );
@@ -99,6 +126,23 @@ const User = () => {
       message.error(e?.data?.message || e?.message || "Failed to delete user");
     } finally {
       setIsLoadingDeleteId(null);
+    }
+  };
+
+  const handleUserToAdmin = async (id: string) => {
+    setIsLoadingMakeAdminId(id);
+
+    try {
+      const result = (await makeAdmin(id).unwrap()) as TResponse<TUser>;
+      if (result?.success) {
+        message.success(result?.message);
+      } else {
+        message.error(result?.message);
+      }
+    } catch (e: any) {
+      message.error(e?.data?.message || e?.message || "Failed to make admin");
+    } finally {
+      setIsLoadingMakeAdminId(null);
     }
   };
 

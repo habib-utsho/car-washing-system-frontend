@@ -30,6 +30,7 @@ const authApi = baseApi.injectEndpoints({
           params: params,
         };
       },
+      providesTags: ["user"],
     }),
     deleteUser: builder.mutation({
       query: (id: string) => {
@@ -38,6 +39,16 @@ const authApi = baseApi.injectEndpoints({
           method: "DELETE",
         };
       },
+      invalidatesTags: ["user"],
+    }),
+    userToAdmin: builder.mutation({
+      query: (id: string) => {
+        return {
+          url: `/auth/users/make-admin/${id}`,
+          method: "PATCH",
+        };
+      },
+      invalidatesTags: ["user"],
     }),
   }),
 });
@@ -47,4 +58,5 @@ export const {
   useSignupMutation,
   useGetAllUserQuery,
   useDeleteUserMutation,
+  useUserToAdminMutation,
 } = authApi;

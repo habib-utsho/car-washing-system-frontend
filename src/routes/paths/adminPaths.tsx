@@ -1,4 +1,5 @@
 import Services from "../../pages/dashboard/admin/Services";
+import Booking from "../../pages/dashboard/admin/UserManagement/Booking";
 import User from "../../pages/dashboard/admin/UserManagement/User";
 
 export const adminPaths = [
@@ -11,8 +12,8 @@ export const adminPaths = [
   {
     name: "User management",
     children: [
-      { name: "All booking", path: "booking", element: "All booking" },
-      { name: "All users", path: "users", element: <User /> },
+      { name: "User bookings", path: "bookings", element: <Booking /> },
+      { name: "Users", path: "users", element: <User /> },
     ],
   },
 ];
