@@ -1,4 +1,4 @@
-import {  Pagination, Skeleton, Empty } from "antd";
+import { Pagination, Skeleton, Empty } from "antd";
 import ServiceCard from "../components/services/ServicesCard";
 import { TService } from "../types/service.type";
 import Container from "../components/ui/Container";
@@ -10,18 +10,19 @@ const Services = () => {
     { page: 1, limit: 10 }
   );
 
-  const { data: servicesData, isLoading: isLoadingServices } =
-    useGetAllServicesQuery([
-      { name: "page", value: pagination.page },
-      { name: "limit", value: pagination.limit },
-    ]);
-
-  console.log(servicesData, "servicesData");
+  const {
+    data: servicesData,
+    isLoading: isLoadingServices,
+    isFetching,
+  } = useGetAllServicesQuery([
+    { name: "page", value: pagination.page },
+    { name: "limit", value: pagination.limit },
+  ]);
 
   return (
     <div>
       <Container className="my-10">
-        {isLoadingServices ? (
+        {isLoadingServices || isFetching ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <Skeleton.Button active className="!h-[250px] !w-full" />
             <Skeleton.Button active className="!h-[250px] !w-full" />
@@ -38,19 +39,10 @@ const Services = () => {
             </div>
 
             <div className="text-center">
-              {/* pagination={{
-            total: orderData?.meta?.total,
-            onChange: (page, pageSize) => {
-              setPagination({ page, limit: pageSize });
-            },
-          }} */}
               <Pagination
-                // current={currentPage}
-                // pageSize={pageSize}
+                current={pagination.page}
+                pageSize={pagination.limit}
                 total={servicesData?.meta?.total}
-                // onChange: (page, pageSize) => {
-                //   setPagination({ page, limit: pageSize })
-                // }
                 onChange={(page, pageSize) =>
                   setPagination({ page, limit: pageSize })
                 }

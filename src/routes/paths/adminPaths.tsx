@@ -1,10 +1,11 @@
+import DashboardHome from "../../pages/dashboard/admin/DashboardHome";
 import Services from "../../pages/dashboard/admin/Services";
 import Slots from "../../pages/dashboard/admin/Slots";
 import Booking from "../../pages/dashboard/admin/UserManagement/Booking";
 import User from "../../pages/dashboard/admin/UserManagement/User";
 
 export const adminPaths = [
-  { name: "Dashboard", path: "dashboard", element: "Admin home" },
+  { name: "Dashboard", path: "dashboard", element: <DashboardHome /> },
   {
     name: "Services",
     path: "services",

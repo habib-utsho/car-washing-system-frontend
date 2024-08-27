@@ -134,9 +134,6 @@ const Services = () => {
         </Button>
       </div>
 
-      <div className="flex flex-wrap gap-4 justify-between mb-4">
-        <h2 className="font-bold text-xl md:text-2xl">User</h2>
-      </div>
 
       {isLoadingServices ? (
         <>
