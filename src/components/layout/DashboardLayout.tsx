@@ -3,7 +3,6 @@ import { Button, Divider, Layout, Menu, Skeleton } from "antd";
 import Sidebar from "./Sidebar";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
-import { TDecodedUser } from "../../types/index.type";
 import { signOut } from "../../redux/features/auth/authSlice";
 import logo from "../../assets/img/logo.png";
 import FromTop from "../helpingCompo/FromTop";
@@ -13,6 +12,7 @@ const { Header, Content } = Layout;
 const DashboardLayout: React.FC = () => {
   const dispatch = useAppDispatch();
   const { user, isAuthLoading } = useAppSelector((state) => state.auth);
+ 
 
   return (
     <>

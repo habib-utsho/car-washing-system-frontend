@@ -31,7 +31,6 @@ const Signin = () => {
     try {
       const result = await signin(data).unwrap();
       if (result.success) {
-        console.log(result, "result");
         const user = verifyJwtToken(result?.data?.accessToken) as TDecodedUser;
         dispatch(setUser({ token: result.data?.accessToken, user: user }));
         message.success(result?.message);

@@ -1,4 +1,4 @@
-import { TQueryParam } from "../../../types/index.type";
+import { TPasswordUpdate, TQueryParam, TUser } from "../../../types/index.type";
 import { baseApi } from "../../baseApi";
 
 const authApi = baseApi.injectEndpoints({
@@ -50,6 +50,32 @@ const authApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ["user"],
     }),
+    editProfile: builder.mutation({
+      query: ({ id, payload }: { id: string; payload: Partial<TUser> }) => {
+        return {
+          url: `/auth/users/edit-profile/${id}`,
+          method: "PATCH",
+          body: payload,
+        };
+      },
+      invalidatesTags: ["user"],
+    }),
+    editPassword: builder.mutation({
+      query: ({
+        id,
+        payload,
+      }: {
+        id: string;
+        payload: Partial<TPasswordUpdate>;
+      }) => {
+        return {
+          url: `/auth/users/edit-password/${id}`,
+          method: "PATCH",
+          body: payload,
+        };
+      },
+      invalidatesTags: ["user"],
+    }),
   }),
 });
 
@@ -59,4 +85,6 @@ export const {
   useGetAllUserQuery,
   useDeleteUserMutation,
   useToggleUserRoleMutation,
+  useEditProfileMutation,
+  useEditPasswordMutation,
 } = authApi;

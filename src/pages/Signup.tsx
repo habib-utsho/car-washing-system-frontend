@@ -10,7 +10,7 @@ const Signup = () => {
   const navigate = useNavigate();
   const [signupForm] = Form.useForm();
   const [createUser, { isLoading: isSignupLoading }] = useSignupMutation();
-  const [uploadFile, { isLoading: isLoadingUploadFile, data: uploadFileData }] =
+  const [uploadFile, { isLoading: isLoadingUploadFile }] =
     useUploadFileMutation();
 
   const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -24,6 +24,10 @@ const Signup = () => {
       const formData = new FormData();
       formData.append("image", fileList[0].originFileObj);
       const file = await uploadFile(formData).unwrap();
+      if (!file?.data?.url) {
+        message.error("Image upload failed");
+        return;
+      }
       data.img = file?.data?.url;
     }
 

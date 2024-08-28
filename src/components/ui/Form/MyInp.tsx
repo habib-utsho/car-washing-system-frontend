@@ -18,7 +18,7 @@ type MyInpProps = {
     | "time";
   rules?: any[];
   disabled?: boolean;
-  placeholder: string;
+  placeholder?: string;
   defaultValue?: string;
   options?: { label: string; value: string }[];
   size?: "small" | "middle" | "large";

@@ -5,6 +5,8 @@ import { sidebarItemsGenerator } from "../../utils/sidebarItemsGenerator";
 import { useAppSelector } from "../../redux/hook";
 import { role } from "../../constant/index.constant";
 import { userPaths } from "../../routes/paths/userPaths";
+import { MdEmail } from "react-icons/md";
+import { MailFilled, MailOutlined, PhoneFilled } from "@ant-design/icons";
 
 const { Sider } = Layout;
 
@@ -14,12 +16,9 @@ type TSidebarItems = {
   children?: TSidebarItems[];
 };
 
-// type TSidebarProps = {
-//   userRole: TRole;
-// };
-
 const Sidebar: React.FC = () => {
   const { user } = useAppSelector((state) => state.auth);
+  const { name, img, phone, email } = user || {};
 
   let sidebarItems: TSidebarItems[] = [];
   if (user?.role === role.ADMIN) {
@@ -43,7 +42,16 @@ const Sidebar: React.FC = () => {
       className="!h-screen !sticky !top-0"
     >
       <div className="demo-logo-vertical" />
-      <h2 className="text-xl md:text-2xl text-white text-center py-2">Car washing system</h2>
+      <div className="mb-6 space-y-2 mt-4 mx-2">
+        <img src={img} alt={name} className="w-full rounded-md h-[150px]" />
+        <h2 className="text-gray">
+          <MailFilled /> {email}
+        </h2>
+        <p className="text-gray">
+          <PhoneFilled /> {phone}
+        </p>
+      </div>
+
       <Menu
         // onClick={({ key }) => {
         //   key ? navigate(key) : navigate("/dashboard");
@@ -55,6 +63,6 @@ const Sidebar: React.FC = () => {
       />
     </Sider>
   );
-}; 
+};
 
 export default Sidebar;

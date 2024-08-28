@@ -11,14 +11,21 @@ export type TUser = {
   phone: string;
   role: TRole;
   address: string;
+  img: string;
   isDeleted: boolean;
 };
+export type TPasswordUpdate = {
+  oldPassword: string
+  newPassword: string
+}
 export type TDecodedUser = {
+  _id: string;
   name: string;
   email: string;
   phone: string;
   role: TRole;
   address: string;
+  img: string;
   iat: number;
   exp: number;
 };
