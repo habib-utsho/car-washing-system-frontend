@@ -27,6 +27,20 @@ const bookingApi = baseApi.injectEndpoints({
         };
       },
     }),
+    getMyBooking: builder.query({
+      query: (filters) => {
+        const params = new URLSearchParams();
+        filters.forEach((item: TQueryParam) => {
+          params.append(item.name, item.value as string);
+        });
+
+        return {
+          url: "/bookings/my-bookings",
+          method: "GET",
+          params: params,
+        };
+      },
+    }),
 
     getSingleBooking: builder.query({
       query: (id) => {
@@ -42,5 +56,6 @@ const bookingApi = baseApi.injectEndpoints({
 export const {
   useCreateBookingMutation,
   useGetAllBookingQuery,
+  useGetMyBookingQuery,
   useGetSingleBookingQuery,
 } = bookingApi;
