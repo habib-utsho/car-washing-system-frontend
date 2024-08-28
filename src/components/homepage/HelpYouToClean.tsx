@@ -9,7 +9,7 @@ const HelpYouToClean = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 items-center">
           <div className="border-b md:border-r border-gray h-full py-14 px-10">
             <h2 className="font-bold text-3xl md:text-5xl">
-              We Will Help You to Keep Your Car Alway Clean
+              We Will Help You to Keep Your Car Always Clean
             </h2>
           </div>
           <div className="space-y-2 p-4">

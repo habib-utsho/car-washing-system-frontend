@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Link } from "react-router-dom";
 import Signin from "../pages/Signin";
 import Signup from "../pages/Signup";
 import Homepage from "../pages/Homepage";
@@ -11,10 +11,27 @@ import { adminPaths } from "./paths/adminPaths";
 import { userPaths } from "./paths/userPaths";
 import UserRoute from "./PrivateRoutes/UserRoute";
 import Service from "../pages/Service";
+import { Button, Result } from "antd";
 
 const router = createBrowserRouter([
   {
     path: "/",
+    errorElement: (
+      <div className="min-h-[90vh] flex items-center justify-center">
+        <Result
+          status="404"
+          title="404"
+          subTitle="Sorry, the page you visited does not exist."
+          extra={
+            <div className="flex items-center justify-center">
+              <Button type="default">
+                <Link to={"/"}>Back Home</Link>
+              </Button>
+            </div>
+          }
+        />
+      </div>
+    ),
     element: <MainLayout />,
     children: [
       {

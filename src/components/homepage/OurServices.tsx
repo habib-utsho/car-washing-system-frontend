@@ -46,9 +46,15 @@ const OurServices = () => {
   return (
     <div className="">
       <Container className="space-y-8">
-        <h2 className="text-cent font-bold text-2xl md:text-4xl text-center">
-          Our services
-        </h2>
+        <div className="text-center">
+          <div className="flex items-center gap-2 justify-center text-slate-700">
+            <span className="h-[1.5px] w-[25px] bg-slate-700"></span>
+            <p>Our services</p>
+          </div>
+          <h2 className="text-cent font-bold text-2xl md:text-4xl text-center">
+            Service we provide
+          </h2>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {services.map((service, index) => (

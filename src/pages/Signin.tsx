@@ -1,7 +1,7 @@
 import { Button, Form, FormProps, message, Typography } from "antd";
 import { useSigninMutation } from "../redux/features/auth/authApi";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { TDecodedUser } from "../types/index.type";
 import verifyJwtToken from "../utils/verifyJwtToken";
 import { setUser } from "../redux/features/auth/authSlice";
@@ -89,12 +89,31 @@ const Signin = () => {
             htmlType="submit"
             type="primary"
             size="large"
-            className="w-full !mt-8"
+            className="w-full !my-6"
             loading={isLoadingSignin}
           >
             Sign in
           </Button>
         </Form>
+
+        {/* Forgot pass and signup */}
+        <div className="flex flex-wrap justify-between gap-2">
+          <p className="mt-2 flex gap-1 items-center">
+            New here?{" "}
+            <Link to={"/signup"}>
+              <Button className="btn-outline-one">Signup</Button>
+            </Link>{" "}
+          </p>
+
+          <p className="mt-2 flex gap-1 items-center">
+            <Link
+              to={"/signin?forgot-password=true"}
+              className="hover:text-primary-2"
+            >
+              Forgot password?
+            </Link>{" "}
+          </p>
+        </div>
       </div>
     </div>
   );
