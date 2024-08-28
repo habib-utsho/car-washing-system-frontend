@@ -171,6 +171,7 @@ const EditProfile = () => {
             <Button
               type="primary"
               block
+              size="large"
               htmlType="submit"
               loading={isLoadingUpdateProfile || isLoadingUploadFile}
             >

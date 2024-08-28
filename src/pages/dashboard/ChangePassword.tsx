@@ -80,6 +80,7 @@ const ChangePassword = () => {
               type="primary"
               htmlType="submit"
               className="btn-one w-full"
+              size="large"
               loading={isLoadingChangePassword}
             >
               Change Password
