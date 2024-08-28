@@ -42,7 +42,7 @@ const Sidebar: React.FC = () => {
       className="!h-screen !sticky !top-0"
     >
       <div className="demo-logo-vertical" />
-      <div className="mb-6 space-y-2 mt-4 mx-2">
+      <div className="mb-6 space-y-2 mt-4 mx-3">
         <img src={img} alt={name} className="w-full rounded-md h-[150px]" />
         <h2 className="text-gray">
           <MailFilled /> {email}

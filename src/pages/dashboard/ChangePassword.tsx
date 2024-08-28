@@ -24,9 +24,9 @@ const ChangePassword = () => {
         payload: data,
       }).unwrap();
 
-      message.success(result?.message);
       dispatch(signOut());
       navigate("/signin");
+      message.success(result?.message);
     } catch (e: any) {
       message.error(e?.data?.message || e?.message);
     }
