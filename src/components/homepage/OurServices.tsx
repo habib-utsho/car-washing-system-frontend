@@ -6,6 +6,7 @@ import superDryImg from "../../assets/img/provideService/Super_Dry_5c5af34ddb.we
 import biodegradableImg from "../../assets/img/provideService/Biodegradable_Soap_a784c88ab9.webp";
 import recycledImg from "../../assets/img/provideService/Recycled_Water_f9a87d9848.webp";
 import MyMotion from "../helpingCompo/MyMotion";
+import CommonSectionBanner from "../helpingCompo/CommonSectionBanner";
 
 const OurServices = () => {
   const services = [
@@ -44,17 +45,12 @@ const OurServices = () => {
     },
   ];
   return (
-    <div className="">
-      <Container className="space-y-8">
-        <div className="text-center">
-          <div className="flex items-center gap-2 justify-center text-slate-700">
-            <span className="h-[1.5px] w-[25px] bg-slate-700"></span>
-            <p>Our services</p>
-          </div>
-          <h2 className="text-cent font-bold text-2xl md:text-4xl text-center">
-            Service we provide
-          </h2>
-        </div>
+    <div className="my-[60px]">
+      <Container className="space-y-12">
+        <CommonSectionBanner
+          title={"Service we provide"}
+          subTitle="Our services"
+        />
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {services.map((service, index) => (

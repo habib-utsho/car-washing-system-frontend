@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Divider, Layout, Menu, Skeleton } from "antd";
 import Sidebar from "./Sidebar";
 import { Link, Outlet, useNavigate } from "react-router-dom";
@@ -6,13 +6,50 @@ import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import { signOut } from "../../redux/features/auth/authSlice";
 import logo from "../../assets/img/logo.png";
 import FromTop from "../helpingCompo/FromTop";
+import moment from "moment";
+import { useGetMyBookingQuery } from "../../redux/features/bookingApi";
 
 const { Header, Content } = Layout;
 
 const DashboardLayout: React.FC = () => {
   const dispatch = useAppDispatch();
   const { user, isAuthLoading } = useAppSelector((state) => state.auth);
- 
+  const [timeRemaining, setTimeRemaining] = useState<string>("");
+  const {
+    data: bookings,
+    isLoading: isLoadingBooking,
+    isFetching: isFetchingBooking,
+  } = useGetMyBookingQuery([
+    { name: "upcoming", value: true },
+    { name: "limit", value: 1 },
+    { name: "sort", value: "-date" },
+  ]);
+
+  console.log(bookings, "bookings");
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = moment();
+      const bookingTime = moment(bookings?.data?.[0]?.slot?.date);
+      const duration = moment.duration(bookingTime.diff(now));
+
+      if (duration.asSeconds() <= 0) {
+        setTimeRemaining("Expired");
+        clearInterval(interval);
+      } else {
+        setTimeRemaining(
+          `${Math.floor(
+            duration.asDays()
+          )}d ${duration.hours()}h ${duration.minutes()}m ${duration.seconds()}s`
+        );
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [bookings]);
+
+  // console.log(bookings, "bookings?.[0]?.slot?.date");
+  console.log(timeRemaining, "timeRemaining");
 
   return (
     <>
@@ -29,6 +66,24 @@ const DashboardLayout: React.FC = () => {
                   alt="Car washing system"
                   className="w-[50px] h-auto"
                 />
+              </Link>
+            </div>
+
+            <div>
+              <Link to="/user/dashboard/upcoming-booking">
+                <Button type="text" className="">
+                  {timeRemaining === "Expired" ? (
+                    "No upcoming bookings"
+                  ) : (
+                    <div className="!text-slate-700 font-normal">
+                      <span>Your next booking for </span>
+                      <span className="font-semibold">
+                        {bookings?.data?.[0]?.service?.name}
+                      </span>
+                      <span> starts in {timeRemaining}.</span>
+                    </div>
+                  )}
+                </Button>
               </Link>
             </div>
 
@@ -57,14 +112,14 @@ const DashboardLayout: React.FC = () => {
           // }}
           className="min-h-screen"
         >
-            <FromTop>
-              <Content
-                style={{ margin: "24px 16px 0" }}
-                className="bg-white rounded-lg shadow p-5"
-              >
-                <Outlet />
-              </Content>
-            </FromTop>
+          <FromTop>
+            <Content
+              style={{ margin: "24px 16px 0" }}
+              className="bg-white rounded-lg shadow p-5"
+            >
+              <Outlet />
+            </Content>
+          </FromTop>
         </Layout>
       </Layout>
     </>

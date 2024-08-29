@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Button, Card, message, Typography } from "antd";
-import { useDispatch } from "react-redux";
+import { Button, Card, Typography } from "antd";
 import { Link } from "react-router-dom";
 import { BsCartPlus } from "react-icons/bs";
 import { TService } from "../../types/service.type";
@@ -10,7 +9,6 @@ type TServiceCard = {
 };
 
 const ServiceCard: React.FC<TServiceCard> = ({ service }) => {
-  const dispatch = useDispatch();
   // const { products: cartItems } = useAppSelector((state) => state.cart);
 
   // const handleBook = (service: TService) => {
@@ -79,9 +77,9 @@ const ServiceCard: React.FC<TServiceCard> = ({ service }) => {
           block
           type="default"
           className="!absolute bottom-2 left-0 right-0 !w-[70%] mx-auto"
-          disabled={service?.isDeleted || Number(service.stock) === 0}
+          disabled={service?.isDeleted}
         >
-          Book slot
+          <Link to={`/services/${service?._id}`}>Book slot</Link>
         </Button>
       </Card>
     </div>

@@ -29,6 +29,7 @@ const Services = () => {
   } = useGetAllServicesQuery([
     { name: "page", value: pagination.page },
     { name: "limit", value: pagination.limit },
+    { name: "isDeleted", value: false },
     ...(priceRange ? [{ name: "priceRange", value: priceRange }] : []),
     ...(searchTerm ? [{ name: "searchTerm", value: searchTerm }] : []),
     ...(isPriceSort ? [{ name: "sort", value: isPriceSort }] : []),

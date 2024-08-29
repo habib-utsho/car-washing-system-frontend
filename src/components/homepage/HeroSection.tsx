@@ -21,8 +21,7 @@ const HeroSection = () => {
           autoplay
         >
           {bannerItems.map((item, ind) => (
-            <Link
-              to={"/products"}
+            <div
               key={ind}
               className="bg-primary h-[400px] cursor-pointer rounded-md"
             >
@@ -33,10 +32,9 @@ const HeroSection = () => {
                   className="h-full w-full rounded-md"
                 />
               </div>
-            </Link>
+            </div>
           ))}
         </Carousel>
-
       </Container>
     </div>
   );
