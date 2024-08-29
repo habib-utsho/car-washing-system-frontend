@@ -1,10 +1,10 @@
 import { Outlet } from "react-router-dom";
-import Footer from "../shared/Footer";
 import Header from "../shared/header/Header";
 import Navbar from "../shared/header/Navbar";
 import { useEffect, useState } from "react";
 import { ToTopOutlined } from "@ant-design/icons";
 import FromTop from "../helpingCompo/FromTop";
+import Footer from "../shared/Footer";
 
 const MainLayout = () => {
   const [isScreenTop, setIsScreenTop] = useState(true);

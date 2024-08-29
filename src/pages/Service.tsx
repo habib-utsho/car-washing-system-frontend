@@ -11,7 +11,7 @@ import {
   Collapse,
   CollapseProps,
   Timeline,
-  DatePicker,
+  Empty,
 } from "antd";
 import banner from "../assets/img/serviceDetailsBanner.jpg";
 import {
@@ -20,12 +20,10 @@ import {
   SafetyCertificateFilled,
 } from "@ant-design/icons";
 import MyMotion from "../components/helpingCompo/MyMotion";
-import {
-  useGetAllSlotQuery,
-  useGetAvailableSlotQuery,
-} from "../redux/features/slotApi";
+import { useGetAllSlotQuery } from "../redux/features/slotApi";
 import { useState } from "react";
 import moment from "moment";
+import { TSlot } from "../types/slot.type";
 
 const { Title, Paragraph } = Typography;
 
@@ -115,7 +113,7 @@ const Service = () => {
       children: (
         <>
           <h2 className="font-semibold text-lg">Select service</h2>
-          <p>From the category, select the service you are looking for.</p>
+          <p>From the services page, select the service you are looking for.</p>
         </>
       ),
     },
@@ -139,13 +137,12 @@ const Service = () => {
     },
   ];
 
-  const [selectedSlot, setSelectedSlot] = useState(null);
+  const [selectedSlot, setSelectedSlot] = useState<TSlot | null>(null);
 
   // Function to group slots by date
   const groupSlotsByDate = (slots) => {
     if (!slots?.data || slots?.data?.length === 0) return {};
     return slots?.data?.reduce((groups, slot) => {
-      console.log(slot, "slot");
       const date = moment(slot.date).format("YYYY-MM-DD");
       if (!groups[date]) {
         groups[date] = [];
@@ -157,13 +154,13 @@ const Service = () => {
 
   const groupedSlots = groupSlotsByDate(slots || []);
 
-  const handleSlotClick = (slot) => {
+  const handleSlotClick = (slot: TSlot) => {
     if (slot.isBooked !== "available") return;
     setSelectedSlot(slot);
   };
 
   return (
-    <div className="py-8 bg-slate-50">
+    <div className="bg-slate-50">
       {/* Banner */}
       <div
         className="mb-8 w-full h-[450px] bg-slate-800 bg-blend-overlay bg-no-repeat bg-center bg-cover p-4 py-8 text-white"
@@ -212,6 +209,9 @@ const Service = () => {
                     "Fast service",
                     "Quality service",
                     "Professional service",
+                    "Affordable price",
+                    "Experienced staff",
+                    "Eco-friendly products",
                   ].map((item) => {
                     return (
                       <li className="flex gap-2 items-center">
@@ -234,6 +234,27 @@ const Service = () => {
           <Skeleton active paragraph={{ rows: 15 }} />
         ) : (
           <div>
+            <Card
+              cover={
+                <img
+                  alt={name}
+                  src={
+                    img ||
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw3OdJ3nAPLc94ubUz-4AvNAz_0IzTkNBSqQ&s"
+                  }
+                  className="w-full h-[200px]"
+                />
+              }
+              className="rounded-md my-shadow-1 w-3/6"
+            >
+              <Title level={2}>
+                Overview of <span className="text-primary">{name}</span>
+              </Title>
+              <Paragraph strong>{`Duration: ${duration} mins`}</Paragraph>
+              <Paragraph strong>{`Price: ${price} BDT`}</Paragraph>
+              <p className="text-normal-desc">{description}</p>
+            </Card>
+
             {/* FAQ */}
             <MyMotion y={50}>
               <div className="my-4 space-y-5">
@@ -265,65 +286,45 @@ const Service = () => {
             <MyMotion y={50}>
               {/* Available Slots Section-wise by Date */}
               <div className="my-8 space-y-5 bg-white rounded-md my-shadow-1 p-4">
-                <h2 className="font-semibold text-2xl">Available Slots</h2>
+                <h2 className="font-semibold text-2xl">Upcoming Slots</h2>
 
-                {Object.keys(groupedSlots).map((date) => (
-                  <div key={date} className="my-6">
-                    <h3 className="text-xl font-semibold mb-4">
-                      {moment(date).format("DD-MM-YYYY")}
-                    </h3>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                      {groupedSlots[date].map((slot) => (
-                        <Button
-                          key={slot._id}
-                          disabled={slot.isBooked !== "available"}
-                          type={
-                            selectedSlot?._id === slot._id
-                              ? "primary"
-                              : slot.isBooked === "available"
-                              ? "default"
-                              : "default"
-                          }
-                          onClick={() => handleSlotClick(slot)}
-                        >
-                          {slot.startTime} - {slot.endTime}
-                        </Button>
-                      ))}
+                {Object.keys(groupedSlots)?.length === 0 ? (
+                  <Empty description="No upcoming time slots for this service." />
+                ) : (
+                  Object.keys(groupedSlots)?.map((date) => (
+                    <div key={date} className="my-6">
+                      <h3 className="text-xl font-semibold mb-4">
+                        {moment(date).format("DD-MM-YYYY")}
+                      </h3>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        {groupedSlots[date].map((slot) => (
+                          <Button
+                            key={slot._id}
+                            disabled={slot.isBooked !== "available"}
+                            type={
+                              selectedSlot?._id === slot._id
+                                ? "primary"
+                                : slot.isBooked === "available"
+                                ? "default"
+                                : "default"
+                            }
+                            onClick={() => handleSlotClick(slot)}
+                          >
+                            {slot.startTime} - {slot.endTime}
+                          </Button>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))
+                )}
 
                 {selectedSlot && (
                   <Button type="primary" size="large" className="mt-4">
-                    Book This Service
+                    <Link to={`/booking/${selectedSlot._id}`}>Book Now</Link>
                   </Button>
                 )}
               </div>
             </MyMotion>
-
-            <Card
-              cover={
-                <img
-                  alt={name}
-                  src={
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw3OdJ3nAPLc94ubUz-4AvNAz_0IzTkNBSqQ&s"
-                  }
-                  className="w-full h-[200px]"
-                />
-              }
-              className="rounded-md my-shadow-1"
-            >
-              <Title level={2}>
-                Overview of <span className="text-primary">{name}</span>
-              </Title>
-
-              <h2>FAQ</h2>
-
-              <Paragraph strong>{`Duration: ${duration} mins`}</Paragraph>
-              <Rate allowHalf defaultValue={4.5} />
-              <Paragraph>{description}</Paragraph>
-              <Button type="primary">Book Now</Button>
-            </Card>
           </div>
         )}
       </Container>

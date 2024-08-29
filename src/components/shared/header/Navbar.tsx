@@ -1,61 +1,19 @@
 import { useState } from "react";
-import { ProductOutlined, ShopOutlined } from "@ant-design/icons";
+import { AppstoreAddOutlined, ProductOutlined } from "@ant-design/icons";
 import { Button, Menu } from "antd";
 import { Link } from "react-router-dom";
-import { BiCategory } from "react-icons/bi";
-import { FcSettings } from "react-icons/fc";
 import Container from "../../ui/Container";
 
 const items = [
-  {
-    label: "Shops",
-    path: "/shops",
-    icon: <ShopOutlined />,
-  },
   {
     label: "Services",
     path: "/services",
     icon: <ProductOutlined />,
   },
   {
-    label: "Categories",
-    path: "/categories",
-    icon: <BiCategory />,
-  },
-  {
-    label: "Gedget accessories",
-    icon: <FcSettings />,
-    path: "",
-    children: [
-      {
-        type: "group",
-        label: "mobile",
-        children: [
-          {
-            label: "apple",
-            key: "apple",
-          },
-          {
-            label: "samsung",
-            key: "samsung",
-          },
-        ],
-      },
-      {
-        type: "group",
-        label: "Laptop",
-        children: [
-          {
-            label: "Hp",
-            key: "Hp",
-          },
-          {
-            label: "lenovo",
-            key: "lenovo",
-          },
-        ],
-      },
-    ],
+    label: "Booking",
+    icon: <AppstoreAddOutlined />,
+    path: "/booking",
   },
 ];
 const Navbar = () => {
@@ -65,9 +23,9 @@ const Navbar = () => {
     setCurrent(e.key);
   };
   return (
-    <section className="shadow  bg-[#FEFEFF]">
+    <section className="shadow  bg-[#FEFEFF] py-2">
       <Container>
-        <div className="flex justify-between gap-4">
+        <div className="flex justify-between flex-wrap gap-4">
           <Menu
             style={{
               border: "0",
@@ -77,6 +35,7 @@ const Navbar = () => {
             onClick={onClick}
             selectedKeys={[current]}
             mode="horizontal"
+            className="min-w-[250px] sm:min-w-[400px] flex-grow"
           >
             {items.map((item, ind) => (
               <Menu.Item key={ind} icon={item?.icon}>
@@ -84,11 +43,14 @@ const Navbar = () => {
               </Menu.Item>
             ))}
           </Menu>
-          <div className="flex items-center py-1">
-            <Button className="!w-[200px]" block size="large" type="primary">
-              Book now
-            </Button>
-          </div>
+          <Button
+            className="!w-full sm:!w-[200px]"
+            block
+            size="large"
+            type="primary"
+          >
+            Book now
+          </Button>
         </div>
       </Container>
     </section>

@@ -56,13 +56,12 @@ const Header = ({}) => {
       //   borderRadius: "6px",
       //   border: "0",
       // }}
-      className="py-1 rounded-md justify-end"
+      className="py-1 rounded-md justify-end px-2"
     >
       <p className="flex items-center gap-1 mr-4">
         Call us now:
         <Link to="tel:+8801706785160">+880170678-5160</Link>
       </p>
-      <Menu.Item key="offer" icon={<GiftOutlined />}></Menu.Item>
       <Menu.Item key="Whats app" icon={<BsWhatsapp />}></Menu.Item>
 
       {isAuthLoading ? (
@@ -92,18 +91,11 @@ const Header = ({}) => {
     <>
       <section className="shadow-sm  py-1 sticky top-0 !z-[5000000] bg-primary">
         <Container>
-          <div className="navbar-container">
-            <Row align="middle" gutter={[16, 16]}>
-              <Col xs={24} sm={24} md={8} lg={8} xl={8}>
-                <Link to="/" className="navbar-left">
-                  <img src={logo} alt="Logo" style={{ height: "50px" }} />
-                </Link>
-              </Col>
-              <Col xs={24} sm={24} md={8} lg={8} xl={8}></Col>
-              <Col xs={24} sm={24} md={8} lg={8} xl={8}>
-                <div className="navbar-right">{rightMenu}</div>
-              </Col>
-            </Row>
+          <div className="flex justify-between flex-wrap">
+            <Link to="/" className="navbar-left">
+              <img src={logo} alt="Logo" style={{ height: "50px" }} />
+            </Link>
+            <div className="mx-auto sm:mx-0 ">{rightMenu}</div>
           </div>
         </Container>
       </section>
