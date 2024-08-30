@@ -318,7 +318,7 @@ const Service = () => {
                           {moment(date).format("DD MMM YYYY")}
                         </h3>
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                          {groupedSlots[date].map((slot: TSlot) => (
+                          {groupedSlots[date]?.map((slot: TSlot) => (
                             <Button
                               key={slot._id}
                               disabled={slot.isBooked !== "available"}
@@ -357,7 +357,7 @@ const Service = () => {
                         className="mt-4 w-[250px]"
                         icon={<PlusCircleOutlined />}
                       >
-                        Book Now
+                        Book This Service
                       </Button>
                     </Link>
                   )}

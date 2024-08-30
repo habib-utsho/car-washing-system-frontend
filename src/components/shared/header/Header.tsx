@@ -57,7 +57,7 @@ const Header = ({}) => {
       // }}
       className="py-1 rounded-md justify-end px-2"
     >
-      <p className="flex items-center gap-1 mr-4">
+      <p className="flex items-center gap-1 mr-4 mb-0">
         Call us now:
         <Link to="tel:+8801706785160">+880170678-5160</Link>
       </p>

@@ -22,7 +22,7 @@ const CommonSectionBanner: React.FC<TCommonSectionBanner> = ({
         }  text-slate-700`}
       >
         <span className="h-[1.5px] w-[25px] bg-slate-700"></span>
-        <p>{subTitle}</p>
+        <p className="mb-0">{subTitle}</p>
       </div>
       <h2
         className={`font-bold text-2xl md:text-4xl ${
