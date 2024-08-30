@@ -13,7 +13,7 @@ const items = [
   {
     label: "Booking",
     icon: <AppstoreAddOutlined />,
-    path: "/booking",
+    path: "/services",
   },
 ];
 const Navbar = () => {
@@ -43,14 +43,16 @@ const Navbar = () => {
               </Menu.Item>
             ))}
           </Menu>
-          <Button
-            className="!w-full sm:!w-[200px]"
-            block
-            size="large"
-            type="primary"
-          >
-            Book now
-          </Button>
+          <Link to={'/services'}>
+            <Button
+              className="!w-full sm:!w-[200px]"
+              block
+              size="large"
+              type="primary"
+            >
+              Book now
+            </Button>
+          </Link>
         </div>
       </Container>
     </section>

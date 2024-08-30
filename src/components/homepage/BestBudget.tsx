@@ -5,7 +5,7 @@ const BestBudget = () => {
   return (
     <div className="bg-black">
       <Container className="grid grid-cols-12 p-4 space-y-2 col-span-8 items-center">
-        <div className="col-span-8 text-white space-y-4">
+        <div className="col-span-12 sm:col-span-8 order-2 sm:order-1 text-white space-y-4">
           <h2 className="font-bold text-2xl md:text-5xl">
             Keep Your <span className="text-primary">Car Clean</span> Always
           </h2>
@@ -42,7 +42,7 @@ const BestBudget = () => {
             will always be ready to shine.
           </p>
         </div>
-        <div className="col-span-4">
+        <div className="col-span-12 sm:col-span-4 order-1 sm:order-2">
           <img src={bestBudgetImg} alt="" />
         </div>
       </Container>

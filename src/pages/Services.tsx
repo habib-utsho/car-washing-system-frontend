@@ -35,6 +35,9 @@ const Services = () => {
     ...params,
   ]);
 
+
+
+
   return (
     <div>
       <Container className="my-10">
@@ -71,7 +74,7 @@ const Services = () => {
               };
             })}
             placeholder="Filter by price range"
-            // style={{ width: "100%" }}
+          // style={{ width: "100%" }}
           />
           {/* Search */}
           <Search
