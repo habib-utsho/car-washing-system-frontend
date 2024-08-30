@@ -14,6 +14,7 @@ import {
 } from "@ant-design/icons";
 import convertTwentyFourHourToTwelveHourFormat from "../utils/convertTwentyFourHourToTwelveHourFormat";
 import { useInitPaymentMutation } from "../redux/features/paymentApi";
+import { TResponse } from "../types/index.type";
 
 const Booking = () => {
   const { id } = useParams();
@@ -31,45 +32,29 @@ const Booking = () => {
 
   const handleSubmit = async (values: TBooking) => {
     try {
-      //   const result = (await createBooking({
-      //     ...values,
-      //     serviceId: slot?.data?.service?._id,
-      //     slotId: slot?.data?._id,
-      //   }).unwrap()) as TResponse<TBooking>;
+      const result = (await createBooking({
+        ...values,
+        serviceId: slot?.data?.service?._id,
+        slotId: slot?.data?._id,
+      }).unwrap()) as TResponse<TBooking>;
 
-      const result = {
-        success: true,
-        data: [{ _id: 1, service: 5 }],
-        message: "hey",
-      };
       if (result?.success) {
         message.success(result?.message || "Booking created successfully!");
 
         const initPaymentResult = await initPayment({
-          store_id: "aamarpaytest",
           tran_id: result?.data?._id,
-          success_url: "/success",
-          fail_url: "/failed",
-          cancel_url: "/canceled",
-          amount: result?.data?.service?.price,
-          currency: "BDT",
-          signature_key: "dbb74894e82415a2f7ff0ec3a97e4183",
-          desc: "Merchant Registration Payment",
+          amount: String(result?.data?.service?.price),
           cus_name: user?.name,
           cus_email: user?.email,
           cus_add1: user?.address,
           cus_add2: user?.address,
-          cus_city: "Dhaka",
-          cus_state: "Dhaka",
-          cus_postcode: "1206",
-          cus_country: "Bangladesh",
           cus_phone: user?.phone,
-          type: "json",
         }).unwrap();
-        console.log(initPaymentResult, "initPaymentResult");
 
-        if (initPaymentResult?.result) {
-          window.location.href = initPaymentResult?.paymentUrl;
+   
+        if (initPaymentResult?.success) {
+          message.success(result?.message || "Payment initiated successfully!");
+          window.location.href = initPaymentResult?.data?.payment_url;
         } else {
           console.log(initPayment, "initPayment");
           message.error("Payment failed.");

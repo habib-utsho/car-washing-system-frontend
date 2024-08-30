@@ -262,10 +262,10 @@ const Service = () => {
                     img ||
                     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw3OdJ3nAPLc94ubUz-4AvNAz_0IzTkNBSqQ&s"
                   }
-                  className="w-full h-[200px]"
+                  className="w-full h-[200px] object-cover"
                 />
               }
-              className="rounded-md my-shadow-1 w-3/6 mx-auto mb-6"
+              className="rounded-md my-shadow-1 w-2/6 mx-auto mb-6"
             >
               <Title level={2}>
                 <span className="text-primary">{name}</span>

@@ -61,7 +61,14 @@ const Header = ({}) => {
         Call us now:
         <Link to="tel:+8801706785160">+880170678-5160</Link>
       </p>
-      <Menu.Item key="Whats app" icon={<BsWhatsapp />}></Menu.Item>
+      <Menu.Item
+        key="Whats app"
+        icon={
+          <Link to="tel:+8801706785160">
+            <BsWhatsapp />{" "}
+          </Link>
+        }
+      ></Menu.Item>
 
       {isAuthLoading ? (
         <div className="flex items-center justify-center w-[70px] pr-[25px]">
