@@ -11,7 +11,10 @@ import { useGetAllServicesQuery } from "../../redux/features/servicesApi";
 
 const FeaturedServices = () => {
   const { data: services, isLoading: isLoadingServices } =
-    useGetAllServicesQuery([{ name: "isDeleted", value: false }]);
+    useGetAllServicesQuery([
+      { name: "isDeleted", value: false },
+      { name: "isFeatured", value: true },
+    ]);
 
   return (
     <div className="py-8 md:py-10 my-[100px]">
@@ -35,7 +38,7 @@ const FeaturedServices = () => {
             </div>
           ) : services?.meta?.total == 0 ? (
             <div>
-              <Empty description='No featured services found!'/>
+              <Empty description="No featured services found!" />
             </div>
           ) : (
             <Swiper

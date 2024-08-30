@@ -5,6 +5,7 @@ import {
   message,
   Popconfirm,
   Skeleton,
+  Switch,
   Table,
 } from "antd";
 
@@ -14,6 +15,7 @@ import { TQueryParam, TResponse } from "../../../types/index.type";
 import {
   useDeleteServiceMutation,
   useGetAllServicesQuery,
+  useUpdateServiceMutation,
 } from "../../../redux/features/servicesApi";
 import { TService } from "../../../types/service.type";
 import ServicesModal from "../../../components/modal/admin/ServicesModal";
@@ -40,14 +42,29 @@ const Services = () => {
     ...params,
   ]);
   const [deleteService] = useDeleteServiceMutation();
+  const [updateService] = useUpdateServiceMutation();
   const [isLoadingDeleteId, setIsLoadingDeleteId] = useState<string | null>(
+    null
+  );
+  const [isLoadingToggleId, setIsLoadingToggleId] = useState<string | null>(
     null
   );
 
   const columns = [
     {
-      title: "Name",
-      dataIndex: "name",
+      title: "Service",
+      render: (record: TService) => {
+        return (
+          <div className="flex items-center gap-2">
+            <img
+              src={record?.img}
+              alt={record?.name}
+              className="h-[40px] w-[40px]"
+            />
+            {record?.name}
+          </div>
+        );
+      },
     },
     {
       title: "Description",
@@ -60,6 +77,18 @@ const Services = () => {
     {
       title: "Duration",
       dataIndex: "duration",
+    },
+    {
+      title: "Is featured",
+      render: (record: TService) => {
+        return (
+          <Switch
+            checked={record?.isFeatured}
+            onChange={() => toggleIsFeatured(record)}
+            loading={record?._id === isLoadingToggleId}
+          />
+        );
+      },
     },
     {
       title: "Actions",
@@ -113,6 +142,27 @@ const Services = () => {
       );
     } finally {
       setIsLoadingDeleteId(null);
+    }
+  };
+
+  const toggleIsFeatured = async (payload: TService) => {
+    setIsLoadingToggleId(payload?._id);
+    try {
+      const result = (await updateService({
+        _id: payload?._id,
+        isFeatured: !payload?.isFeatured,
+      }).unwrap()) as TResponse<TService>;
+      if (result?.success) {
+        message.success(result?.message);
+      } else {
+        message.error(result?.message);
+      }
+    } catch (e: any) {
+      message.error(
+        e?.data?.message || e?.message || "Failed to toggle isFeatured service!"
+      );
+    } finally {
+      setIsLoadingToggleId(null);
     }
   };
 

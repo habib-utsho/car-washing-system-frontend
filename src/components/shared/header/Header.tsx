@@ -1,11 +1,10 @@
 import { useState } from "react";
 // import jwtDecode from 'jwt-decode';
-import { Menu, Dropdown, Col, Row, Skeleton } from "antd";
+import { Menu, Dropdown, Skeleton } from "antd";
 import {
   UserOutlined,
   DashboardOutlined,
   LogoutOutlined,
-  GiftOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import logo from "../../../assets/img/logo.png";

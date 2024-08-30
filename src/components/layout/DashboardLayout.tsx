@@ -18,14 +18,11 @@ const DashboardLayout: React.FC = () => {
   const {
     data: bookings,
     isLoading: isLoadingBooking,
-    isFetching: isFetchingBooking,
   } = useGetMyBookingQuery([
     { name: "upcoming", value: true },
     { name: "limit", value: 1 },
     { name: "sort", value: "-date" },
   ]);
-
-  console.log(bookings, "bookings");
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -48,8 +45,6 @@ const DashboardLayout: React.FC = () => {
     return () => clearInterval(interval);
   }, [bookings]);
 
-  // console.log(bookings, "bookings?.[0]?.slot?.date");
-  console.log(timeRemaining, "timeRemaining");
 
   return (
     <>
@@ -69,23 +64,29 @@ const DashboardLayout: React.FC = () => {
               </Link>
             </div>
 
-            <div>
-              <Link to="/user/dashboard/upcoming-booking">
-                <Button type="text" className="">
-                  {timeRemaining === "Expired" ? (
-                    "No upcoming bookings"
-                  ) : (
-                    <div className="!text-slate-700 font-normal">
-                      <span>Your next booking for </span>
-                      <span className="font-semibold">
-                        {bookings?.data?.[0]?.service?.name}
-                      </span>
-                      <span> starts in {timeRemaining}.</span>
-                    </div>
-                  )}
-                </Button>
-              </Link>
-            </div>
+            {user && user.role === "admin" ? (
+              ""
+            ) : isLoadingBooking ? (
+              <Skeleton.Button active className="!w-[250px] !flex" />
+            ) : (
+              <div>
+                <Link to="/user/dashboard/upcoming-booking">
+                  <Button type="text" className="">
+                    {timeRemaining === "Expired" ? (
+                      "No upcoming bookings"
+                    ) : (
+                      <div className="!text-slate-700 font-normal">
+                        <span>Your next booking for </span>
+                        <span className="font-semibold">
+                          {bookings?.data?.[0]?.service?.name}
+                        </span>
+                        <span> starts in {timeRemaining}.</span>
+                      </div>
+                    )}
+                  </Button>
+                </Link>
+              </div>
+            )}
 
             {isAuthLoading ? (
               <Skeleton.Button

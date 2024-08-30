@@ -1,5 +1,5 @@
-import { Button, Form, message, Modal } from "antd";
-import React, { useEffect } from "react";
+import { Button, Form, message, Modal, Upload, UploadFile } from "antd";
+import React, { useEffect, useState } from "react";
 import { TService } from "../../../types/service.type";
 import {
   useCreateServiceMutation,
@@ -7,6 +7,8 @@ import {
 } from "../../../redux/features/servicesApi";
 import { TResponse } from "../../../types/index.type";
 import MyInp from "../../ui/Form/MyInp";
+import { useUploadFileMutation } from "../../../redux/features/fileUpload";
+import { UploadOutlined } from "@ant-design/icons";
 type TProps = {
   open: boolean;
   editingService: Partial<TService> | null;
@@ -27,6 +29,10 @@ const ServicesModal = ({
     useCreateServiceMutation();
   const [updateService, { isLoading: isLoadingUpdateService }] =
     useUpdateServiceMutation();
+  const [uploadFile, { isLoading: isLoadingUploadFile }] =
+    useUploadFileMutation();
+
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   useEffect(() => {
     if (editingService) {
@@ -37,12 +43,32 @@ const ServicesModal = ({
         duration: editingService.duration,
       });
     }
+    if (editingService?.img) {
+      setFileList([
+        {
+          uid: "-1", // Unique identifier for the file
+          name: "image.png", // Name of the file
+          status: "done", // Status of the file (could be 'uploading', 'done', 'error', 'removed')
+          url: editingService.img, // URL of the image
+        },
+      ]);
+    }
   }, [form, editingService]);
 
   const handleCreateService = async (values: TService) => {
-
-
     try {
+      if (fileList.length > 0 && fileList[0]?.originFileObj) {
+        // formData.append("file", fileList[0].originFileObj);
+        const formData = new FormData();
+        formData.append("image", fileList[0].originFileObj);
+        const file = await uploadFile(formData).unwrap();
+        if (!file?.data?.url) {
+          message.error("Image upload failed");
+          return;
+        }
+        values.img = file?.data?.url;
+      }
+
       const result = (await createService(
         values
       ).unwrap()) as TResponse<TService>;
@@ -61,6 +87,18 @@ const ServicesModal = ({
 
   const handleUpdateService = async (values: Partial<TService>) => {
     try {
+      if (fileList.length > 0 && fileList[0]?.originFileObj) {
+        // formData.append("file", fileList[0].originFileObj);
+        const formData = new FormData();
+        formData.append("image", fileList[0].originFileObj);
+        const file = await uploadFile(formData).unwrap();
+        if (!file?.data?.url) {
+          message.error("Image upload failed");
+          return;
+        }
+        values.img = file?.data?.url;
+      }
+
       const res = (await updateService({
         ...values,
         _id: editingService?._id,
@@ -101,6 +139,42 @@ const ServicesModal = ({
         form={form}
         onFinish={editingService ? handleUpdateService : handleCreateService}
       >
+        {/* Image */}
+        <Form.Item
+          label="Image"
+          valuePropName="fileList"
+          className="mb-6"
+          getValueFromEvent={(e) => {
+            if (Array.isArray(e)) {
+              return e;
+            }
+            return e && e.fileList;
+          }}
+        >
+          <Upload
+            listType="picture-card"
+            fileList={fileList}
+            onChange={({ fileList: newFileList }) => setFileList(newFileList)}
+            customRequest={({ file, onSuccess, onError }) => {
+              setTimeout(() => {
+                onSuccess({ url: URL.createObjectURL(file) }, file);
+              }, 1000);
+            }}
+            showUploadList={{
+              showPreviewIcon: true,
+              showRemoveIcon: true,
+            }}
+            accept="image/*"
+          >
+            {fileList.length >= 1 ? null : (
+              <div>
+                <UploadOutlined />
+                <div>Upload</div>
+              </div>
+            )}
+          </Upload>
+        </Form.Item>
+
         {/* service name */}
         <MyInp
           name="name"
@@ -160,7 +234,9 @@ const ServicesModal = ({
           <Button
             type="primary"
             loading={
-              editingService ? isLoadingUpdateService : isLoadingCreateService
+              isLoadingUpdateService ||
+              isLoadingUploadFile ||
+              isLoadingCreateService
             }
             htmlType="submit"
             block

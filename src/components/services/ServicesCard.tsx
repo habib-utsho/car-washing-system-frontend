@@ -68,19 +68,21 @@ const ServiceCard: React.FC<TServiceCard> = ({ service }) => {
           }
         />
 
-        <Button
-          style={{
-            marginTop: "10px",
-          }}
-          // onClick={() => handleBook(service)}
-          icon={<BsCartPlus />}
-          block
-          type="default"
-          className="!absolute bottom-2 left-0 right-0 !w-[70%] mx-auto"
-          disabled={service?.isDeleted}
-        >
-          <Link to={`/services/${service?._id}`}>Book slot</Link>
-        </Button>
+        <Link to={`/services/${service?._id}`}>
+          <Button
+            style={{
+              marginTop: "10px",
+            }}
+            // onClick={() => handleBook(service)}
+            icon={<BsCartPlus />}
+            block
+            type="default"
+            className="!absolute bottom-2 left-0 right-0 !w-[70%] mx-auto"
+            disabled={service?.isDeleted}
+          >
+            Book slot
+          </Button>
+        </Link>
       </Card>
     </div>
   );

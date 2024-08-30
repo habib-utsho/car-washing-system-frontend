@@ -12,6 +12,7 @@ import { userPaths } from "./paths/userPaths";
 import UserRoute from "./PrivateRoutes/UserRoute";
 import Service from "../pages/Service";
 import { Button, Result } from "antd";
+import Booking from "../pages/Booking";
 
 const router = createBrowserRouter([
   {
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
       {
         path: "/services/:id",
         element: <Service />,
+      },
+      {
+        path: "/booking/:id",
+        element: <Booking />,
       },
     ],
   },

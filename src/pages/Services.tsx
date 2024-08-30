@@ -17,8 +17,7 @@ const Services = () => {
   const [pagination, setPagination] = useState<{ page: number; limit: number }>(
     { page: 1, limit: 10 }
   );
-  const [isPriceSort, setIsPriceSort] = useState<string | null>(null);
-  const [isDurationSort, setIsDurationSort] = useState<string | null>(null);
+  const [isSort, setIsSort] = useState<string | null>(null);
 
   const [params, setParams] = useState<TQueryParam[]>([]);
 
@@ -32,8 +31,7 @@ const Services = () => {
     { name: "isDeleted", value: false },
     ...(priceRange ? [{ name: "priceRange", value: priceRange }] : []),
     ...(searchTerm ? [{ name: "searchTerm", value: searchTerm }] : []),
-    ...(isPriceSort ? [{ name: "sort", value: isPriceSort }] : []),
-    ...(isDurationSort ? [{ name: "sort", value: isDurationSort }] : []),
+    ...(isSort ? [{ name: "sort", value: isSort }] : []),
     ...params,
   ]);
 
@@ -89,28 +87,24 @@ const Services = () => {
               Sort by
             </span>
             <Button
-              onClick={() =>
-                setIsPriceSort(isPriceSort === "price" ? "-price" : "price")
-              }
+              onClick={() => setIsSort(isSort === "price" ? "-price" : "price")}
             >
-              {isPriceSort === "-price" ? (
+              {isSort === "-price" ? (
                 <SortAscendingOutlined />
               ) : (
-                isPriceSort === "price" && <SortDescendingOutlined />
+                isSort === "price" && <SortDescendingOutlined />
               )}{" "}
               Price
             </Button>
             <Button
               onClick={() =>
-                setIsPriceSort(
-                  isPriceSort === "duration" ? "-duration" : "duration"
-                )
+                setIsSort(isSort === "duration" ? "-duration" : "duration")
               }
             >
-              {isPriceSort === "-duration" ? (
+              {isSort === "-duration" ? (
                 <SortAscendingOutlined />
               ) : (
-                isPriceSort === "duration" && <SortDescendingOutlined />
+                isSort === "duration" && <SortDescendingOutlined />
               )}{" "}
               Duration
             </Button>

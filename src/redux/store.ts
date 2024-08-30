@@ -13,6 +13,7 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { uploadApi } from "./features/fileUpload";
+import { paymentApi } from "./features/paymentApi";
 
 const persistConfig = {
   key: "auth",
@@ -26,13 +27,14 @@ export const store = configureStore({
     auth: persistedAuthReducer,
     [baseApi.reducerPath]: baseApi.reducer,
     [uploadApi.reducerPath]: uploadApi.reducer,
+    [paymentApi.reducerPath]: paymentApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(baseApi.middleware, uploadApi.middleware),
+    }).concat(baseApi.middleware, uploadApi.middleware, paymentApi.middleware),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
