@@ -90,7 +90,7 @@ const MyInp: React.FC<MyInpProps> = ({
           // minDate={dayjs('2019-08-01', dateFormat)}
           // maxDate={dayjs('2020-10-31', dateFormat)}
         />
-      ) : (
+      ) : type === 'textarea' ? <Input.TextArea size={size} placeholder={placeholder} disabled={disabled}/> : (
         <Input size={size} placeholder={placeholder} disabled={disabled} />
       )}
     </Form.Item>

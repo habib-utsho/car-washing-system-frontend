@@ -193,7 +193,9 @@ const Services = () => {
           <Skeleton active />
         </>
       ) : services?.meta?.total === 0 ? (
-        <Empty description="No services found!" />
+        <div className="h-[60vh] flex items-center justify-center">
+          <Empty description="No services found!" />
+        </div>
       ) : (
         <Table
           columns={columns}

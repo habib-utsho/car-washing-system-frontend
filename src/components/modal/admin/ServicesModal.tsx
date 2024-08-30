@@ -80,6 +80,7 @@ const ServicesModal = ({
     } catch (e: any) {
       message.error(e?.data?.message || e?.message || "Failed to add service!");
     } finally {
+      setFileList([])
       setModalVisible(false);
       form.resetFields();
     }
@@ -115,6 +116,7 @@ const ServicesModal = ({
     } finally {
       setEditingService(null);
       setModalVisible(false);
+      setFileList([])
       form.resetFields();
     }
   };
@@ -189,19 +191,7 @@ const ServicesModal = ({
           type="text"
           size="large"
         />
-        <MyInp
-          name="description"
-          rules={[
-            {
-              required: true,
-              message: "Please input service description!",
-            },
-          ]}
-          label="Service description"
-          placeholder="Enter service description"
-          type="textarea"
-          size="large"
-        />
+
         <MyInp
           name="price"
           rules={[
@@ -226,6 +216,20 @@ const ServicesModal = ({
           label="Duration"
           placeholder="Enter duration in minutes"
           type="number"
+          size="large"
+        />
+
+        <MyInp
+          name="description"
+          rules={[
+            {
+              required: true,
+              message: "Please input service description!",
+            },
+          ]}
+          label="Service description"
+          placeholder="Enter service description"
+          type="textarea"
           size="large"
         />
 
