@@ -1,15 +1,17 @@
 import { Empty, Input, Skeleton, Table } from "antd";
 import { useState } from "react";
-import { TQueryParam } from "../../../types/index.type";
+import { TQueryParam, TUser } from "../../../types/index.type";
 import { useGetMyBookingQuery } from "../../../redux/features/bookingApi";
 import moment from "moment";
 import { TSlot } from "../../../types/slot.type";
+import { TBooking } from "../../../types/booking.type";
 
 const { Search } = Input;
 
 const Booking = () => {
   const [pagination, setPagination] = useState({ limit: 10, page: 1 });
   const [searchTerm, setSearchTerm] = useState<string | null>(null);
+  // @ts-ignore
   const [params, setParams] = useState<TQueryParam[]>([]);
   const {
     data: bookings,
@@ -27,13 +29,13 @@ const Booking = () => {
       title: "Customer",
       dataIndex: "customer",
       key: "customer",
-      render: (text, record) => record.customer?.name || "N/A",
+      render: (_: TUser, record: TBooking) => record.customer?.name || "N/A",
     },
     {
       title: "Service",
       dataIndex: "service",
       key: "service",
-      render: (text, record) => record.service?.name || "N/A",
+      render: (_: TUser, record: TBooking) => record.service?.name || "N/A",
     },
     {
       title: "Slot",

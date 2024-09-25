@@ -19,6 +19,7 @@ const Services = () => {
   );
   const [isSort, setIsSort] = useState<string | null>(null);
 
+  // @ts-ignore
   const [params, setParams] = useState<TQueryParam[]>([]);
 
   const {
@@ -57,7 +58,7 @@ const Services = () => {
             options={[
               { min: 0, max: 500 },
               { min: 500, max: 1000 },
-              { min: 1000, max: 20000 },
+              { min: 1000, max: 2000 },
               { min: 2000, max: 4000 },
               { min: 4000, max: 8000 },
               { min: "All price", max: "All price" },

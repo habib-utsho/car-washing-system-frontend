@@ -26,6 +26,7 @@ import { useAppSelector } from "../../../../redux/hook";
 const { Search } = Input;
 const User = () => {
   const [pagination, setPagination] = useState({ limit: 10, page: 1 });
+    // @ts-ignore
   const [params, setParams] = useState<TQueryParam[]>([]);
   const [searchTerm, setSearchTerm] = useState<string | null>(null);
 

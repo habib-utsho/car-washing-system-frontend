@@ -13,7 +13,6 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { uploadApi } from "./features/fileUpload";
-import { paymentApi } from "./features/paymentApi";
 
 const persistConfig = {
   key: "auth",

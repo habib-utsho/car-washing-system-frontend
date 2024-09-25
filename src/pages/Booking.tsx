@@ -51,7 +51,6 @@ const Booking = () => {
           cus_phone: user?.phone,
         }).unwrap();
 
-   
         if (initPaymentResult?.success) {
           message.success(result?.message || "Payment initiated successfully!");
           window.location.href = initPaymentResult?.data?.payment_url;
@@ -198,6 +197,7 @@ const Booking = () => {
                     htmlType="submit"
                     loading={isBookingLoading || isLoadingInitPayment}
                     block
+                    disabled={!user}
                   >
                     Pay Now
                   </Button>

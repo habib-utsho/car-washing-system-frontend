@@ -5,8 +5,7 @@ import { sidebarItemsGenerator } from "../../utils/sidebarItemsGenerator";
 import { useAppSelector } from "../../redux/hook";
 import { role } from "../../constant/index.constant";
 import { userPaths } from "../../routes/paths/userPaths";
-import { MdEmail } from "react-icons/md";
-import { MailFilled, MailOutlined, PhoneFilled } from "@ant-design/icons";
+import { MailFilled, PhoneFilled } from "@ant-design/icons";
 
 const { Sider } = Layout;
 

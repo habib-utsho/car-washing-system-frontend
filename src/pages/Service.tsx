@@ -1,4 +1,5 @@
-import { Link, useParams } from "react-router-dom";
+// @ts-nocheck
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useGetSingleServiceQuery } from "../redux/features/servicesApi";
 import Container from "../components/ui/Container";
 import {
@@ -18,6 +19,7 @@ import {
   PlusCircleOutlined,
   PlusOutlined,
   SafetyCertificateFilled,
+  UserOutlined,
 } from "@ant-design/icons";
 import MyMotion from "../components/helpingCompo/MyMotion";
 import { useGetAllSlotQuery } from "../redux/features/slotApi";
@@ -25,17 +27,21 @@ import { useState } from "react";
 import moment from "moment";
 import { TSlot } from "../types/slot.type";
 import convertTwentyFourHourToTwelveHourFormat from "../utils/convertTwentyFourHourToTwelveHourFormat";
+import { useAppSelector } from "../redux/hook";
 
 const { Title, Paragraph } = Typography;
 
 const Service = () => {
   const { id } = useParams();
+  const { user } = useAppSelector((state) => state.auth);
   const { data: serviceData, isLoading: isLoadingService } =
     useGetSingleServiceQuery(id);
   const { data: slots, isLoading: isLoadingSlots } = useGetAllSlotQuery([
     { name: "service", value: id },
   ]);
   const { name, duration, price, description, img } = serviceData?.data || {};
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const accordionItems: CollapseProps["items"] = [
     {
@@ -346,20 +352,39 @@ const Service = () => {
                     ))
                   )}
 
-                  {selectedSlot && (
-                    <Link
-                      to={`/booking/${selectedSlot._id}`}
-                      className="block text-center"
-                    >
+                  {!user ? (
+                    <div className="text-center">
                       <Button
                         type="primary"
                         size="large"
-                        className="mt-4 w-[250px]"
-                        icon={<PlusCircleOutlined />}
+                        className="mt-4 w-[250px] mx-auto"
+                        icon={<UserOutlined />}
+                        onClick={() =>
+                          navigate("/signin", {
+                            replace: true,
+                            state: { from: location },
+                          })
+                        }
                       >
-                        Book This Service
+                        Signin first to book
                       </Button>
-                    </Link>
+                    </div>
+                  ) : (
+                    selectedSlot && (
+                      <Link
+                        to={`/booking/${selectedSlot._id}`}
+                        className="block text-center"
+                      >
+                        <Button
+                          type="primary"
+                          size="large"
+                          className="mt-4 w-[250px]"
+                          icon={<PlusCircleOutlined />}
+                        >
+                          Book This Service
+                        </Button>
+                      </Link>
+                    )
                   )}
                 </div>
               </MyMotion>

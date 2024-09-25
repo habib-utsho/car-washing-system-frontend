@@ -1,5 +1,3 @@
-import { useState } from "react";
-// import jwtDecode from 'jwt-decode';
 import { Menu, Dropdown, Skeleton } from "antd";
 import {
   UserOutlined,
@@ -14,19 +12,11 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hook";
 import { signOut } from "../../../redux/features/auth/authSlice";
 
 const Header = ({}) => {
-  const [cartDrawerVisible, setCartDrawerVisible] = useState(false);
 
   const { user, isAuthLoading } = useAppSelector((state) => state.auth);
 
   const dispatch = useAppDispatch();
 
-  const handleCartDrawerOpen = () => {
-    setCartDrawerVisible(true);
-  };
-
-  const handleCartDrawerClose = () => {
-    setCartDrawerVisible(false);
-  };
 
   const authenticatedRoutes = [
     {

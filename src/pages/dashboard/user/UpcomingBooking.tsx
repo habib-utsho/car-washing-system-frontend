@@ -7,6 +7,7 @@ import UpcomingBookingCard from "../../../components/booking/UpcomingBookingCard
 
 const UpcomingBooking = () => {
   const [pagination, setPagination] = useState({ limit: 10, page: 1 });
+  // @ts-ignore
   const [params, setParams] = useState<TQueryParam[]>([]);
   const {
     data: bookings,

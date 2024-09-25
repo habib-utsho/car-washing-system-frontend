@@ -80,7 +80,7 @@ const ServicesModal = ({
     } catch (e: any) {
       message.error(e?.data?.message || e?.message || "Failed to add service!");
     } finally {
-      setFileList([])
+      setFileList([]);
       setModalVisible(false);
       form.resetFields();
     }
@@ -116,7 +116,7 @@ const ServicesModal = ({
     } finally {
       setEditingService(null);
       setModalVisible(false);
-      setFileList([])
+      setFileList([]);
       form.resetFields();
     }
   };
@@ -157,8 +157,10 @@ const ServicesModal = ({
             listType="picture-card"
             fileList={fileList}
             onChange={({ fileList: newFileList }) => setFileList(newFileList)}
+            // @ts-ignore
             customRequest={({ file, onSuccess, onError }) => {
               setTimeout(() => {
+                // @ts-ignore
                 onSuccess({ url: URL.createObjectURL(file) }, file);
               }, 1000);
             }}

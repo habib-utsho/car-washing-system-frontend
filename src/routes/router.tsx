@@ -16,6 +16,8 @@ import Booking from "../pages/Booking";
 import Success from "../pages/Success";
 import Cancelled from "../pages/Cacelled";
 import Failed from "../pages/Failed";
+import Review from "../pages/Review";
+import ServiceCompare from "../pages/ServiceCompare";
 
 const router = createBrowserRouter([
   {
@@ -81,6 +83,14 @@ const router = createBrowserRouter([
       {
         path: "/booking/:id",
         element: <Booking />,
+      },
+      {
+        path: "/review",
+        element: <Review />,
+      },
+      {
+        path: "/service/compare",
+        element: <ServiceCompare />,
       },
     ],
   },

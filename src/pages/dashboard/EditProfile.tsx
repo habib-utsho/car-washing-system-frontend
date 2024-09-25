@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Button, Form, Input, message, Upload, UploadFile } from "antd";
+import { useState, useEffect } from "react";
+import { Button, Form, message, Upload, UploadFile } from "antd";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import { useEditProfileMutation } from "../../redux/features/auth/authApi";
 import { useUploadFileMutation } from "../../redux/features/fileUpload";
@@ -101,8 +101,10 @@ const EditProfile = () => {
               listType="picture-card"
               fileList={fileList}
               onChange={({ fileList: newFileList }) => setFileList(newFileList)}
+              // @ts-ignore
               customRequest={({ file, onSuccess, onError }) => {
                 setTimeout(() => {
+                  // @ts-ignore
                   onSuccess({ url: URL.createObjectURL(file) }, file);
                 }, 1000);
               }}

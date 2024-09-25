@@ -3,7 +3,6 @@ import { Button, Card, Typography } from "antd";
 import { Link } from "react-router-dom";
 import { BsCartPlus } from "react-icons/bs";
 import { TService } from "../../types/service.type";
-import convertMinutesToHour from "../../utils/convertMinutesToHour";
 
 type TServiceCard = {
   service: TService;

@@ -26,6 +26,7 @@ const Services = () => {
   const [pagination, setPagination] = useState({ limit: 10, page: 1 });
   const [searchTerm, setSearchTerm] = useState<string | null>(null);
 
+  // @ts-ignore
   const [params, setParams] = useState<TQueryParam[]>([]);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [editingService, setEditingService] =

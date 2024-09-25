@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { AppstoreAddOutlined, ProductOutlined } from "@ant-design/icons";
+import { ProductOutlined } from "@ant-design/icons";
 import { Button, Menu } from "antd";
 import { Link } from "react-router-dom";
 import Container from "../../ui/Container";
+import { GrCompare } from "react-icons/gr";
 
 const items = [
   {
@@ -11,9 +12,9 @@ const items = [
     icon: <ProductOutlined />,
   },
   {
-    label: "Booking",
-    icon: <AppstoreAddOutlined />,
-    path: "/services",
+    label: "Compare",
+    icon: <GrCompare />,
+    path: "/service/compare",
   },
 ];
 const Navbar = () => {

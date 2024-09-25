@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Button, Divider, Layout, Menu, Skeleton } from "antd";
+import { Button, Layout, Menu, Skeleton } from "antd";
 import Sidebar from "./Sidebar";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import { signOut } from "../../redux/features/auth/authSlice";
 import logo from "../../assets/img/logo.png";

@@ -1,10 +1,10 @@
 import { LockOutlined } from "@ant-design/icons";
-import { DatePicker, Form, Input, InputNumber, Select, TimePicker } from "antd";
+import { DatePicker, Form, Input, InputNumber, Select } from "antd";
 import React from "react";
 
 type MyInpProps = {
   name: string | string[];
-  label: string;
+  label?: string;
   type:
     | "text"
     | "number"
@@ -90,7 +90,14 @@ const MyInp: React.FC<MyInpProps> = ({
           // minDate={dayjs('2019-08-01', dateFormat)}
           // maxDate={dayjs('2020-10-31', dateFormat)}
         />
-      ) : type === 'textarea' ? <Input.TextArea size={size} placeholder={placeholder} disabled={disabled}/> : (
+      ) : type === "textarea" ? (
+        <Input.TextArea
+          size={size}
+          placeholder={placeholder}
+          disabled={disabled}
+          rows={6}
+        />
+      ) : (
         <Input size={size} placeholder={placeholder} disabled={disabled} />
       )}
     </Form.Item>

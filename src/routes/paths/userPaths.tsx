@@ -1,15 +1,11 @@
 import ChangePassword from "../../pages/dashboard/ChangePassword";
 import EditProfile from "../../pages/dashboard/EditProfile";
 import Booking from "../../pages/dashboard/user/Booking";
+import DashboardHome from "../../pages/dashboard/user/DashboardHome";
 import UpcomingBooking from "../../pages/dashboard/user/UpcomingBooking";
 
 export const userPaths = [
-  { name: "Dashboard", path: "dashboard", element: "User home" },
-  {
-    name: "Services",
-    path: "services",
-    element: "Services",
-  },
+  { name: "Dashboard", path: "dashboard", element: <DashboardHome /> },
   {
     name: "Booking",
     children: [

@@ -1,16 +1,42 @@
-import { Button, Form, FormProps, message, Typography } from "antd";
+import {
+  Button,
+  Divider,
+  Form,
+  FormProps,
+  message,
+  Table,
+  Typography,
+} from "antd";
 import { useSigninMutation } from "../redux/features/auth/authApi";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { TDecodedUser } from "../types/index.type";
 import verifyJwtToken from "../utils/verifyJwtToken";
 import { setUser } from "../redux/features/auth/authSlice";
 import MyInp from "../components/ui/Form/MyInp";
 
 type TSigninFieldType = {
-  id?: string;
+  email?: string;
   password?: string;
 };
+
+const columns = [
+  {
+    key: "email",
+    title: "Email",
+    dataIndex: "email",
+  },
+  {
+    key: "password",
+    title: "Password",
+    dataIndex: "password",
+  },
+  {
+    key: "role",
+    title: "Role",
+    dataIndex: "role",
+  },
+];
 
 const Signin = () => {
   const [signin, { isLoading: isLoadingSignin }] = useSigninMutation();
@@ -18,6 +44,8 @@ const Signin = () => {
   const [form] = Form.useForm();
   const { token, user } = useAppSelector((state) => state.auth);
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location?.state?.from?.pathname;
 
   const { role } = (user as TDecodedUser) || {};
 
@@ -34,11 +62,32 @@ const Signin = () => {
         const user = verifyJwtToken(result?.data?.accessToken) as TDecodedUser;
         dispatch(setUser({ token: result.data?.accessToken, user: user }));
         message.success(result?.message);
-        navigate(`/`);
+        navigate(from || `/`);
       }
     } catch (e: any) {
       message.error(e?.message || e?.data?.message);
     }
+  };
+
+  const signinData = [
+    {
+      email: "admin@gmail.com",
+      password: "1234@@aA",
+      role: "admin",
+    },
+    {
+      email: "user@gmail.com",
+      password: "1234@@aA",
+      role: "user",
+    },
+  ];
+
+  // Row click handler to populate the form
+  const onRowClick = (record: TSigninFieldType) => {
+    form.setFieldsValue({
+      email: record.email,
+      password: record.password,
+    });
   };
 
   return (
@@ -112,6 +161,21 @@ const Signin = () => {
               Forgot password?
             </Link>{" "}
           </p>
+
+          <Divider />
+          <div className="w-full my-shadow-1 rounded">
+            <Table
+              columns={columns}
+              dataSource={signinData}
+              pagination={false}
+              size="large"
+              onRow={(record) => ({
+                onClick: () => onRowClick(record),
+                className: "cursor-pointer",
+              })}
+              scroll={{ x: 240 }}
+            />
+          </div>
         </div>
       </div>
     </div>

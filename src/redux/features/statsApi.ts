@@ -10,7 +10,15 @@ const statsApi = baseApi.injectEndpoints({
         };
       },
     }),
+    getUserStats: builder.query({
+      query: () => {
+        return {
+          url: "/stats/user",
+          method: "GET",
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetAdminStatsQuery } = statsApi;
+export const { useGetAdminStatsQuery, useGetUserStatsQuery } = statsApi;

@@ -1,4 +1,4 @@
-import { Button, Form, Input, message, Upload, UploadFile } from "antd";
+import { Button, Form, message, Upload, UploadFile } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { useSignupMutation } from "../redux/features/auth/authApi";
 import { useUploadFileMutation } from "../redux/features/fileUpload";
@@ -85,8 +85,10 @@ const Signup = () => {
                   onChange={({ fileList: newFileList }) =>
                     setFileList(newFileList)
                   }
+                  // @ts-ignore
                   customRequest={({ file, onSuccess, onError }) => {
                     setTimeout(() => {
+                      // @ts-ignore
                       onSuccess({ url: URL.createObjectURL(file) }, file);
                     }, 1000);
                   }}
