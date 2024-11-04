@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ProductOutlined } from "@ant-design/icons";
+import { InfoCircleOutlined, ProductOutlined } from "@ant-design/icons";
 import { Button, Menu } from "antd";
 import { Link } from "react-router-dom";
 import Container from "../../ui/Container";
@@ -15,6 +15,11 @@ const items = [
     label: "Compare",
     icon: <GrCompare />,
     path: "/service/compare",
+  },
+  {
+    label: "About Us",
+    icon: <InfoCircleOutlined />,
+    path: "/about-us",
   },
 ];
 const Navbar = () => {
@@ -44,7 +49,7 @@ const Navbar = () => {
               </Menu.Item>
             ))}
           </Menu>
-          <Link to={'/services'}>
+          <Link to={"/services"}>
             <Button
               className="!w-full sm:!w-[200px]"
               block

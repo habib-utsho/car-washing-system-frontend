@@ -51,7 +51,7 @@ const authApi = baseApi.injectEndpoints({
       invalidatesTags: ["user"],
     }),
     editProfile: builder.mutation({
-      query: ({ id, payload }: { id: string; payload: Partial<TUser> }) => {
+      query: ({ id, payload }: { id: string; payload: FormData }) => {
         return {
           url: `/auth/users/edit-profile/${id}`,
           method: "PATCH",

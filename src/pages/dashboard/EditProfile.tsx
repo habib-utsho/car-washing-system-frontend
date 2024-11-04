@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Button, Form, message, Upload, UploadFile } from "antd";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import { useEditProfileMutation } from "../../redux/features/auth/authApi";
-import { useUploadFileMutation } from "../../redux/features/fileUpload";
 import Container from "../../components/ui/Container";
 import MyInp from "../../components/ui/Form/MyInp";
 import { UploadOutlined } from "@ant-design/icons";
@@ -14,8 +13,6 @@ const EditProfile = () => {
   const [updateProfileForm] = Form.useForm();
   const [updateProfile, { isLoading: isLoadingUpdateProfile }] =
     useEditProfileMutation();
-  const [uploadFile, { isLoading: isLoadingUploadFile }] =
-    useUploadFileMutation();
 
   const dispatch = useAppDispatch();
 
@@ -44,22 +41,24 @@ const EditProfile = () => {
   }, [name, phone, address, updateProfileForm, name, email]);
 
   const handleUpdateProfile = async (values: TUser) => {
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(values));
     if (fileList.length > 0 && fileList[0]?.originFileObj) {
-      // formData.append("file", fileList[0].originFileObj);
-      const formData = new FormData();
-      formData.append("image", fileList[0].originFileObj);
-      const file = await uploadFile(formData).unwrap();
-      if (!file?.data?.url) {
-        message.error("Image upload failed");
-        return;
-      }
-      values.img = file?.data?.url;
+      formData.append("file", fileList[0].originFileObj);
+      // const formData = new FormData();
+      // formData.append("image", fileList[0].originFileObj);
+      // const file = await uploadFile(formData).unwrap();
+      // if (!file?.data?.url) {
+      //   message.error("Image upload failed");
+      //   return;
+      // }
+      // values.img = file?.data?.url;
     }
 
     try {
       const result = await updateProfile({
         id: _id as string,
-        payload: values,
+        payload: formData,
       }).unwrap();
 
       // dispatch(setUser(result?.data));
@@ -175,7 +174,7 @@ const EditProfile = () => {
               block
               size="large"
               htmlType="submit"
-              loading={isLoadingUpdateProfile || isLoadingUploadFile}
+              loading={isLoadingUpdateProfile}
             >
               Update profile
             </Button>

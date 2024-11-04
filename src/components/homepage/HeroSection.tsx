@@ -14,7 +14,7 @@ const HeroSection = () => {
     <div className="py-4">
       <Container>
         <Carousel
-          afterChange={(currElem) => console.log(currElem)}
+          // afterChange={(currElem) => console.log(currElem)}
           className="w-full rounded-md text-white"
           arrows
           autoplay

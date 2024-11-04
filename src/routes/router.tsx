@@ -18,6 +18,7 @@ import Cancelled from "../pages/Cacelled";
 import Failed from "../pages/Failed";
 import Review from "../pages/Review";
 import ServiceCompare from "../pages/ServiceCompare";
+import About from "../pages/About";
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
       {
         path: "/signup",
         element: <Signup />,
+      },
+      {
+        path: "/about-us",
+        element: <About />,
       },
       {
         path: "/services",

@@ -21,11 +21,11 @@ const CommonSectionBanner: React.FC<TCommonSectionBanner> = ({
             : "justify-center"
         }  text-slate-700`}
       >
-        <span className="h-[1.5px] w-[25px] bg-slate-700"></span>
-        <p className="mb-0">{subTitle}</p>
+        <span className="h-[1.5px] w-[25px] bg-primary"></span>
+        <p className="mb-0 ">{subTitle}</p>
       </div>
       <h2
-        className={`font-bold text-2xl md:text-4xl ${
+        className={`font-semibold text-xl md:text-2xl max-w-2xl mx-auto ${
           align ? `text-${align}` : "text-center"
         }`}
       >

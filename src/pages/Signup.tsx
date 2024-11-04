@@ -1,7 +1,6 @@
 import { Button, Form, message, Upload, UploadFile } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { useSignupMutation } from "../redux/features/auth/authApi";
-import { useUploadFileMutation } from "../redux/features/fileUpload";
 import { useState } from "react";
 import { UploadOutlined } from "@ant-design/icons";
 import MyInp from "../components/ui/Form/MyInp";
@@ -10,29 +9,28 @@ const Signup = () => {
   const navigate = useNavigate();
   const [signupForm] = Form.useForm();
   const [createUser, { isLoading: isSignupLoading }] = useSignupMutation();
-  const [uploadFile, { isLoading: isLoadingUploadFile }] =
-    useUploadFileMutation();
 
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   const handleSignup = async (data: any) => {
-    // formData.append("data", JSON.stringify(updatedData));
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(data));
 
     // Append image file if present
     if (fileList.length > 0 && fileList[0]?.originFileObj) {
-      // formData.append("file", fileList[0].originFileObj);
-      const formData = new FormData();
-      formData.append("image", fileList[0].originFileObj);
-      const file = await uploadFile(formData).unwrap();
-      if (!file?.data?.url) {
-        message.error("Image upload failed");
-        return;
-      }
-      data.img = file?.data?.url;
+      formData.append("file", fileList[0].originFileObj);
+      // const formData = new FormData();
+      // formData.append("image", fileList[0].originFileObj);
+      // const file = await uploadFile(formData).unwrap();
+      // if (!file?.data?.url) {
+      //   message.error("Image upload failed");
+      //   return;
+      // }
+      // data.img = file?.data?.url;
     }
 
     try {
-      const result = await createUser(data).unwrap();
+      const result = await createUser(formData).unwrap();
       if (result?.success) {
         message.success({
           content: result?.message || "Signup successful",
@@ -184,7 +182,7 @@ const Signup = () => {
                   type="primary"
                   block
                   htmlType="submit"
-                  loading={isSignupLoading || isLoadingUploadFile}
+                  loading={isSignupLoading}
                 >
                   Signup
                 </Button>
