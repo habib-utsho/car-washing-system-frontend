@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { TQueryParam } from "../types/index.type";
 import Container from "../components/ui/Container";
-import { Card, Empty, Pagination, Rate, Skeleton, Typography } from "antd";
+import { Card, Empty, Pagination, Rate, Skeleton } from "antd";
 import { TReview } from "../types/review.type";
 import { useGetAllReviewsQuery } from "../redux/features/reviewApi";
 import CommonSectionBanner from "../components/helpingCompo/CommonSectionBanner";
@@ -44,19 +44,34 @@ const Review = () => {
         ) : (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {reviewData?.data?.map((review: TReview, index: number) => (
-                <Card key={index} style={{ marginBottom: "10px" }}>
-                  <img
-                    src={review?.user?.img}
-                    alt={review?.user?.name}
-                    className="h-[120px] w-auto rounded-md"
-                  />
-                  <Typography.Text type="secondary">
-                    - {review.user?.name}
-                  </Typography.Text>
-                  <br /> <br />
+              {reviewData?.data?.map((review: TReview) => (
+                <Card
+                  bordered={false}
+                  className="h-full min-h-[250px] bg-slate-50"
+                >
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div className="rounded-full border border-primary p-1">
+                      <img
+                        className="w-12 h-12 rounded-full"
+                        src={review?.user?.img}
+                        alt={review?.user?.name}
+                      />
+                    </div>
+                    <div className="text-left">
+                      <p className="font-bold my-text-gradient-2 inline-block mb-1">
+                        {review?.user?.name}
+                      </p>
+                      <p className="text-normal-desc">Honorable Customer</p>
+                    </div>
+                  </div>
+
+                  <br></br>
+                  <h2 className="text-left font-bold">Customer Review</h2>
                   <Rate disabled value={review.rating} />
-                  <Typography.Paragraph>{review.feedback}</Typography.Paragraph>
+                  <br />
+                  <p className="text-left text-slate-700 line-clamp-3">
+                    {review.feedback}
+                  </p>
                 </Card>
               ))}
             </div>

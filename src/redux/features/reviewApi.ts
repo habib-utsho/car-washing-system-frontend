@@ -1,3 +1,4 @@
+import { TQueryParam } from "../../types/index.type";
 import { baseApi } from "../baseApi";
 
 const reviewApi = baseApi.injectEndpoints({
@@ -13,10 +14,16 @@ const reviewApi = baseApi.injectEndpoints({
       invalidatesTags: ["review"],
     }),
     getAllReviews: builder.query({
-      query: () => {
+      query: (args) => {
+        const params = new URLSearchParams();
+
+        args.forEach((item: TQueryParam) => {
+          params.append(item.name, item.value);
+        });
         return {
           url: "/review",
           method: "GET",
+          params,
         };
       },
       providesTags: ["review"],

@@ -62,7 +62,7 @@ const OurServices = () => {
                 <img
                   src={service.img}
                   alt={service.name}
-                  className="w-[250px] h-auto mx-auto"
+                  className="w-[150px] h-auto mx-auto"
                 />
                 <div className="p-4 space-y-2 mt-2">
                   <h2 className="font-semibold text-xl line-clamp-1">

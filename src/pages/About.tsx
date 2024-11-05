@@ -11,6 +11,7 @@ import CommonPageBanner from "../components/helpingCompo/CommonPageBanner";
 import carWashImg from "../assets/img/quickPass.jpg";
 import carWashVideo from "../assets/video/carServiceVideo.mp4";
 import MyMotion from "../components/helpingCompo/MyMotion";
+import Testimonial from "../components/homepage/Testimonial";
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -83,7 +84,7 @@ const teamMembers = [
 
 const About = () => {
   return (
-    <div className="bg-gray-50">
+    <div className="bg-slate-50">
       {/* Page Banner */}
       <CommonPageBanner
         title="About Us"
@@ -139,6 +140,11 @@ const About = () => {
           </section>
         </MyMotion>
 
+        {/* Testimonial */}
+        <MyMotion y={200}>
+          <Testimonial />
+        </MyMotion>
+
         {/* Team Section */}
         <MyMotion y={50}>
           <section className="my-28">
@@ -183,8 +189,9 @@ const About = () => {
           </section>
         </MyMotion>
 
+        {/* Contact */}
         <MyMotion y={50}>
-          <div className="my-4 rounded-md my-shadow-1 py-8 px-6">
+          <div className="my-4 rounded-md my-shadow-1 py-8 px-6 bg-white">
             <CommonSectionBanner
               title="Contact Info"
               subTitle="Get in touch with us for any queries or assistance. Visit our office, call us, or email us. We're here to help!"

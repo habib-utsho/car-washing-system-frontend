@@ -64,5 +64,5 @@ export type TResponse<T> = {
 
 export type TQueryParam = {
   name: string;
-  value: boolean | React.Key;
+  value: any;
 };

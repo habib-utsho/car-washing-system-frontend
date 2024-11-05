@@ -25,7 +25,7 @@ const CommonSectionBanner: React.FC<TCommonSectionBanner> = ({
         <p className="mb-0 ">{subTitle}</p>
       </div>
       <h2
-        className={`font-semibold text-xl md:text-2xl max-w-2xl mx-auto ${
+        className={`font-semibold text-xl md:text-2xl max-w-2xl mx-auto inline-block ${
           align ? `text-${align}` : "text-center"
         }`}
       >

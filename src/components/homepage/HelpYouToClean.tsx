@@ -12,21 +12,23 @@ const HelpYouToClean = () => {
               We Will Help You to Keep Your Car Always Clean
             </h2>
           </div>
-          <div className="space-y-2 p-4">
-            <p className="text-slate-500">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Inventore, modi eveniet eos atque, fugiat quibusdam saepe
-              laudantium earum deleniti doloribus, quisquam accusantium!
-              Aspernatur quis iure quia sunt facilis est fuga!
+          <div className="space-y-1 p-4">
+            <p className="text-slate-500 !mb-[2px]">
+              At Cleanify, we’re passionate about giving your car the care it
+              deserves. From thorough exterior washes to detailed interior
+              cleaning, our team uses eco-friendly products and state-of-the-art
+              equipment to leave your vehicle spotless and protected. Experience
+              the difference that professional, dedicated care can make.
             </p>
 
             <Button
-              className=""
+              href="/services"
               type="link"
               icon={<CgArrowTopRight />}
               iconPosition="end"
+              className={"!px-0 !text-primary"}
             >
-              Learn more
+              Explore services
             </Button>
           </div>
         </div>
