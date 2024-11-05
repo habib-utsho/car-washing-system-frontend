@@ -4,7 +4,7 @@ import { CgArrowTopRight } from "react-icons/cg";
 
 const HelpYouToClean = () => {
   return (
-    <div className="border-y border-gray my-[50px]">
+    <div className="border-y border-gray mt-[30px] mb-[50px]">
       <Container>
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-4">
           <div className="border-b md:border-r border-gray h-full py-14 px-10">

@@ -15,9 +15,9 @@ export type TUser = {
   isDeleted: boolean;
 };
 export type TPasswordUpdate = {
-  oldPassword: string
-  newPassword: string
-}
+  oldPassword: string;
+  newPassword: string;
+};
 export type TDecodedUser = {
   _id: string;
   name: string;
@@ -38,6 +38,7 @@ export type TSidebarRoute = {
   key: string;
   label: ReactNode;
   children?: TSidebarRoute[];
+  icon?: ReactNode;
 };
 
 export type TRoutes = {
@@ -45,6 +46,7 @@ export type TRoutes = {
   path?: string;
   element?: ReactNode;
   children?: TRoutes[];
+  icon?: ReactNode;
 };
 
 export type TMeta = {

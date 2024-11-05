@@ -1,0 +1,66 @@
+.my-editor strong {
+  font-weight: 600;
+}
+.my-editor h1 strong,
+.my-editor h1 {
+  @apply font-bold text-[18px] md:text-[22px];
+}
+.my-editor h2 strong,
+.my-editor h2 {
+  @apply font-bold text-[17px] md:text-[20px];
+}
+.my-editor h3 strong,
+.my-editor h3 {
+  @apply font-bold text-[16px] md:text-[18px];
+}
+.my-editor h4 strong,
+.my-editor h4 {
+  @apply font-bold text-[16px] md:text-[18px];
+}
+.my-editor h5 strong,
+.my-editor h5 {
+  @apply font-bold text-[16px] md:text-[18px];
+}
+.my-editor h6 strong,
+.my-editor h6 {
+  @apply font-bold text-[16px] md:text-[18px];
+}
+
+.my-editor p {
+  @apply text-slate-700 text-base;
+}
+
+.my-editor ul {
+  @apply list-disc space-y-[15px] md:space-y-[8px] pl-6 text-slate-700;
+}
+.my-editor ol {
+  @apply list-decimal space-y-[15px] md:space-y-[8px] pl-6 text-slate-700;
+}
+.my-editor ul li {
+  @apply marker:text-primary marker:text-lg;
+}
+.my-editor ol li {
+  @apply marker:text-primary marker:text-lg;
+}
+
+.my-editor img {
+  @apply m-3 rounded-md md:rounded-lg;
+}
+/* .my-editor a{
+      @apply link-hover link-primary
+  } */
+
+.my-editor ins,
+u {
+  background: linear-gradient(to right, #fc4a1a, #f7b733);
+  -webkit-background-clip: text;
+  /* For webkit-based browsers (Safari, Chrome) */
+  background-clip: text;
+  color: transparent;
+  text-decoration: none;
+}
+
+.my-editor .marker {
+  background-color: #f7b733;
+  color: black;
+}

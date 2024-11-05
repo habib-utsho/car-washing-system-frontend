@@ -6,6 +6,7 @@ export const sidebarItemsGenerator = (items: TRoutes[], role: TRole) => {
     if (item.name && item.path && !item.children) {
       acc.push({
         key: item.name,
+        icon: item.icon, // Add icon here if available
         label: <NavLink to={`/${role}/${item.path}`}>{item.name}</NavLink>,
       });
     }
@@ -13,9 +14,11 @@ export const sidebarItemsGenerator = (items: TRoutes[], role: TRole) => {
     if (item.name && item.children) {
       acc.push({
         key: item.name,
+        icon: item.icon, // Add icon here if available
         label: item.name,
         children: item.children.map((child: TRoutes) => ({
           key: child.name,
+          icon: child.icon, // Add icon to child item if available
           label: <NavLink to={`/${role}/${child.path}`}>{child.name}</NavLink>,
         })),
       });

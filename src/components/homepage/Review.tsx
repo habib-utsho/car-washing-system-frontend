@@ -68,7 +68,6 @@ const Review: React.FC = () => {
     }
   };
 
-
   return (
     <div className="" id="review">
       <Container>
@@ -130,7 +129,7 @@ const Review: React.FC = () => {
                   <h2>
                     Average rating{" "}
                     <span className="text-primary">
-                      ({averageRating?.data})
+                      ({averageRating?.data?.toFixed(2)})
                     </span>
                   </h2>
                 )}

@@ -1,7 +1,7 @@
 import BestBudget from "../components/homepage/BestBudget";
 import FeaturedServices from "../components/homepage/FeaturedServices";
 import HelpYouToClean from "../components/homepage/HelpYouToClean";
-import HeroSection from "../components/homepage/HeroSection";
+import HeroSection from "../components/homepage/HeroSection/HeroSection";
 import OurServices from "../components/homepage/OurServices";
 import Review from "../components/homepage/Review";
 
