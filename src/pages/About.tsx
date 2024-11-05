@@ -1,4 +1,4 @@
-import { Typography, Row, Col, Avatar } from "antd";
+import { Typography, Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import Container from "../components/ui/Container";
 import CommonSectionBanner from "../components/helpingCompo/CommonSectionBanner";

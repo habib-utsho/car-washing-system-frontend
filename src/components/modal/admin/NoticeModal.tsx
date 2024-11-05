@@ -1,4 +1,4 @@
-import { Button, Form, message, Modal, Skeleton } from "antd";
+import { Button, Form, message, Modal } from "antd";
 import React, { useEffect, useState } from "react";
 import { TResponse } from "../../../types/index.type";
 import MyInp from "../../ui/Form/MyInp";

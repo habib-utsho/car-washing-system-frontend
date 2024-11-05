@@ -1,4 +1,4 @@
-import { TPasswordUpdate, TQueryParam, TUser } from "../../../types/index.type";
+import { TPasswordUpdate, TQueryParam } from "../../../types/index.type";
 import { baseApi } from "../../baseApi";
 
 const authApi = baseApi.injectEndpoints({
