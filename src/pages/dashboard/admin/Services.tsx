@@ -3,6 +3,7 @@ import {
   Empty,
   Input,
   message,
+  Modal,
   Popconfirm,
   Skeleton,
   Switch,
@@ -25,6 +26,8 @@ const { Search } = Input;
 const Services = () => {
   const [pagination, setPagination] = useState({ limit: 10, page: 1 });
   const [searchTerm, setSearchTerm] = useState<string | null>(null);
+
+  const [descriptionModal, setDescriptionModal] = useState("");
 
   // @ts-ignore
   const [params, setParams] = useState<TQueryParam[]>([]);
@@ -70,6 +73,11 @@ const Services = () => {
     {
       title: "Description",
       dataIndex: "description",
+      render: (description: string) => (
+        <Button type="link" className="text-primary-500 hover:!text-primary-300" onClick={() => setDescriptionModal(description)}>
+          View Description
+        </Button>
+      ),
     },
     {
       title: "Price",
@@ -225,6 +233,16 @@ const Services = () => {
         setEditingService={setEditingService}
         editingService={editingService}
       />
+
+      {/* Description modal */}
+      <Modal
+        title="Description"
+        open={!!descriptionModal}
+        onCancel={() => setDescriptionModal("")}
+        footer={null}
+      >
+        <div dangerouslySetInnerHTML={{ __html: descriptionModal }} />
+      </Modal>
     </div>
   );
 };

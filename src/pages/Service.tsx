@@ -16,6 +16,8 @@ import {
 import banner from "../assets/img/serviceDetailsBanner.jpg";
 import {
   CheckCircleFilled,
+  ClockCircleOutlined,
+  DollarOutlined,
   PlusCircleOutlined,
   PlusOutlined,
   SafetyCertificateFilled,
@@ -171,7 +173,7 @@ const Service = () => {
       <div
         className="mb-8 w-full h-[450px] bg-slate-800 bg-blend-overlay bg-no-repeat bg-center bg-cover p-4 py-8 text-white"
         style={{
-          backgroundImage: `url(${banner})`,
+          backgroundImage: `url(${img || banner})`,
         }}
       >
         <Container className="space-y-4">
@@ -260,30 +262,29 @@ const Service = () => {
           <Skeleton active paragraph={{ rows: 15 }} />
         ) : (
           <div>
-            <Card
-              cover={
-                <img
-                  alt={name}
-                  src={
-                    img ||
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw3OdJ3nAPLc94ubUz-4AvNAz_0IzTkNBSqQ&s"
-                  }
-                  className="w-full h-[200px] object-cover"
+            <Card className="rounded-md shadow-lg w-full mx-auto mb-6 overflow-hidden">
+              <div className="p-4 bg-white">
+                <Typography.Title level={2} className="text-primary mb-2">
+                  {name}
+                </Typography.Title>
+                <div className="flex items-center text-gray-600 mb-2">
+                  <ClockCircleOutlined className="mr-2 text-primary" />
+                  <span>{`${duration} mins`}</span>
+                </div>
+                <div className="flex items-center text-gray-600 mb-4">
+                  <DollarOutlined className="mr-2 text-primary" />
+                  <span>{`${price} BDT`}</span>
+                </div>
+                <div
+                  className="mt-4 text-gray-700"
+                  dangerouslySetInnerHTML={{ __html: description }}
                 />
-              }
-              className="rounded-md my-shadow-1 w-2/6 mx-auto mb-6"
-            >
-              <Title level={2}>
-                <span className="text-primary">{name}</span>
-              </Title>
-              <Paragraph strong>{`Duration: ${duration} mins`}</Paragraph>
-              <Paragraph strong>{`Price: ${price} BDT`}</Paragraph>
-              <p className="text-normal-desc">{description}</p>
+              </div>
             </Card>
 
             {/* FAQ */}
             <MyMotion y={50}>
-              <div className="my-4 space-y-5">
+              <div className="my-[35px] md:my-[60px] space-y-5">
                 <h2 className="font-semibold text-2xl">
                   Frequently asked question
                 </h2>

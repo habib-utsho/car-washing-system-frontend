@@ -27,9 +27,7 @@ const NoticeMerQueue = () => {
             return (
               <span
                 key={ind}
-                className={`${
-                  ind % 2 === 0 ? "text-primary" : "text-primary"
-                }  font-semibold mx-4 cursor-pointer`}
+                className={`  font-semibold mx-4 cursor-pointer`}
                 onClick={() => setSelectedNotice(notice)}
               >
                 🚨 {notice?.name}

@@ -45,7 +45,7 @@ const OurServices = () => {
     },
   ];
   return (
-    <div className="my-[60px]">
+    <div className="my-[100px]">
       <Container className="space-y-12">
         <CommonSectionBanner
           title={"Service we provide"}

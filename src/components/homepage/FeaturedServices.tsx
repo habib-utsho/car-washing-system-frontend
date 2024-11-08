@@ -17,7 +17,7 @@ const FeaturedServices = () => {
     ]);
 
   return (
-    <div className="py-8 md:py-10 my-[100px]">
+    <div className="pb-[1px] pt-8 md:pb-[2px] md:pt-10 mt-[100px] mb-[10px]">
       <Container>
         <div className="bg-white my-shadow-1 rounded-md p-4 space-y-6">
           <div className="flex justify-between flex-wrap items-center">

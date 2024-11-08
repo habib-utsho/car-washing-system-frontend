@@ -38,11 +38,13 @@ const servicesApi = baseApi.injectEndpoints({
       },
     }),
     updateService: builder.mutation({
-      query: (payload) => {
+      query: ({ id, body }) => {
+        console.log(id, body, "id, body");
+
         return {
-          url: `/services/${payload?._id}`,
+          url: `/services/${id}`,
           method: "PATCH",
-          body: payload,
+          body,
         };
       },
       invalidatesTags: ["services"],

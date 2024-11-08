@@ -39,6 +39,78 @@ const Services = () => {
   return (
     <div>
       <Container className="my-10">
+        {/* Filtering and sorting */}
+        <div className="mb-8 flex gap-4 flex-wrap">
+          {/* Price range */}
+          <Select
+            className="w-[200px]"
+            onChange={(value) => {
+              // const newParams = params.filter(
+              //   (param) => param.name !== "priceRange"
+              // );
+              // setParams([...newParams, { name: "priceRange", value }]);
+              setPriceRange(value);
+            }}
+            value={priceRange}
+            options={[
+              { min: 0, max: 500 },
+              { min: 500, max: 1000 },
+              { min: 1000, max: 2000 },
+              { min: 2000, max: 4000 },
+              { min: 4000, max: 8000 },
+              { min: "All price", max: "All price" },
+            ].map((item) => {
+              if (item.min === "All price") {
+                return {
+                  label: item.min,
+                  value: null,
+                };
+              }
+              return {
+                label: `${item.min} - ${item.max}`,
+                value: `${item.min},${item.max}`,
+              };
+            })}
+            placeholder="Filter by price range"
+            // style={{ width: "100%" }}
+          />
+          {/* Search */}
+          <Search
+            placeholder="Search service"
+            onSearch={(value) => setSearchTerm(value)}
+            allowClear
+            enterButton
+            className="w-[200px] "
+          />
+
+          <div className="flex items-center gap-2">
+            <span className="text-normal-desc pr-1 border-r border-r-slate-200">
+              Sort by
+            </span>
+            <Button
+              onClick={() => setIsSort(isSort === "price" ? "-price" : "price")}
+            >
+              {isSort === "-price" ? (
+                <SortAscendingOutlined />
+              ) : (
+                isSort === "price" && <SortDescendingOutlined />
+              )}{" "}
+              Price
+            </Button>
+            <Button
+              onClick={() =>
+                setIsSort(isSort === "duration" ? "-duration" : "duration")
+              }
+            >
+              {isSort === "-duration" ? (
+                <SortAscendingOutlined />
+              ) : (
+                isSort === "duration" && <SortDescendingOutlined />
+              )}{" "}
+              Duration
+            </Button>
+          </div>
+        </div>
         {isLoadingServices || isFetching ? (
           <div className="">
             <Skeleton.Button
@@ -64,81 +136,6 @@ const Services = () => {
           </div>
         ) : (
           <>
-            {/* Filtering and sorting */}
-            <div className="mb-8 flex gap-4 flex-wrap">
-              {/* Price range */}
-              <Select
-                className="w-[200px]"
-                onChange={(value) => {
-                  // const newParams = params.filter(
-                  //   (param) => param.name !== "priceRange"
-                  // );
-                  // setParams([...newParams, { name: "priceRange", value }]);
-                  setPriceRange(value);
-                }}
-                value={priceRange}
-                options={[
-                  { min: 0, max: 500 },
-                  { min: 500, max: 1000 },
-                  { min: 1000, max: 2000 },
-                  { min: 2000, max: 4000 },
-                  { min: 4000, max: 8000 },
-                  { min: "All price", max: "All price" },
-                ].map((item) => {
-                  if (item.min === "All price") {
-                    return {
-                      label: item.min,
-                      value: null,
-                    };
-                  }
-                  return {
-                    label: `${item.min} - ${item.max}`,
-                    value: `${item.min},${item.max}`,
-                  };
-                })}
-                placeholder="Filter by price range"
-                // style={{ width: "100%" }}
-              />
-              {/* Search */}
-              <Search
-                placeholder="Search service"
-                onSearch={(value) => setSearchTerm(value)}
-                allowClear
-                enterButton
-                className="w-[200px] "
-              />
-
-              <div className="flex items-center gap-2">
-                <span className="text-normal-desc pr-1 border-r border-r-slate-200">
-                  Sort by
-                </span>
-                <Button
-                  onClick={() =>
-                    setIsSort(isSort === "price" ? "-price" : "price")
-                  }
-                >
-                  {isSort === "-price" ? (
-                    <SortAscendingOutlined />
-                  ) : (
-                    isSort === "price" && <SortDescendingOutlined />
-                  )}{" "}
-                  Price
-                </Button>
-                <Button
-                  onClick={() =>
-                    setIsSort(isSort === "duration" ? "-duration" : "duration")
-                  }
-                >
-                  {isSort === "-duration" ? (
-                    <SortAscendingOutlined />
-                  ) : (
-                    isSort === "duration" && <SortDescendingOutlined />
-                  )}{" "}
-                  Duration
-                </Button>
-              </div>
-            </div>
-
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
               {servicesData?.data?.map((service: TService) => (
                 <ServiceCard service={service} />

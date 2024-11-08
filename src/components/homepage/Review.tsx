@@ -50,12 +50,12 @@ const Review: React.FC = () => {
   };
 
   return (
-    <div className="" id="review">
+    <div className="my-16" id="review">
       <Container>
         <div className="relative bg-white my-shadow-1 rounded-md p-4">
           <CommonSectionBanner
             title="Review"
-            subTitle="Share your thoughts and help us improve!"
+            subTitle="Share your thoughts and help us to improve!"
             align="left"
           />
 

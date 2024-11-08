@@ -29,7 +29,7 @@ const ServiceCard: React.FC<TServiceCard> = ({ service }) => {
   return (
     <div>
       <Card
-        className="min-h-[465px] relative pb-10 space-y-4"
+        className="min-h-[345px] relative pb-10 space-y-4"
         cover={
           <img
             style={{ height: 200, objectFit: "cover" }}
@@ -61,11 +61,7 @@ const ServiceCard: React.FC<TServiceCard> = ({ service }) => {
               </p>
             </>
           }
-          description={
-            <Typography.Paragraph ellipsis={{ rows: 2 }}>
-              {service?.description}
-            </Typography.Paragraph>
-          }
+     
         />
 
         <Link to={`/services/${service?._id}`}>
@@ -77,7 +73,7 @@ const ServiceCard: React.FC<TServiceCard> = ({ service }) => {
             icon={<BsCartPlus />}
             block
             type="default"
-            className="!absolute bottom-2 left-0 right-0 !w-[70%] mx-auto"
+            className="!absolute bottom-2 left-0 right-0 !w-[80%] mx-auto"
             disabled={service?.isDeleted}
           >
             Book slot

@@ -8,7 +8,20 @@ import {
 import { TResponse } from "../../../types/index.type";
 import MyInp from "../../ui/Form/MyInp";
 import { useUploadFileMutation } from "../../../redux/features/fileUpload";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import { UploadOutlined } from "@ant-design/icons";
+
+const toolbarOptions = [
+  [{ header: [1, 2, false] }],
+  ["bold", "italic", "underline"],
+  ["blockquote", "code-block"],
+  [{ list: "ordered" }, { list: "bullet" }],
+  [{ color: [] }, { background: [] }],
+  ["link", "image"],
+  ["clean"],
+];
+
 type TProps = {
   open: boolean;
   editingService: Partial<TService> | null;
@@ -31,6 +44,7 @@ const ServicesModal = ({
     useUpdateServiceMutation();
   const [uploadFile, { isLoading: isLoadingUploadFile }] =
     useUploadFileMutation();
+  const [description, setDescription] = useState<string>("");
 
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
@@ -53,59 +67,89 @@ const ServicesModal = ({
         },
       ]);
     }
+    if (editingService?.description) {
+      setDescription(editingService.description);
+    }
   }, [form, editingService]);
 
   const handleCreateService = async (values: TService) => {
     try {
+      const formData = new FormData();
+
+      if (!description) {
+        message.error("Please input service description!");
+        return;
+      }
+      values.description = description;
+      formData.append("data", JSON.stringify(values));
+
+      if (fileList.length === 0) {
+        message.error("Image is required");
+        return;
+      }
       if (fileList.length > 0 && fileList[0]?.originFileObj) {
         // formData.append("file", fileList[0].originFileObj);
-        const formData = new FormData();
-        formData.append("image", fileList[0].originFileObj);
-        const file = await uploadFile(formData).unwrap();
-        if (!file?.data?.url) {
-          message.error("Image upload failed");
-          return;
-        }
-        values.img = file?.data?.url;
+        formData.append("file", fileList[0].originFileObj);
+        // const file = await uploadFile(formData).unwrap();
       }
 
       const result = (await createService(
-        values
+        formData
       ).unwrap()) as TResponse<TService>;
       if (result?.success) {
         message.success(result?.message);
+        setDescription("");
+        form.resetFields();
+        setModalVisible(false);
+        setFileList([]);
       } else {
         message.error(result?.message);
       }
     } catch (e: any) {
       message.error(e?.data?.message || e?.message || "Failed to add service!");
-    } finally {
-      setFileList([]);
-      setModalVisible(false);
-      form.resetFields();
     }
   };
 
   const handleUpdateService = async (values: Partial<TService>) => {
     try {
+      const formData = new FormData();
+
+      if (!description) {
+        message.error("Please input service description!");
+        return;
+      }
+      values.description = description;
+      formData.append("data", JSON.stringify(values));
+
       if (fileList.length > 0 && fileList[0]?.originFileObj) {
         // formData.append("file", fileList[0].originFileObj);
-        const formData = new FormData();
-        formData.append("image", fileList[0].originFileObj);
-        const file = await uploadFile(formData).unwrap();
-        if (!file?.data?.url) {
-          message.error("Image upload failed");
-          return;
-        }
-        values.img = file?.data?.url;
+        formData.append("file", fileList[0].originFileObj);
+        // const file = await uploadFile(formData).unwrap();
+        // if (!file?.data?.url) {
+        //   message.error("Image upload failed");
+        //   return;
+        // }
+        // values.img = file?.data?.url;
       }
 
+      // console.log({
+      //   id: editingService?._id,
+      //   body: formData,
+      // } , 'return');
+      // return
+
       const res = (await updateService({
-        ...values,
-        _id: editingService?._id,
+        id: editingService?._id,
+        body: formData,
       }).unwrap()) as TResponse<TService>;
       if (res?.success) {
         message.success(res?.message);
+
+        setEditingService(null);
+        setDescription("");
+        form.resetFields();
+        setModalVisible(false);
+        setFileList([]);
       } else {
         message.error(res?.message);
       }
@@ -113,16 +157,12 @@ const ServicesModal = ({
       message.error(
         error?.data?.message || error?.message || "Failed to update service!"
       );
-    } finally {
-      setEditingService(null);
-      setModalVisible(false);
-      setFileList([]);
-      form.resetFields();
     }
   };
 
   return (
     <Modal
+      width={800}
       open={open}
       onCancel={() => {
         form.resetFields();
@@ -221,7 +261,7 @@ const ServicesModal = ({
           size="large"
         />
 
-        <MyInp
+        {/* <MyInp
           name="description"
           rules={[
             {
@@ -233,6 +273,15 @@ const ServicesModal = ({
           placeholder="Enter service description"
           type="textarea"
           size="large"
+        /> */}
+        {/* Description */}
+        <ReactQuill
+          theme="snow"
+          value={description}
+          onChange={setDescription}
+          placeholder="What's on your mind?"
+          modules={{ toolbar: toolbarOptions }}
+          className="my-4"
         />
 
         {/* Submit button */}
