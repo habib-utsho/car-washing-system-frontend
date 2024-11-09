@@ -16,7 +16,7 @@ const servicesApi = baseApi.injectEndpoints({
     getAllServices: builder.query({
       query: (filters) => {
         const params = new URLSearchParams();
-        filters.forEach((item: TQueryParam) => {
+        filters?.forEach((item: TQueryParam) => {
           params.append(item.name, item.value as string);
         });
 

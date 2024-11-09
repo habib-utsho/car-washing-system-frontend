@@ -7,7 +7,7 @@ import {
   LockOutlined,
   NotificationOutlined,
 } from "@ant-design/icons";
-import DashboardHome from "../../pages/dashboard/admin/DashboardHome";
+import DashboardHome from "../../pages/dashboard/admin/DashboardHome/DashboardHome";
 import Services from "../../pages/dashboard/admin/Services";
 import Slots from "../../pages/dashboard/admin/Slots";
 import Booking from "../../pages/dashboard/admin/UserManagement/Booking";

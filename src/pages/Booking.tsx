@@ -113,9 +113,12 @@ const Booking = () => {
                   <ClockCircleOutlined className="text-primary mr-2" />{" "}
                   {slot?.data?.service?.duration} minutes
                 </Typography.Paragraph>
-                <Typography.Paragraph>
-                  {slot?.data?.service?.description}
-                </Typography.Paragraph>
+                <div
+                  className="mt-4 text-gray-700"
+                  dangerouslySetInnerHTML={{
+                    __html: slot?.data?.service?.description,
+                  }}
+                />
                 {/* Add more details about the service and time slot here */}
               </Card>
               <Card
