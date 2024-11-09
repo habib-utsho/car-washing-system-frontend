@@ -7,7 +7,7 @@ To get started with the Car Washing System locally, follow these steps:
 
 ## Clone this repository to your local machine:
 
-git clone [https://github.com/Source-Code-007/car-washing-system-frontend](https://github.com/Source-Code-007/car-washing-system-frontend)
+git clone [https://github.com/habib-utsho/car-washing-system-frontend](https://github.com/habib-utsho/car-washing-system-frontend)
 
 **Navigate into the project directory:** cd car_washing_system_frontend
 **Install dependencies:** yarn install
@@ -43,4 +43,4 @@ Running the Server by- **yarn dev**
 
 Local URL: **[Link](http://localhost:5173)**
 
-Live URL: **[Link]()**
+Live URL: **[Link](https://car-cleanify.vercel.app/)**
