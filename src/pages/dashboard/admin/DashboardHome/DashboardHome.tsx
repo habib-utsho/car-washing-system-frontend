@@ -23,7 +23,8 @@ import { TService } from "../../../../types/service.type";
 const { TabPane } = Tabs;
 
 const DashboardHome = () => {
-  const { data: adminStats, isLoading } = useGetAdminStatsQuery(undefined);
+  const { data: adminStats, isLoading: isLoadingStats } =
+    useGetAdminStatsQuery(undefined);
   const user = useAppSelector((state) => state.auth.user);
 
   const { data: featuredServices, isLoading: isLoadingFeaturedServices } =
@@ -61,6 +62,13 @@ const DashboardHome = () => {
       icon: <CheckCircleOutlined />,
       background: "#f3e8ff",
       iconBackground: "#bf83ff",
+    },
+    {
+      amount: `${adminStats?.data?.upcomingSlots || 0}`,
+      title: "Upcoming Slots",
+      icon: <CalendarOutlined />,
+      background: "#f0f8ff",
+      iconBackground: "#008080",
     },
     {
       amount: `${adminStats?.data?.totalBookings || 0}`,
@@ -118,8 +126,9 @@ const DashboardHome = () => {
   const slotSummaryConfig = {
     appendPadding: 10,
     data: [
-      { type: "Available Slots", value: 50 },
-      { type: "Booked Slots", value: 250 },
+      { type: "Upcoming Slots", value: adminStats?.data?.upcomingSlots || 0 },
+      { type: "Available Slots", value: adminStats?.data?.availableSlots || 0 },
+      { type: "Booked Slots", value: adminStats?.data?.totalBookings || 0 },
     ],
     angleField: "value",
     colorField: "type",
@@ -165,6 +174,7 @@ const DashboardHome = () => {
       itemSpacing: 10,
     },
     color: ["#1f77b4", "#ff7f0e"],
+    height: 300,
   };
 
   // Latest booking columns
@@ -358,8 +368,8 @@ const DashboardHome = () => {
             <h2 className="font-semibold text-xl md:text-2xl mb-2">
               Overall summary
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
-              {isLoading
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+              {isLoadingStats
                 ? Array.from({ length: 5 }).map((_, index) => (
                     <Skeleton.Button
                       key={index}
@@ -390,23 +400,23 @@ const DashboardHome = () => {
             </div>
           </Card>
 
-          {/* Best Selling Products and Product Summary */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 my-8">
-            {/* Latest bookings */}
-            <div className="bg-white rounded-md p-4 shadow">
-              <h2 className="font-semibold text-xl">Latest Bookings</h2>
-              <Table
-                loading={isLoadingLatestBookings}
-                dataSource={latestBooking?.data?.slice(0, 10)}
-                columns={latestBookingsColumns}
-                pagination={false}
-                style={{ width: 800, overflow: "auto" }}
-              />
-            </div>
+          {/* Latest bookings */}
+          <div className="bg-white rounded-md p-4 shadow my-[50px] md:my-[60px]">
+            <h2 className="font-semibold text-xl">Latest Bookings</h2>
+            <Table
+              loading={isLoadingLatestBookings}
+              dataSource={latestBooking?.data?.slice(0, 10)}
+              columns={latestBookingsColumns}
+              pagination={false}
+              style={{ maxWidth: "full", overflow: "auto" }}
+              // className="!w-[800px] md:max-w-full"
+            />
+          </div>
 
-            {/* Booking Summary Chart */}
+          {/* Grid for latest bookings, booking Mapping, Satisfy vs Fulfill */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
             {/* TODO */}
-            {isLoadingFeaturedServices ? (
+            {isLoadingFeaturedServices || isLoadingStats ? (
               <Skeleton paragraph={{ rows: 10 }} />
             ) : (
               <div className="bg-white rounded-md p-4 shadow">
@@ -414,29 +424,6 @@ const DashboardHome = () => {
                 <Pie {...slotSummaryConfig} />
               </div>
             )}
-          </div>
-
-          {/* Grid for latest bookings, booking Mapping, Satisfy vs Fulfill */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-            {/* Featured services */}
-            <div className="bg-white rounded-md p-4 shadow space-y-6">
-              <div className="flex items-center justify-between">
-                <h2 className="font-semibold text-xl">Featured Services</h2>
-                <Button
-                  type="link"
-                  className="text-slate-500 flex items-center gap-1"
-                >
-                  More <RightCircleOutlined />
-                </Button>
-              </div>
-              <Table
-                loading={isLoadingFeaturedServices}
-                dataSource={featuredServices?.data}
-                columns={columns}
-                pagination={false}
-                style={{ width: 800, overflow: "auto" }}
-              />
-            </div>
 
             {/* Sales Mapping by Areas Section */}
             <div className="bg-white rounded-md p-4 shadow space-y-4">
@@ -451,6 +438,26 @@ const DashboardHome = () => {
               </h2>
               <Pie {...barConfig} />
             </div>
+          </div>
+
+          {/* Featured services */}
+          <div className="bg-white rounded-md p-4 shadow space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="font-semibold text-xl">Featured Services</h2>
+              <Button
+                type="link"
+                className="text-slate-500 flex items-center gap-1"
+              >
+                More <RightCircleOutlined />
+              </Button>
+            </div>
+            <Table
+              loading={isLoadingFeaturedServices}
+              dataSource={featuredServices?.data}
+              columns={columns}
+              pagination={false}
+              style={{ width: "full", overflow: "auto" }}
+            />
           </div>
         </TabPane>
 
