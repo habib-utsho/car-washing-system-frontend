@@ -9,11 +9,14 @@ import {
 import { TSlot } from "../../../types/slot.type";
 import { TService } from "../../../types/service.type";
 import SlotModal from "../../../components/modal/admin/SlotModal";
+import { useGetAllServicesQuery } from "../../../redux/features/servicesApi";
+import { CloseCircleOutlined } from "@ant-design/icons";
 
 const Slots = () => {
   const [pagination, setPagination] = useState({ limit: 10, page: 1 });
   const [params, setParams] = useState<TQueryParam[]>([]);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [selectedService, setSelectedService] = useState<string | null>(null);
   const {
     data: slots,
     isLoading: isLoadingSlot,
@@ -21,8 +24,11 @@ const Slots = () => {
   } = useGetAllSlotQuery([
     { name: "limit", value: pagination.limit },
     { name: "page", value: pagination.page },
+    ...(selectedService ? [{ name: "service", value: selectedService }] : []),
     ...params,
   ]);
+  const { data: services, isLoading: isLoadingServices } =
+    useGetAllServicesQuery([{ name: "limit", value: 50000 }]);
   const [toggleSlotStatus] = useToggleStatusMutation();
 
   const columns = [
@@ -124,24 +130,52 @@ const Slots = () => {
   return (
     <div className="">
       <div className="flex gap-4 justify-between mb-4">
-        <h2 className="font-bold text-xl md:text-2xl">Slots</h2>
+        <div className="flex items-center gap-2 md:gap-4 flex-wrap">
+          <h2 className="font-bold text-xl md:text-2xl mb-0">Slots</h2>
 
-        <Select
-          className="w-[250px]"
-          size="large"
-          placeholder="Filter by status"
-          onChange={(value) => {
-            const newParams = params.filter(
-              (param) => param.name !== "isBooked"
-            );
-            setParams([...newParams, { name: "isBooked", value }]);
-          }}
-          options={[
-            { label: "Available", value: "available" },
-            { label: "Booked", value: "booked" },
-            { label: "Canceled", value: "canceled" },
-          ]}
-        />
+          <Select
+            className="w-[250px]"
+            size="large"
+            placeholder="Filter by service"
+            disabled={isLoadingServices || !services}
+            onChange={(value) => {
+              setSelectedService(value);
+              setPagination({ limit: 10, page: 1 });
+            }}
+            options={services?.data?.map((service: TService) => ({
+              label: service?.name,
+              value: service?._id,
+            }))}
+          />
+          <Select
+            className="w-[250px]"
+            size="large"
+            placeholder="Filter by status"
+            onChange={(value) => {
+              const newParams = params.filter(
+                (param) => param.name !== "isBooked"
+              );
+              setParams([...newParams, { name: "isBooked", value }]);
+            }}
+            options={[
+              { label: "Available", value: "available" },
+              { label: "Booked", value: "booked" },
+              { label: "Canceled", value: "canceled" },
+            ]}
+          />
+          <span
+            onClick={() => {
+              setSelectedService(null);
+              setPagination({ limit: 10, page: 1 });
+              setParams([]);
+            }}
+          >
+            <CloseCircleOutlined
+              className="text-red-500 cursor-pointer"
+              alt="Clear filer"
+            />
+          </span>
+        </div>
 
         <Button type="primary" onClick={() => setModalVisible(true)}>
           Create slot
