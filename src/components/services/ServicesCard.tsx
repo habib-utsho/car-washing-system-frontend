@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Button, Card, Typography } from "antd";
+import { Button, Card } from "antd";
 import { Link } from "react-router-dom";
 import { BsCartPlus } from "react-icons/bs";
 import { TService } from "../../types/service.type";

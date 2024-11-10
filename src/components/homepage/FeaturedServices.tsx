@@ -1,4 +1,4 @@
-import { Navigation, Pagination } from "swiper/modules";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { Button, Empty, Skeleton } from "antd";
@@ -60,7 +60,11 @@ const FeaturedServices = () => {
                 clickable: true,
               }}
               navigation={true}
-              modules={[Navigation, Pagination]}
+              modules={[Navigation, Pagination, Autoplay]}
+              autoplay={{
+                delay: 5000,
+              }}
+              speed={8000}
               className="!pb-8"
             >
               {services?.data?.map((service: TService, ind: number) => (

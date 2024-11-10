@@ -8,10 +8,17 @@ import {
 } from "@ant-design/icons";
 import { useGetAdminStatsQuery } from "../../../../redux/features/statsApi";
 import { useAppSelector } from "../../../../redux/hook";
-import { Button, Card, Skeleton, Table, Tabs } from "antd";
+import { Button, Card, Select, Skeleton, Table, Tabs } from "antd";
 import "antd/dist/reset.css"; // Import Ant Design CSS
 import { useGetAllServicesQuery } from "../../../../redux/features/servicesApi";
-import { Pie } from "@ant-design/charts";
+import { Line, Pie } from "@ant-design/charts";
+import { useState } from "react";
+import { useGetAllBookingQuery } from "../../../../redux/features/bookingApi";
+import { TBooking } from "../../../../types/booking.type";
+import worldMap from "../../../../assets/img/dashboard/world_map.png";
+import moment from "moment";
+import { ColumnsType } from "antd/es/table";
+import { TService } from "../../../../types/service.type";
 
 const { TabPane } = Tabs;
 
@@ -19,12 +26,12 @@ const DashboardHome = () => {
   const { data: adminStats, isLoading } = useGetAdminStatsQuery(undefined);
   const user = useAppSelector((state) => state.auth.user);
 
-  const {
-    data: highestBookedServices,
-    isLoading: isLoadingHighestBookedServices,
-  } = useGetAllServicesQuery([{ name: "isFeatured", value: true }]);
-
-  console.log(highestBookedServices, "highestBookedServices");
+  const { data: featuredServices, isLoading: isLoadingFeaturedServices } =
+    useGetAllServicesQuery([{ name: "isFeatured", value: true }]);
+  const { data: latestBooking, isLoading: isLoadingLatestBookings } =
+    useGetAllBookingQuery([]);
+  const { data: bookings, isLoading: isLoadingAllBookings } =
+    useGetAllBookingQuery([{ name: "limit", value: 5000000 }]);
 
   const stats = [
     {
@@ -80,12 +87,12 @@ const DashboardHome = () => {
     // },
   ];
 
-  // Data for Best Selling Products
-  const columns = [
+  // Data for featured services table
+  const columns: ColumnsType<TService> = [
     {
       title: "Service",
       key: "service",
-      render: (text, record) => (
+      render: (record) => (
         <div className="flex items-center">
           <img
             src={record.img}
@@ -121,7 +128,7 @@ const DashboardHome = () => {
     label: {
       type: "inner",
       offset: "-30%",
-      content: ({ value }) => `${value}`,
+      content: ({ value }: { value: number }) => `${value}`,
       style: {
         fontSize: 14,
         textAlign: "center",
@@ -130,7 +137,7 @@ const DashboardHome = () => {
     tooltip: {
       showTitle: true,
       title: "Order Status",
-      formatter: (datum) => ({
+      formatter: (datum: { type: string; value: number }) => ({
         name: datum.type,
         value: datum.value,
       }),
@@ -153,73 +160,200 @@ const DashboardHome = () => {
         style: {
           fontSize: 14,
         },
-        formatter: (text, item) => `${item.value}`,
+        formatter: (item: { value: number }) => `${item.value}`,
       },
       itemSpacing: 10,
     },
     color: ["#1f77b4", "#ff7f0e"],
   };
 
+  // Latest booking columns
+  const latestBookingsColumns: ColumnsType<TBooking> = [
+    {
+      title: "Customer",
+      key: "customer",
+      dataIndex: "customer",
+      render: (customer) => (
+        <div className="flex items-center">
+          <img
+            src={customer.img}
+            alt={customer.name}
+            className="w-10 h-10 rounded-full mr-2"
+          />
+          {customer.name}
+        </div>
+      ),
+    },
+    {
+      title: "Service",
+      dataIndex: "service",
+      key: "service",
+      render: (service) => (
+        <div className="flex items-center">
+          <img
+            src={service.img}
+            alt={service.name}
+            className="w-10 h-10 rounded-full mr-2"
+          />
+          {service.name}
+        </div>
+      ),
+    },
+    {
+      title: "Price",
+      key: "price",
+      dataIndex: "service",
+      render: (service) => (
+        <div className="flex items-center">{service.price}</div>
+      ),
+    },
+    {
+      title: "Duration",
+      key: "duration",
+      dataIndex: "service",
+      render: (service) => (
+        <div className="flex items-center">{service.duration}</div>
+      ),
+    },
+    {
+      title: "Booking Date",
+      key: "slot",
+      dataIndex: "slot",
+      render: (slot) => (
+        <div className="flex items-center">
+          {moment(slot).format("DD Mo, YYYY")}
+        </div>
+      ),
+    },
+    {
+      title: "Vehicle Type",
+      key: "vehicleType",
+      dataIndex: "vehicleType",
+    },
+    {
+      title: "Vehicle Brand",
+      key: "vehicleBrand",
+      dataIndex: "vehicleBrand",
+    },
+    {
+      title: "Vehicle Model",
+      key: "vehicleModel",
+      dataIndex: "vehicleModel",
+    },
+    {
+      title: "Manufacturing Year",
+      key: "manufacturingYear",
+      dataIndex: "manufacturingYear",
+    },
+    {
+      title: "Registration Plate",
+      key: "registrationPlate",
+      dataIndex: "registrationPlate",
+    },
+  ];
+
+  // Data for Satisfy vs Fulfill Customer (Bar Chart)
+  const barData = [
+    { category: "Vol", value: 1135 },
+    { category: "Services", value: 635 },
+  ];
+
+  const barConfig = {
+    data: barData,
+    xField: "category",
+    yField: "value",
+    height: 300,
+    colorField: "category",
+    color: ["#36a2eb", "#ff6384"],
+  };
+
+  // Booking analytics [2nd tab]
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const currentMonthIndex = new Date().getMonth();
+  const [slotBookingDetailsActiveMonth, setSlotBookingDetailsActiveMonth] =
+    useState<keyof typeof monthMap>(
+      months[currentMonthIndex] as keyof typeof monthMap
+    );
+
+  // Month mapping for easier comparison
+
+  const monthMap = {
+    Jan: 0,
+    Feb: 1,
+    Mar: 2,
+    Apr: 3,
+    May: 4,
+    Jun: 5,
+    Jul: 6,
+    Aug: 7,
+    Sep: 8,
+    Oct: 9,
+    Nov: 10,
+    Dec: 11,
+  };
+
+  // Get the index of the active month
+  const activeMonthIndex = monthMap[slotBookingDetailsActiveMonth];
+
+  // Group orders by day for the active month and count occurrences
+  interface SlotsCounts {
+    [key: number]: number;
+  }
+  const bookingCounts: SlotsCounts = bookings?.data?.reduce(
+    (acc: SlotsCounts, booking: TBooking) => {
+      const date = new Date(booking.createdAt);
+      const day = date.getDate(); // Get the day (1-30)
+      const monthIndex = date.getMonth(); // Get the month index (0-11)
+
+      // Only include orders from the active month
+      if (monthIndex === activeMonthIndex) {
+        acc[day] = (acc[day] || 0) + 1; // Increment count for that day
+      }
+      return acc;
+    },
+    {}
+  );
+
+  // Convert grouped data to an array of objects suitable for the chart
+  const lineData = Array.from({ length: 30 }, (_, index) => {
+    const day = index + 1; // Days range from 1 to 30
+    return {
+      date: day,
+      value: bookingCounts?.[day] || 0, // Use order count or 0 if no orders
+    };
+  });
+  const lineConfig = {
+    data: lineData,
+    xField: "date", // The x-axis will show the day of the month
+    yField: "value", // The y-axis will show the count of orders for that day
+    smooth: true,
+    height: 300,
+  };
+
   return (
     <div style={{ padding: "24px", background: "#f0f2f5" }}>
-      <h2 style={{ marginBottom: "24px" }}>
+      <h2
+        style={{ marginBottom: "24px" }}
+        className="font-bold text-xl md:text-2xl"
+      >
         Hi <strong className="text-primary">{user?.name}</strong>, Welcome back
-        👋
+        in Admin Dashboard 👋
       </h2>
       <Tabs defaultActiveKey="1">
         <TabPane tab="Overview" key="1">
-          {/* {isLoading ? (
-            <Skeleton paragraph={{ rows: 5 }} />
-          ) : (
-            <Row gutter={[16, 24]}>
-              <Col span={24} md={12} style={{ marginBottom: "16px" }}>
-                <Card>
-                  <Statistic
-                    title="Total Users"
-                    value={adminStats?.data?.totalUsers || 0}
-                    prefix={<UserOutlined />}
-                  />
-                </Card>
-              </Col>
-              <Col span={24} md={12} style={{ marginBottom: "16px" }}>
-                <Card>
-                  <Statistic
-                    title="Total Services"
-                    value={adminStats?.data?.totalServices || 0}
-                    prefix={<AppstoreOutlined />}
-                  />
-                </Card>
-              </Col>
-              <Col span={24} md={8} style={{ marginBottom: "16px" }}>
-                <Card>
-                  <Statistic
-                    title="Total Slots"
-                    value={adminStats?.data?.totalSlots || 0}
-                    prefix={<CalendarOutlined />}
-                  />
-                </Card>
-              </Col>
-              <Col span={24} md={8} style={{ marginBottom: "16px" }}>
-                <Card>
-                  <Statistic
-                    title="Available Slots"
-                    value={adminStats?.data?.availableSlots || 0}
-                    prefix={<CheckCircleOutlined />}
-                  />
-                </Card>
-              </Col>
-              <Col span={24} md={8} style={{ marginBottom: "16px" }}>
-                <Card>
-                  <Statistic
-                    title="Total Bookings"
-                    value={adminStats?.data?.totalBookings || 0}
-                    prefix={<BookOutlined />}
-                  />
-                </Card>
-              </Col>
-            </Row>
-          )} */}
-
           <Card className="mt-6">
             <h2 className="font-semibold text-xl md:text-2xl mb-2">
               Overall summary
@@ -258,7 +392,33 @@ const DashboardHome = () => {
 
           {/* Best Selling Products and Product Summary */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 my-8">
-            {/* Best Selling Products */}
+            {/* Latest bookings */}
+            <div className="bg-white rounded-md p-4 shadow">
+              <h2 className="font-semibold text-xl">Latest Bookings</h2>
+              <Table
+                loading={isLoadingLatestBookings}
+                dataSource={latestBooking?.data?.slice(0, 10)}
+                columns={latestBookingsColumns}
+                pagination={false}
+                style={{ width: 800, overflow: "auto" }}
+              />
+            </div>
+
+            {/* Booking Summary Chart */}
+            {/* TODO */}
+            {isLoadingFeaturedServices ? (
+              <Skeleton paragraph={{ rows: 10 }} />
+            ) : (
+              <div className="bg-white rounded-md p-4 shadow">
+                <h2 className="font-semibold text-xl">Slots Summary</h2>
+                <Pie {...slotSummaryConfig} />
+              </div>
+            )}
+          </div>
+
+          {/* Grid for latest bookings, booking Mapping, Satisfy vs Fulfill */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            {/* Featured services */}
             <div className="bg-white rounded-md p-4 shadow space-y-6">
               <div className="flex items-center justify-between">
                 <h2 className="font-semibold text-xl">Featured Services</h2>
@@ -270,28 +430,55 @@ const DashboardHome = () => {
                 </Button>
               </div>
               <Table
-                loading={isLoadingHighestBookedServices}
-                dataSource={highestBookedServices?.data}
+                loading={isLoadingFeaturedServices}
+                dataSource={featuredServices?.data}
                 columns={columns}
                 pagination={false}
                 style={{ width: 800, overflow: "auto" }}
               />
             </div>
 
-            {/* Product Summary Chart */}
-            {/* TODO */}
-            {isLoadingHighestBookedServices ? (
-              <Skeleton paragraph={{ rows: 10 }} />
+            {/* Sales Mapping by Areas Section */}
+            <div className="bg-white rounded-md p-4 shadow space-y-4">
+              <h2 className="font-semibold text-xl">Sales Mapping by Areas</h2>
+              <img src={worldMap} alt="world map" className="w-full h-auto" />
+            </div>
+
+            {/* Satisfy vs Fulfill Customer Section */}
+            <div className="bg-white rounded-md p-4 shadow">
+              <h2 className="font-semibold text-xl">
+                Satisfy vs Fulfill Customer
+              </h2>
+              <Pie {...barConfig} />
+            </div>
+          </div>
+        </TabPane>
+
+        <TabPane tab="Analytics" key="2">
+          {/* Booking Analytics */}
+          <div className="bg-white rounded-md p-4 shadow mb-6 space-y-6">
+            <div className="flex justify-between gap-4 flex-wrap">
+              <h2 className="font-semibold text-xl">Monthly Booking Details</h2>
+              <Select
+                placeholder="Select month"
+                value={slotBookingDetailsActiveMonth}
+                onChange={(value) => setSlotBookingDetailsActiveMonth(value)}
+              >
+                {months.slice(0, currentMonthIndex + 1).map((month) => (
+                  <Select.Option key={month}>{month}</Select.Option>
+                ))}
+              </Select>
+            </div>
+            {isLoadingAllBookings ? (
+              <Skeleton paragraph={{ rows: 14 }} />
             ) : (
-              <div className="bg-white rounded-md p-4 shadow">
-                <h2 className="font-semibold text-xl">Slots Summary</h2>
-                <Pie {...slotSummaryConfig} />
+              <div
+                style={{ width: "100%", maxWidth: "800px", overflowX: "auto" }}
+              >
+                <Line {...lineConfig} />
               </div>
             )}
           </div>
-        </TabPane>
-        <TabPane tab="Analytics" key="2" disabled>
-          {/* Future Analytics Content */}
         </TabPane>
       </Tabs>
     </div>

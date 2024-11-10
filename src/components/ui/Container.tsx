@@ -7,22 +7,12 @@ type TContainer = {
 
 const Container: React.FC<TContainer> = ({ children, className }) => {
   return (
-    <div className={`max-w-[1400px] mx-4 md:mx-auto ${className}`}>
+    <div
+      className={`max-w-[1168] xl:max-w-[1200px] 2xl:max-w-[1350px] mx-2 sm:mx-8 md:mx-12 xl:mx-auto px-2 ${className}`}
+    >
       {children}
     </div>
   );
 };
 
 export default Container;
-
-// import React from "react";
-
-// type ContainerProps = {
-//   children: React.ReactNode;
-// };
-
-// const Container: React.FC<ContainerProps> = ({ children }) => {
-//   return <div className="max-w-7xl mx-4 md:mx-auto ">{children}</div>;
-// };
-
-// export default Container;

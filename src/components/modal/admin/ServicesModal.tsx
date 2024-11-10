@@ -7,7 +7,7 @@ import {
 } from "../../../redux/features/servicesApi";
 import { TResponse } from "../../../types/index.type";
 import MyInp from "../../ui/Form/MyInp";
-import { useUploadFileMutation } from "../../../redux/features/fileUpload";
+// import { useUploadFileMutation } from "../../../redux/features/fileUpload";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { UploadOutlined } from "@ant-design/icons";
@@ -42,8 +42,8 @@ const ServicesModal = ({
     useCreateServiceMutation();
   const [updateService, { isLoading: isLoadingUpdateService }] =
     useUpdateServiceMutation();
-  const [uploadFile, { isLoading: isLoadingUploadFile }] =
-    useUploadFileMutation();
+  // const [uploadFile, { isLoading: isLoadingUploadFile }] =
+  //   useUploadFileMutation();
   const [description, setDescription] = useState<string>("");
 
   const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -290,7 +290,7 @@ const ServicesModal = ({
             type="primary"
             loading={
               isLoadingUpdateService ||
-              isLoadingUploadFile ||
+              // isLoadingUploadFile ||
               isLoadingCreateService
             }
             htmlType="submit"
