@@ -15,36 +15,38 @@ const DashboardLayout: React.FC = () => {
   const dispatch = useAppDispatch();
   const { user, isAuthLoading } = useAppSelector((state) => state.auth);
   const [timeRemaining, setTimeRemaining] = useState<string>("");
-  const {
-    data: bookings,
-    isLoading: isLoadingBooking,
-  } = useGetMyBookingQuery([
+  const { data: bookings, isLoading: isLoadingBooking } = useGetMyBookingQuery([
     { name: "upcoming", value: true },
     { name: "limit", value: 1 },
     { name: "sort", value: "-date" },
   ]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      const now = moment();
-      const bookingTime = moment(bookings?.data?.[0]?.slot?.date);
-      const duration = moment.duration(bookingTime.diff(now));
+    // @ts-ignore
+    let interval;
+    if (!isLoadingBooking) {
+      interval = setInterval(() => {
+        const now = moment();
+        const bookingTime = moment(bookings?.data?.[0]?.slot?.date);
+        const duration = moment.duration(bookingTime.diff(now));
 
-      if (duration.asSeconds() <= 0) {
-        setTimeRemaining("Expired");
-        clearInterval(interval);
-      } else {
-        setTimeRemaining(
-          `${Math.floor(
-            duration.asDays()
-          )}d ${duration.hours()}h ${duration.minutes()}m ${duration.seconds()}s`
-        );
-      }
-    }, 1000);
+        if (duration.asSeconds() <= 0) {
+          setTimeRemaining("Expired");
+          // @ts-ignore
+          clearInterval(interval);
+        } else {
+          setTimeRemaining(
+            `${Math.floor(
+              duration.asDays()
+            )}d ${duration.hours()}h ${duration.minutes()}m ${duration.seconds()}s`
+          );
+        }
+      }, 1000);
+    }
 
+    // @ts-ignore
     return () => clearInterval(interval);
   }, [bookings]);
-
 
   return (
     <>

@@ -26,7 +26,7 @@ import { useAppSelector } from "../../../../redux/hook";
 const { Search } = Input;
 const User = () => {
   const [pagination, setPagination] = useState({ limit: 10, page: 1 });
-    // @ts-ignore
+  // @ts-ignore
   const [params, setParams] = useState<TQueryParam[]>([]);
   const [searchTerm, setSearchTerm] = useState<string | null>(null);
 
@@ -96,8 +96,10 @@ const User = () => {
               Make {record.role === "admin" ? "user" : "admin"}
             </Button>
             <Popconfirm
-              title="Delete the student"
-              description="Are you sure to delete this student?"
+              title={`Delete the ${record.role === "admin" ? "admin" : "user"}`}
+              description={`Are you sure to delete this ${
+                record.role === "admin" ? "admin" : "user"
+              }?`}
               onConfirm={() => handleDeleteUser(record._id)}
               okText="Yes"
               cancelText="No"

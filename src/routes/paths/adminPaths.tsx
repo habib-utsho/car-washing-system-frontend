@@ -45,12 +45,24 @@ export const adminPaths = [
         element: <User />,
         icon: <UserOutlined />,
       },
+    ],
+  },
+  {
+    name: "Booking",
+    icon: <CalendarOutlined />,
+    children: [
       {
         name: "User bookings",
         path: "bookings",
         element: <Booking />,
         icon: <CalendarOutlined />,
       },
+    ],
+  },
+  {
+    name: "Profile",
+    icon: <UserOutlined />,
+    children: [
       {
         name: "Profile",
         path: "dashboard/profile",

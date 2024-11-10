@@ -23,7 +23,7 @@ const UpcomingBooking = () => {
   return (
     <div className="">
       <div className="flex gap-4 justify-between mb-4">
-        <h2 className="font-bold text-xl md:text-2xl">Bookings</h2>
+        <h2 className="font-bold text-xl md:text-2xl">Upcoming Bookings</h2>
       </div>
 
       {isLoadingBooking || isFetchingBooking ? (

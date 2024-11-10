@@ -1,12 +1,15 @@
 import { Link } from "react-router-dom";
 import footerBg from "../../assets/img/footer-bg.png";
 import logo from "../../assets/img/logo.png";
+import aamarpay from "../../assets/img/footer/aamarpay.png";
+
 import {
   FacebookFilled,
   GithubFilled,
   TwitterCircleFilled,
 } from "@ant-design/icons";
 import MyMotion from "../helpingCompo/MyMotion";
+import Container from "../ui/Container";
 
 const footerLinks = {
   important: [
@@ -25,6 +28,10 @@ const footerLinks = {
   legal: [
     { path: "/", label: "Terms of use" },
     { path: "/", label: "Privacy policy" },
+  ],
+  support: [
+    { path: "/", label: "Contact" },
+    { path: "/", label: "FAQ" },
   ],
 };
 
@@ -103,11 +110,11 @@ const Footer = () => {
           </MyMotion>
         </div>
 
-        {/* Legal Section */}
+        {/* support Section */}
         <div className="col-span-3">
           <ul className="space-y-3">
-            <span className="font-semibold">Legal</span>
-            {footerLinks.legal.map((link) => (
+            <span className="font-semibold">Support</span>
+            {footerLinks.support.map((link) => (
               <li key={link.label}>
                 <Link
                   className="text-gray text-sm hover:text-primary transition"
@@ -122,11 +129,35 @@ const Footer = () => {
       </div>
 
       {/* Copyright Section */}
-      <div className="text-center border-t border-t-slate-800 text-slate-300">
-        <p className="py-6 font-bold">
-          Copyright © {new Date().getFullYear()} - All rights reserved by{" "}
-          <span className="text-primary text-lg">Cleanify</span>
-        </p>
+      <div className="border-t border-t-slate-800">
+        <Container>
+          <div className="text-center  text-slate-300 flex justify-between flex-wrap gap-4 items-center">
+            <ul className=" flex gap-2 flex-wrap items-center mb-0">
+              {footerLinks.legal.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    className="text-gray text-sm hover:text-primary transition inline-block"
+                    to={link.path}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <p className="py-6 font-bold !mb-0">
+              Copyright © {new Date().getFullYear()} - All rights reserved by{" "}
+              <span className="text-primary text-lg">Cleanify</span>
+            </p>
+
+            <Link className="inline-block" to={"https://www.aamarpay.com/"}>
+              <img
+                src={aamarpay}
+                alt="aamarPay"
+                className="max-w-[400px] h-auto"
+              />
+            </Link>
+          </div>
+        </Container>
       </div>
     </footer>
   );

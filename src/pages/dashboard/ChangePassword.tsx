@@ -40,9 +40,9 @@ const ChangePassword = () => {
           name="passwordChangeForm"
           layout="vertical"
           onFinish={handleChangePassword}
-          className="bg-white my-shadow-1 rounded-md p-6 md:max-w-4xl mx-auto"
+          className="bg-white my-shadow-1 rounded-md p-6 md:max-w-2xl mx-auto"
         >
-          <h2 className="font-bold text-2xl md:text-3xl mb-8">
+          <h2 className="font-semibold text-lg md:text-xl mb-8">
             Change password
           </h2>
           <Form.Item

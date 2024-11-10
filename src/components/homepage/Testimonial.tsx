@@ -1,6 +1,6 @@
 import { Button, Card, Empty, Rate, Skeleton } from "antd";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, FreeMode, Pagination } from "swiper/modules";
+import { Autoplay, FreeMode, Navigation, Pagination } from "swiper/modules";
 import "swiper/css/free-mode";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -123,9 +123,14 @@ const Testimonial = () => {
             pagination={{
               clickable: true,
             }}
-            autoplay={{ delay: 1500, disableOnInteraction: false }}
-            modules={[FreeMode, Pagination, Autoplay]}
-            className="mySwiper mt-10 pb-10"
+            autoplay={{
+              delay: 5000,
+              disableOnInteraction: false,
+              pauseOnMouseEnter: true,
+            }}
+            modules={[Navigation, FreeMode, Pagination, Autoplay]}
+            speed={8000}
+            className="mySwiper mt-10 !pb-8"
             // style={{ minHeight: "300px" }}
           >
             {reviews?.data?.map((review: TReview, ind: number) => {
@@ -133,7 +138,7 @@ const Testimonial = () => {
                 <SwiperSlide key={ind}>
                   <Card
                     bordered={false}
-                    className="h-full min-h-[250px] bg-slate-50"
+                    className="h-full min-h-[345px] bg-slate-50"
                   >
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <div className="rounded-full border border-primary p-1">

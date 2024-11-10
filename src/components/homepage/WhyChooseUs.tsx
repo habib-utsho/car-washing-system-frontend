@@ -9,6 +9,7 @@ import {
 } from "@ant-design/icons"; // Import different icons from Ant Design
 import whyChooseUsIllustration from "../../assets/img/whyChooseUs/whyChooseUs2.png";
 import Container from "../ui/Container";
+import MyMotion from "../helpingCompo/MyMotion";
 
 const WhyChooseUs = () => {
   return (
@@ -49,27 +50,35 @@ const WhyChooseUs = () => {
       </Container>
       <div className="bg-black text-white py-[72px] md:py-[95px] mt-2">
         <Container className=" relative">
-          <div className="!w-[330px] bg-primary-500 rounded-md my-shadow-1 space-y-4 p-6 absolute right-[140px] -top-[195px]">
-            <h2 className="text-xl md:text-2xl font-semibold text-black">
-              Get Started with Us
-            </h2>
-            <div className="space-y-[6px]">
-              {[
-                "Book an appointment now",
-                "Quick and convenient scheduling",
-                "Eco-friendly cleaning options",
-                "Professional detailing available",
-              ]?.map((item, index) => (
-                <p key={index} className="text-sm text-slate-800 !mb-0">
-                  {item}
-                </p>
-              ))}
-            </div>
+          <MyMotion x={-50}>
+            <div className="!w-[330px] bg-primary-500 rounded-md my-shadow-1 space-y-4 p-6 absolute right-[140px] -top-[195px]">
+              <h2 className="text-xl md:text-2xl font-semibold text-black">
+                Get Started with Us
+              </h2>
+              <div className="space-y-[6px]">
+                {[
+                  "Book an appointment now",
+                  "Quick and convenient scheduling",
+                  "Eco-friendly cleaning options",
+                  "Professional detailing available",
+                ]?.map((item, index) => (
+                  <p key={index} className="text-sm text-slate-800 !mb-0">
+                    {item}
+                  </p>
+                ))}
+              </div>
 
-            <Button size="large" block className="bg-black text-white" href="/services">
-              Get Started Now
-            </Button>
-          </div>
+              <Button
+                size="large"
+                block
+                className="bg-black text-white"
+                href="/services"
+              >
+                Get Started Now
+              </Button>
+            </div>
+          </MyMotion>
+
           <div>
             <h2 className="text-xl md:text-2xl font-semibold">
               Your Car is Our Car

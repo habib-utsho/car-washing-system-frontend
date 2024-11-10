@@ -37,7 +37,7 @@ const bookingApi = baseApi.injectEndpoints({
         return {
           url: "/bookings/my-bookings",
           method: "GET",
-          params: params,
+          params,
         };
       },
     }),

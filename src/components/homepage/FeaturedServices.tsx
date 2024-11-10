@@ -63,6 +63,8 @@ const FeaturedServices = () => {
               modules={[Navigation, Pagination, Autoplay]}
               autoplay={{
                 delay: 5000,
+                pauseOnMouseEnter: true,
+                disableOnInteraction: false,
               }}
               speed={8000}
               className="!pb-8"

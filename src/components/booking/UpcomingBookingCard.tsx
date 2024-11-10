@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Card, Typography } from "antd";
+import { Button, Card, Modal } from "antd";
 import { Link } from "react-router-dom";
 import { TBooking } from "../../types/booking.type";
 import moment from "moment";
@@ -10,9 +10,12 @@ type TUpcomingBookingCard = {
 
 const UpcomingBookingCard: React.FC<TUpcomingBookingCard> = ({ booking }) => {
   const [timeRemaining, setTimeRemaining] = useState<string>("");
+  const [descriptionModal, setDescriptionModal] = useState("");
+
+  if (!booking) return null;
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    let interval = setInterval(() => {
       const now = moment();
       const bookingTime = moment(booking?.slot?.date);
       const duration = moment.duration(bookingTime.diff(now));
@@ -33,7 +36,16 @@ const UpcomingBookingCard: React.FC<TUpcomingBookingCard> = ({ booking }) => {
   }, [booking]);
 
   return (
-    <Card className="min-h-[250px] relative pb-10 space-y-4 my-shadow-1">
+    <Card
+      className="min-h-[250px] relative space-y-4 my-shadow-1"
+      cover={
+        <img
+          src={booking?.service?.img}
+          className="h-[320px] object-cover"
+          alt={booking?.service?.name}
+        />
+      }
+    >
       <Link
         to={`/services/${booking?.service?._id}`}
         className="font-bold text-xl inline-block mb-2 hover:text-primary-2 truncate w-full hover:text-primary"
@@ -51,15 +63,15 @@ const UpcomingBookingCard: React.FC<TUpcomingBookingCard> = ({ booking }) => {
                 </span>
               </p>
             </div>
-            <p className="text-secondary-200 font-normal">
-              Duration: {booking?.service?.duration} mins
-            </p>
+
+            <Button
+              type="link"
+              className="text-primary-500 hover:!text-primary-300 mx-0 px-0"
+              onClick={() => setDescriptionModal(booking?.service?.description)}
+            >
+              View Description
+            </Button>
           </>
-        }
-        description={
-          <Typography.Paragraph ellipsis={{ rows: 2 }}>
-            {booking?.service?.description}
-          </Typography.Paragraph>
         }
       />
       <div className="mt-4">
@@ -71,6 +83,16 @@ const UpcomingBookingCard: React.FC<TUpcomingBookingCard> = ({ booking }) => {
           <strong className="text-primary">{timeRemaining}</strong>
         </p>
       </div>
+
+      {/* Description modal */}
+      <Modal
+        title="Description"
+        open={!!descriptionModal}
+        onCancel={() => setDescriptionModal("")}
+        footer={null}
+      >
+        <div dangerouslySetInnerHTML={{ __html: descriptionModal }} />
+      </Modal>
     </Card>
   );
 };
