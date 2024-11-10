@@ -40,6 +40,7 @@ const Service = () => {
     useGetSingleServiceQuery(id);
   const { data: slots, isLoading: isLoadingSlots } = useGetAllSlotQuery([
     { name: "service", value: id },
+    { name: "limit", value: 5000 },
   ]);
   const { name, duration, price, description, img } = serviceData?.data || {};
   const location = useLocation();
@@ -138,8 +139,8 @@ const Service = () => {
       color: "green",
       children: (
         <>
-          <h2 className="font-semibold text-lg">Place order</h2>
-          <p>Confirm your order by clicking ‘Place order’.</p>
+          <h2 className="font-semibold text-lg">Book service</h2>
+          <p>Book your slot by clicking Book this Service’.</p>
         </>
       ),
     },

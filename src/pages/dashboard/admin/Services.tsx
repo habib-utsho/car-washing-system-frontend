@@ -74,7 +74,11 @@ const Services = () => {
       title: "Description",
       dataIndex: "description",
       render: (description: string) => (
-        <Button type="link" className="text-primary-500 hover:!text-primary-300" onClick={() => setDescriptionModal(description)}>
+        <Button
+          type="link"
+          className="text-primary-500 hover:!text-primary-300"
+          onClick={() => setDescriptionModal(description)}
+        >
           View Description
         </Button>
       ),
@@ -156,10 +160,15 @@ const Services = () => {
 
   const toggleIsFeatured = async (payload: TService) => {
     setIsLoadingToggleId(payload?._id);
+
+    const values = { isFeatured: !payload?.isFeatured ? true : false };
+
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(values));
     try {
       const result = (await updateService({
-        _id: payload?._id,
-        isFeatured: !payload?.isFeatured,
+        id: payload?._id,
+        body: formData,
       }).unwrap()) as TResponse<TService>;
       if (result?.success) {
         message.success(result?.message);

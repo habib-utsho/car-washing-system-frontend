@@ -231,7 +231,7 @@ const DashboardHome = () => {
       dataIndex: "slot",
       render: (slot) => (
         <div className="flex items-center">
-          {moment(slot).format("DD Mo, YYYY")}
+          {moment(slot?.date).format("Do MMM, YYYY")}
         </div>
       ),
     },
