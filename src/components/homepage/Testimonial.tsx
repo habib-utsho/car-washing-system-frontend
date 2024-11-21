@@ -138,7 +138,7 @@ const Testimonial = () => {
                 <SwiperSlide key={ind}>
                   <Card
                     bordered={false}
-                    className="h-full min-h-[345px] bg-slate-50"
+                    className="h-full min-h-[285px] bg-slate-50"
                   >
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <div className="rounded-full border border-primary p-1">
