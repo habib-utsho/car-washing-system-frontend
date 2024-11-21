@@ -3,6 +3,7 @@ import { Button, Card } from "antd";
 import { Link } from "react-router-dom";
 import { BsCartPlus } from "react-icons/bs";
 import { TService } from "../../types/service.type";
+import { ClockCircleOutlined } from "@ant-design/icons";
 
 type TServiceCard = {
   service: TService;
@@ -26,24 +27,31 @@ const ServiceCard: React.FC<TServiceCard> = ({ service }) => {
   //   message.error("Out of stock");
   // };
 
+  console.log("service", service);
+
   return (
     <div>
       <Card
-        className="min-h-[345px] relative pb-10 space-y-4"
+        className="min-h-[315px] relative pb-10 space-y-4"
         cover={
-          <img
-            style={{ height: 200, objectFit: "cover" }}
-            src={
-              service?.img ||
-              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw3OdJ3nAPLc94ubUz-4AvNAz_0IzTkNBSqQ&s" // TODO
-            }
-            alt={service?.name}
-          />
+          <Link
+            to={`/services/${service?._id}`}
+            className="group inline-block overflow-hidden cursor-pointer"
+          >
+            <img
+              src={
+                service?.img ||
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw3OdJ3nAPLc94ubUz-4AvNAz_0IzTkNBSqQ&s" // TODO
+              }
+              alt={service?.name}
+              className="w-full h-[200px] rounded-t-md group-hover:scale-[1.07] transition-all duration-500 object-cover"
+            />
+          </Link>
         }
       >
         <Link
           to={`/services/${service?._id}`}
-          className="font-bold text-xl inline-block mb-2 hover:text-primary-2 truncate w-full hover:text-primary"
+          className="font-semibold text-[18px] inline-block mb-1 hover:text-primary-2 truncate w-full hover:text-primary"
         >
           {service?.name}
         </Link>
@@ -52,16 +60,15 @@ const ServiceCard: React.FC<TServiceCard> = ({ service }) => {
           title={
             <>
               <div className="flex items-end gap-2">
-                <p className="font-semibold text-lg">
-                  <span className="!text-primary-2">৳ {service?.price}</span>
+                <p className="font-semibold mb-0">
+                  <span className="">৳ {service?.price}</span>
                 </p>
               </div>
-              <p className="text-secondary-200 font-normal">
-                Duration: {service?.duration} mins
+              <p className=" font-normal">
+                <ClockCircleOutlined /> {service?.duration} mins
               </p>
             </>
           }
-     
         />
 
         <Link to={`/services/${service?._id}`}>
