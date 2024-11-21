@@ -16,7 +16,7 @@ const WhyChooseUs = () => {
     <section>
       <Container>
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-4">
-          <div>
+          <div className="order-2 md:order-1">
             <h2 className="text-3xl font-bold">Why Choose Us?</h2>
             <p className="text-lg text-gray-500">
               We are the best in the business, with years of experience, we are
@@ -39,7 +39,7 @@ const WhyChooseUs = () => {
               Explore Services{" "}
             </Button>
           </div>
-          <div>
+          <div className="order-1 md:order-2">
             <img
               src={whyChooseUsIllustration}
               alt="Why Choose Us"
@@ -51,7 +51,7 @@ const WhyChooseUs = () => {
       <div className="bg-black text-white py-[72px] md:py-[95px] mt-2">
         <Container className=" relative">
           <MyMotion x={-50}>
-            <div className="!w-[330px] bg-primary-500 rounded-md my-shadow-1 space-y-4 p-6 absolute right-[140px] -top-[195px]">
+            <div className="!w-[330px] bg-primary-500 rounded-md my-shadow-1 space-y-4 p-6 absolute right-[35px] md:right-[80px] lg:right-[100px] xl:right-[140px] -top-[195px] hidden sm:block">
               <h2 className="text-xl md:text-2xl font-semibold text-black">
                 Get Started with Us
               </h2>

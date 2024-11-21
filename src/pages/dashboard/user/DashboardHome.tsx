@@ -3,6 +3,9 @@ import {
   BookOutlined,
   CalendarOutlined,
   CheckCircleOutlined,
+  MailOutlined,
+  PhoneOutlined,
+  TrophyOutlined,
 } from "@ant-design/icons";
 import { useGetUserStatsQuery } from "../../../redux/features/statsApi";
 import { useAppSelector } from "../../../redux/hook";
@@ -11,6 +14,9 @@ import { useGetMyBookingQuery } from "../../../redux/features/bookingApi";
 import moment from "moment";
 import Table, { ColumnsType } from "antd/es/table";
 import { TBooking } from "../../../types/booking.type";
+import { TService } from "../../../types/service.type";
+import { TUser } from "../../../types/index.type";
+import { TSlot } from "../../../types/slot.type";
 const { TabPane } = Tabs;
 
 //TODO: Showing admin stats now, replace it to for user stats
@@ -71,33 +77,76 @@ const DashboardHome = () => {
   const upcomingBookingsColumn: ColumnsType<TBooking> = [
     {
       title: "Customer",
-      key: "customer",
       dataIndex: "customer",
-      render: (customer) => (
-        <div className="flex items-center">
-          <img
-            src={customer.img}
-            alt={customer.name}
-            className="w-10 h-10 rounded-full mr-2"
-          />
-          {customer.name}
-        </div>
-      ),
+      key: "customer",
+      render: (_: TUser, record: TBooking) =>
+        record.customer ? (
+          <div className="flex items-center gap-[6px]">
+            <img
+              src={record.customer?.img}
+              alt={record.customer?.name}
+              className="h-[60px] w-[60px] object-cover rounded-full border-2 border-primary"
+            />
+            <div>
+              <h2 className="mb-0 font-semibold">{record.customer?.name}</h2>
+              <h2 className="mb-0 text-slate-700 text-[12px]">
+                <PhoneOutlined className="mr-[2px]" /> {record.customer?.phone}
+              </h2>
+              <h2 className="mb-0 text-slate-700 text-[12px]">
+                <MailOutlined className="mr-[2px]" /> {record.customer?.email}
+              </h2>
+            </div>
+          </div>
+        ) : (
+          "N/A"
+        ),
     },
     {
       title: "Service",
       dataIndex: "service",
       key: "service",
-      render: (service) => (
-        <div className="flex items-center">
-          <img
-            src={service.img}
-            alt={service.name}
-            className="w-10 h-10 rounded-full mr-2"
-          />
-          {service.name}
-        </div>
-      ),
+      render: (_: TService, record: TBooking) =>
+        record.service ? (
+          <div className="flex items-center gap-[6px]">
+            <img
+              src={record.service?.img}
+              alt={record.service?.name}
+              className="h-[60px] w-[60px] object-cover rounded-full border-2 border-primary"
+            />
+            <div>
+              <h2 className="mb-0 font-semibold">{record.service?.name}</h2>
+              {record.service?.isFeatured ? (
+                <div className="text-primary-500">
+                  <TrophyOutlined className="mr-[2px]" /> Featured service
+                </div>
+              ) : (
+                "Normal service"
+              )}
+            </div>
+          </div>
+        ) : (
+          "N/A"
+        ),
+    },
+    {
+      title: "Slot",
+      dataIndex: "slot",
+      key: "slot",
+      render: (slot: TSlot) => {
+        const formatTime = (time: string) =>
+          moment(time, "HH:mm").format("h:mm A");
+
+        return (
+          <div>
+            <div className="text-sm font-semibold text-gray-700">
+              {`${formatTime(slot?.startTime)} - ${formatTime(slot?.endTime)}`}
+            </div>
+            <div className="flex items-center">
+              {moment(slot?.date).format("Do MMM, YYYY")}
+            </div>
+          </div>
+        );
+      },
     },
     {
       title: "Price",
@@ -115,16 +164,7 @@ const DashboardHome = () => {
         <div className="flex items-center">{service.duration}</div>
       ),
     },
-    {
-      title: "Booking Date",
-      key: "slot",
-      dataIndex: "slot",
-      render: (slot) => (
-        <div className="flex items-center">
-          {moment(slot?.date).format("Do MMM, YYYY")}
-        </div>
-      ),
-    },
+
     {
       title: "Vehicle Type",
       key: "vehicleType",

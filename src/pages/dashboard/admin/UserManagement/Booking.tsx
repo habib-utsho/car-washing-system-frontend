@@ -6,6 +6,7 @@ import { TSlot } from "../../../../types/slot.type";
 import { TQueryParam, TUser } from "../../../../types/index.type";
 import { TBooking } from "../../../../types/booking.type";
 import { TService } from "../../../../types/service.type";
+import { MailOutlined, PhoneOutlined, TrophyOutlined } from "@ant-design/icons";
 
 const { Search } = Input;
 
@@ -32,13 +33,54 @@ const Booking = () => {
       title: "Customer",
       dataIndex: "customer",
       key: "customer",
-      render: (_: TUser, record: TBooking) => record.customer?.name || "N/A",
+      render: (_: TUser, record: TBooking) =>
+        record.customer ? (
+          <div className="flex items-center gap-[6px]">
+            <img
+              src={record.customer?.img}
+              alt={record.customer?.name}
+              className="h-[60px] w-[60px] object-cover rounded-full border-2 border-primary"
+            />
+            <div>
+              <h2 className="mb-0 font-semibold">{record.customer?.name}</h2>
+              <h2 className="mb-0 text-slate-700 text-[12px]">
+                <PhoneOutlined className="mr-[2px]" /> {record.customer?.phone}
+              </h2>
+              <h2 className="mb-0 text-slate-700 text-[12px]">
+                <MailOutlined className="mr-[2px]" /> {record.customer?.email}
+              </h2>
+            </div>
+          </div>
+        ) : (
+          "N/A"
+        ),
     },
     {
       title: "Service",
       dataIndex: "service",
       key: "service",
-      render: (_: TService, record: TBooking) => record.service?.name || "N/A",
+      render: (_: TService, record: TBooking) =>
+        record.service ? (
+          <div className="flex items-center gap-[6px]">
+            <img
+              src={record.service?.img}
+              alt={record.service?.name}
+              className="h-[60px] w-[60px] object-cover rounded-full border-2 border-primary"
+            />
+            <div>
+              <h2 className="mb-0 font-semibold">{record.service?.name}</h2>
+              {record.service?.isFeatured ? (
+                <div className="text-primary-500">
+                  <TrophyOutlined className="mr-[2px]" /> Featured service
+                </div>
+              ) : (
+                "Normal service"
+              )}
+            </div>
+          </div>
+        ) : (
+          "N/A"
+        ),
     },
     {
       title: "Slot",
@@ -86,6 +128,8 @@ const Booking = () => {
       key: "registrationPlate",
     },
   ];
+
+  console.log(bookings, "bookings");
 
   return (
     <div className="">
