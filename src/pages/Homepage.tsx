@@ -15,7 +15,6 @@ const Homepage = () => {
       <FeaturedServices />
       <WhyChooseUs />
       <OurServices />
-      {/* <Review /> */}
       <Testimonial />
     </>
   );

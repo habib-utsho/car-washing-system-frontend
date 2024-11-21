@@ -2,9 +2,9 @@ import { Outlet } from "react-router-dom";
 import Header from "../shared/header/Header";
 import Navbar from "../shared/header/Navbar";
 import { useEffect, useState } from "react";
-import { ToTopOutlined } from "@ant-design/icons";
 import FromTop from "../helpingCompo/FromTop";
 import Footer from "../shared/Footer";
+import { FaUpLong } from "react-icons/fa6";
 
 const MainLayout = () => {
   const [isScreenTop, setIsScreenTop] = useState(true);
@@ -56,7 +56,7 @@ const MainLayout = () => {
           }`}
           onClick={handleToTop}
         >
-          <ToTopOutlined />
+          <FaUpLong className="!text-[16px]" />
         </span>
       )}
     </>
