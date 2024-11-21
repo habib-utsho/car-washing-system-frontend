@@ -1,10 +1,27 @@
 import { useState } from "react";
-import { TQueryParam } from "../types/index.type";
+import { TQueryParam, TResponse } from "../types/index.type";
 import Container from "../components/ui/Container";
-import { Card, Empty, Pagination, Rate, Skeleton } from "antd";
+import {
+  Button,
+  Card,
+  Divider,
+  Empty,
+  Form,
+  message,
+  Pagination,
+  Rate,
+  Skeleton,
+  Typography,
+} from "antd";
 import { TReview } from "../types/review.type";
-import { useGetAllReviewsQuery } from "../redux/features/reviewApi";
+import {
+  useCreateReviewMutation,
+  useGetAllReviewsQuery,
+} from "../redux/features/reviewApi";
 import CommonSectionBanner from "../components/helpingCompo/CommonSectionBanner";
+import { useAppSelector } from "../redux/hook";
+import { useNavigate } from "react-router-dom";
+import MyInp from "../components/ui/Form/MyInp";
 
 const Review = () => {
   const [pagination, setPagination] = useState<{ page: number; limit: number }>(
@@ -23,9 +40,96 @@ const Review = () => {
     ...params,
   ]);
 
+  const { user } = useAppSelector((state) => state.auth);
+  const [createReview, { isLoading: isLoadingCreateReview }] =
+    useCreateReviewMutation();
+  const [rating, setRating] = useState<number>(0);
+  const [form] = Form.useForm();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (values: { feedback: string }) => {
+    if (!user) {
+      message.error("Please login to leave a review");
+      navigate("/signin", { state: { from: location } });
+      return;
+    }
+
+    try {
+      const res = (await createReview({
+        user: user?._id,
+        rating,
+        feedback: values.feedback,
+      }).unwrap()) as TResponse<TReview>;
+      if (res.success) {
+        message.success(res.message);
+        form.resetFields();
+      }
+    } catch (e: any) {
+      message.error(e.message || e.data?.message || "Something went wrong");
+    } finally {
+      form.resetFields();
+      setRating(0);
+    }
+  };
+
   return (
     <div>
       <Container className="my-10">
+        <div className="relative bg-white my-shadow-1 rounded-md p-4 mb-[60px]">
+          <CommonSectionBanner
+            title="Review"
+            subTitle="Share your thoughts and help us to improve!"
+            align="left"
+          />
+
+          {!user && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 rounded-md z-50">
+              <Typography.Title level={4} style={{ color: "white" }}>
+                Please log in to leave a review
+              </Typography.Title>
+              <Button
+                type="primary"
+                style={{ marginTop: "10px" }}
+                className="cursor-pointer"
+                onClick={() => navigate("/signin")}
+              >
+                Signin
+              </Button>
+            </div>
+          )}
+
+          <div className={`${!user && "opacity-50"}`}>
+            <Form
+              form={form}
+              onFinish={handleSubmit}
+              className="my-2"
+              layout="vertical"
+            >
+              <Rate onChange={setRating} value={rating} disabled={!user} />
+
+              <MyInp
+                type="textarea"
+                name={"feedback"}
+                placeholder="Leave your feedback..."
+                disabled={!user}
+              />
+              <Button
+                type="primary"
+                style={{ marginTop: "10px" }}
+                disabled={!user}
+                htmlType="submit"
+                loading={isLoadingCreateReview}
+              >
+                Submit
+              </Button>
+            </Form>
+
+            <Divider className="my-8" />
+
+            {/* <Testimonial /> */}
+          </div>
+        </div>
+
         <CommonSectionBanner
           title="Customer Reviews"
           subTitle="What our customers are saying"

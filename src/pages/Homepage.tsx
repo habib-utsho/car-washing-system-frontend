@@ -3,7 +3,7 @@ import FeaturedServices from "../components/homepage/FeaturedServices";
 import HelpYouToClean from "../components/homepage/HelpYouToClean";
 import HeroSection from "../components/homepage/HeroSection/HeroSection";
 import OurServices from "../components/homepage/OurServices";
-import Review from "../components/homepage/Review";
+import Testimonial from "../components/homepage/Testimonial";
 import WhyChooseUs from "../components/homepage/WhyChooseUs";
 
 const Homepage = () => {
@@ -15,7 +15,8 @@ const Homepage = () => {
       <FeaturedServices />
       <WhyChooseUs />
       <OurServices />
-      <Review />
+      {/* <Review /> */}
+      <Testimonial />
     </>
   );
 };

@@ -4,10 +4,10 @@ import { CgArrowTopRight } from "react-icons/cg";
 
 const HelpYouToClean = () => {
   return (
-    <div className="border-y border-gray mt-[30px] mb-[50px]">
+    <div className="border-y border-gray mt-[5px] mb-[50px]">
       <Container>
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-4">
-          <div className="border-b md:border-r border-gray h-full py-14 px-10">
+          <div className="border-b md:border-r border-gray h-full py-8 px-10">
             <h2 className="font-bold text-3xl md:text-5xl">
               We Will Help You to Keep Your Car Always Clean
             </h2>

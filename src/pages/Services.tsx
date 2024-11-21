@@ -9,11 +9,13 @@ import {
   SortAscendingOutlined,
   SortDescendingOutlined,
 } from "@ant-design/icons";
+import useDebounce from "../hooks/useDebounce";
 
 const { Search } = Input;
 const Services = () => {
   const [priceRange, setPriceRange] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const debounceSearch = useDebounce(searchTerm, 500);
   const [pagination, setPagination] = useState<{ page: number; limit: number }>(
     { page: 1, limit: 10 }
   );
@@ -31,7 +33,7 @@ const Services = () => {
     { name: "limit", value: pagination.limit },
     { name: "isDeleted", value: false },
     ...(priceRange ? [{ name: "priceRange", value: priceRange }] : []),
-    ...(searchTerm ? [{ name: "searchTerm", value: searchTerm }] : []),
+    ...(debounceSearch ? [{ name: "searchTerm", value: debounceSearch }] : []),
     ...(isSort ? [{ name: "sort", value: isSort }] : []),
     ...params,
   ]);
@@ -77,7 +79,7 @@ const Services = () => {
           {/* Search */}
           <Search
             placeholder="Search service"
-            onSearch={(value) => setSearchTerm(value)}
+            onChange={(e) => setSearchTerm(e.target.value)}
             allowClear
             enterButton
             className="w-[200px] "
@@ -113,10 +115,6 @@ const Services = () => {
         </div>
         {isLoadingServices || isFetching ? (
           <div className="">
-            <Skeleton.Button
-              active
-              className="!h-[40px] !w-[320px] md:!w-[550px] xl:!w-[600px] !mb-8"
-            />
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
               <Skeleton.Button active className="!h-[250px] !w-full" />
               <Skeleton.Button active className="!h-[250px] !w-full" />

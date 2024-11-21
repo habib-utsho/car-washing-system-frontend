@@ -9,15 +9,29 @@ import {
   Divider,
   Empty,
   Switch,
-  Tooltip,
+  Image,
+  Modal,
+  Button,
 } from "antd";
 import Container from "../components/ui/Container";
 import { useGetAllServicesQuery } from "../redux/features/servicesApi";
 import { TService } from "../types/service.type";
+import {
+  ClockCircleOutlined,
+  DollarOutlined,
+  EyeOutlined,
+} from "@ant-design/icons";
+import { useGetAllBookingQuery } from "../redux/features/bookingApi";
+import { useGetAllSlotQuery } from "../redux/features/slotApi";
+import { TResponse } from "../types/index.type";
+import { TSlot } from "../types/slot.type";
+import { TBooking } from "../types/booking.type";
 
 const { Option } = Select;
 
 const ServiceCompare: React.FC = () => {
+  const [selectedServiceForModal, setSelectedServiceForModal] =
+    useState<TService | null>(null);
   const [selectedService1, setSelectedService1] = useState<TService | null>(
     null
   );
@@ -25,12 +39,52 @@ const ServiceCompare: React.FC = () => {
     null
   );
 
+  const {
+    data: bookingRes1,
+    isLoading: isLoadingBooking1,
+    isFetching: isFetchingBooking1,
+  } = useGetAllBookingQuery(
+    [{ name: "service", value: selectedService1?._id }],
+    {
+      skip: !selectedService1,
+    }
+  );
+  const booking1 = bookingRes1 as TResponse<TBooking>;
+  const {
+    data: bookingRes2,
+    isLoading: isLoadingBooking2,
+    isFetching: isFetchingBooking2,
+  } = useGetAllBookingQuery(
+    [{ name: "service", value: selectedService2?._id }],
+    {
+      skip: !selectedService2,
+    }
+  );
+  const booking2 = bookingRes2 as TResponse<TBooking>;
+
+  const {
+    data: slotRes1,
+    isLoading: isLoadingSlot1,
+    isFetching: isFetchingSlot1,
+  } = useGetAllSlotQuery([{ name: "service", value: selectedService1?._id }], {
+    skip: !selectedService1,
+  });
+  const slot1 = slotRes1 as TResponse<TSlot>;
+  const {
+    data: slotRes2,
+    isLoading: isLoadingSlot2,
+    isFetching: isFetchingSlot2,
+  } = useGetAllSlotQuery([{ name: "service", value: selectedService2?._id }], {
+    skip: !selectedService2,
+  });
+  const slot2 = slotRes2 as TResponse<TSlot>;
+
   const { data: servicesData, isLoading } = useGetAllServicesQuery([
     { name: "limit", value: 1500 },
     { name: "isDeleted", value: false },
   ]);
 
-  console.log({ selectedService1, selectedService2 });
+  console.log({ booking1, booking2, slot1, slot2 });
 
   return (
     <div className="py-8 px-2">
@@ -130,8 +184,8 @@ const ServiceCompare: React.FC = () => {
             <Divider />
 
             {/* Service Comparison */}
-            <Row gutter={16} className="mt-8">
-              <Col span={12}>
+            <Row gutter={16} className="mt-8 justify-center">
+              <Col span={11}>
                 {!selectedService1 ? (
                   <div className="h-[40vh] flex items-center justify-center">
                     <Empty description="Please select service one!" />
@@ -139,26 +193,83 @@ const ServiceCompare: React.FC = () => {
                 ) : (
                   <Card title={selectedService1?.name} className="my-shadow-1">
                     <div className="space-y-4">
-                      <img
-                        src={selectedService1?.img}
-                        alt={selectedService1?.name}
-                        style={{ width: "100%" }}
-                        className="h-[200px] rounded-md "
-                      />
-                      <p>Price: {selectedService1?.price} BDT</p>
-                      <p>Duration: {selectedService1?.duration} minutes</p>
-                      <p className="flex gap-2 items-center">
-                        Featured:
-                        <Switch
-                          checked={selectedService1?.isFeatured}
-                          disabled
+                      <div className=" w-full text-center">
+                        <Image
+                          src={selectedService1?.img}
+                          alt={selectedService1?.name}
+                          className="!h-[200px] !w-full mx-auto rounded-md "
                         />
-                      </p>
-                      <Tooltip title={selectedService1?.description}>
-                        <p className="line-clamp-3">
-                          {selectedService1?.description}
-                        </p>
-                      </Tooltip>
+                      </div>
+
+                      {isLoadingBooking1 ||
+                      isLoadingSlot1 ||
+                      isFetchingBooking1 ||
+                      isFetchingSlot1 ? (
+                        <div className="flex flex-col gap-[2px]">
+                          <Skeleton.Button
+                            className="!h-[25px] !w-[275px] "
+                            active
+                          />
+                          <Skeleton.Button
+                            className="!h-[25px] !w-[195px] "
+                            active
+                          />
+                        </div>
+                      ) : (
+                        <div className="!space-y-[4px]">
+                          <p className="!my-0">
+                            -Total{" "}
+                            <strong className="text-primary">
+                              {booking1?.meta?.total}
+                            </strong>{" "}
+                            bookings
+                          </p>
+                          <p className="!my-0">
+                            -Total{" "}
+                            <strong className="text-primary">
+                              {slot1?.meta?.total}
+                            </strong>{" "}
+                            slots
+                          </p>
+                        </div>
+                      )}
+                      <Divider />
+                      <div className="">
+                        <div className="flex items-center justify-between gap-2">
+                          <p className="!my-0">
+                            <DollarOutlined /> {selectedService1?.price} BDT
+                          </p>
+                          <p className="!my-0">
+                            <ClockCircleOutlined /> {selectedService1?.duration}{" "}
+                            minutes
+                          </p>
+                        </div>
+
+                        <div className="flex items-center justify-between gap-2 mt-2">
+                          <div>
+                            <Switch
+                              checked={selectedService1?.isFeatured}
+                              disabled
+                              size="small"
+                              className="bg-green-500"
+                            />
+                            <span className="text-sm text-gray-600 ml-1">
+                              {selectedService1?.isFeatured
+                                ? "Featured Service"
+                                : "Regular Service"}
+                            </span>
+                          </div>
+                          <Button
+                            onClick={() =>
+                              setSelectedServiceForModal(selectedService1)
+                            }
+                            className="cursor-pointer text-primary"
+                            icon={<EyeOutlined />}
+                          >
+                            View Description
+                          </Button>
+                        </div>
+                      </div>
                     </div>
                   </Card>
                 )}
@@ -176,26 +287,83 @@ const ServiceCompare: React.FC = () => {
                 ) : (
                   <Card title={selectedService2?.name} className="my-shadow-1">
                     <div className="space-y-4">
-                      <img
-                        src={selectedService2?.img}
-                        alt={selectedService2?.name}
-                        style={{ width: "100%" }}
-                        className="h-[200px] rounded-md "
-                      />
-                      <p>Price: {selectedService2?.price} BDT</p>
-                      <p>Duration: {selectedService2?.duration} minutes</p>
-                      <p className="flex gap-2 items-center">
-                        Featured:
-                        <Switch
-                          checked={selectedService2?.isFeatured}
-                          disabled
+                      <div className=" w-full text-center">
+                        <Image
+                          src={selectedService2?.img}
+                          alt={selectedService2?.name}
+                          className="!h-[200px] !w-full mx-auto rounded-md "
                         />
-                      </p>
-                      <Tooltip title={selectedService2?.description}>
-                        <p className="line-clamp-3">
-                          {selectedService2?.description}
-                        </p>
-                      </Tooltip>
+                      </div>
+
+                      {isLoadingBooking2 ||
+                      isLoadingSlot2 ||
+                      isFetchingBooking2 ||
+                      isFetchingSlot2 ? (
+                        <div className="flex flex-col gap-[2px]">
+                          <Skeleton.Button
+                            className="!h-[25px] !w-[275px] "
+                            active
+                          />
+                          <Skeleton.Button
+                            className="!h-[25px] !w-[195px] "
+                            active
+                          />
+                        </div>
+                      ) : (
+                        <div className="!space-y-[4px]">
+                          <p className="!my-0">
+                            -Total{" "}
+                            <strong className="text-primary">
+                              {booking2?.meta?.total}
+                            </strong>{" "}
+                            bookings
+                          </p>
+                          <p className="!my-0">
+                            -Total{" "}
+                            <strong className="text-primary">
+                              {slot2?.meta?.total}
+                            </strong>{" "}
+                            slots
+                          </p>
+                        </div>
+                      )}
+                      <Divider />
+                      <div className="">
+                        <div className="flex items-center justify-between gap-2">
+                          <p className="!my-0">
+                            <DollarOutlined /> {selectedService2?.price} BDT
+                          </p>
+                          <p className="!my-0">
+                            <ClockCircleOutlined /> {selectedService2?.duration}{" "}
+                            minutes
+                          </p>
+                        </div>
+
+                        <div className="flex items-center justify-between gap-2 mt-2">
+                          <div>
+                            <Switch
+                              checked={selectedService2?.isFeatured}
+                              disabled
+                              size="small"
+                              className="bg-green-500"
+                            />
+                            <span className="text-sm text-gray-600 ml-1">
+                              {selectedService2?.isFeatured
+                                ? "Featured Service"
+                                : "Regular Service"}
+                            </span>
+                          </div>
+                          <Button
+                            onClick={() =>
+                              setSelectedServiceForModal(selectedService2)
+                            }
+                            className="cursor-pointer text-primary"
+                            icon={<EyeOutlined />}
+                          >
+                            View Description
+                          </Button>
+                        </div>
+                      </div>
                     </div>
                   </Card>
                 )}
@@ -204,6 +372,20 @@ const ServiceCompare: React.FC = () => {
           </>
         )}
       </Container>
+
+      {/* Description modal */}
+      <Modal
+        title={`${selectedServiceForModal?.name}'s Description`}
+        open={!!selectedServiceForModal}
+        onCancel={() => setSelectedServiceForModal(null)}
+        footer={null}
+      >
+        <div
+          dangerouslySetInnerHTML={{
+            __html: selectedServiceForModal?.description || "",
+          }}
+        />
+      </Modal>
     </div>
   );
 };
