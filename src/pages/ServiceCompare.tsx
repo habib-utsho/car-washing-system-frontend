@@ -259,15 +259,24 @@ const ServiceCompare: React.FC = () => {
                                 : "Regular Service"}
                             </span>
                           </div>
-                          <Button
-                            onClick={() =>
-                              setSelectedServiceForModal(selectedService1)
-                            }
-                            className="cursor-pointer text-primary"
-                            icon={<EyeOutlined />}
-                          >
-                            View Description
-                          </Button>
+                          <div className="space-x-2">
+                            <Button
+                              onClick={() =>
+                                setSelectedServiceForModal(selectedService1)
+                              }
+                              className="cursor-pointer text-primary"
+                              icon={<EyeOutlined />}
+                            >
+                              View Description
+                            </Button>
+                            <Button
+                              href={`/services/${selectedService1?._id}`}
+                              type="primary"
+                              icon={<EyeOutlined />}
+                            >
+                              Book Now
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -353,15 +362,25 @@ const ServiceCompare: React.FC = () => {
                                 : "Regular Service"}
                             </span>
                           </div>
-                          <Button
-                            onClick={() =>
-                              setSelectedServiceForModal(selectedService2)
-                            }
-                            className="cursor-pointer text-primary"
-                            icon={<EyeOutlined />}
-                          >
-                            View Description
-                          </Button>
+
+                          <div className="space-x-2">
+                            <Button
+                              onClick={() =>
+                                setSelectedServiceForModal(selectedService2)
+                              }
+                              className="cursor-pointer text-primary"
+                              icon={<EyeOutlined />}
+                            >
+                              View Description
+                            </Button>
+                            <Button
+                              href={`/services/${selectedService2?._id}`}
+                              type="primary"
+                              icon={<EyeOutlined />}
+                            >
+                              Book Now
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     </div>
