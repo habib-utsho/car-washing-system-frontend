@@ -27,8 +27,6 @@ const ServiceCard: React.FC<TServiceCard> = ({ service }) => {
   //   message.error("Out of stock");
   // };
 
-  console.log("service", service);
-
   return (
     <div>
       <Card
@@ -51,7 +49,7 @@ const ServiceCard: React.FC<TServiceCard> = ({ service }) => {
       >
         <Link
           to={`/services/${service?._id}`}
-          className="font-semibold text-[18px] inline-block mb-1 hover:text-primary-2 truncate w-full hover:text-primary"
+          className="font-semibold text-[16px] min-h-[50px] inline-block mb-1 hover:text-primary-2 line-clamp-2 w-full hover:text-primary"
         >
           {service?.name}
         </Link>
