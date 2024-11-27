@@ -45,7 +45,7 @@ const Header = ({}) => {
       //   borderRadius: "6px",
       //   border: "0",
       // }}
-      className="py-1 rounded-md justify-end px-2"
+      className="py-1 rounded-md justify-end px-2 bg-secondary text-white"
     >
       <p className="flex items-center gap-1 mr-4 mb-0">
         Call us now:
@@ -55,7 +55,7 @@ const Header = ({}) => {
         key="Whats app"
         icon={
           <Link to="tel:+8801706785160">
-            <BsWhatsapp />{" "}
+            <BsWhatsapp className="!text-white" />{" "}
           </Link>
         }
       ></Menu.Item>
@@ -65,18 +65,18 @@ const Header = ({}) => {
           <Skeleton.Button active className="!h-6 !w-10" />
         </div>
       ) : user ? (
-        <Menu.Item key="account" icon={<UserOutlined />}>
+        <Menu.Item key="account" icon={<UserOutlined className="!text-white" />}>
           <Dropdown
             menu={{ items: authenticatedRoutes }}
             placement="bottom"
             overlayStyle={{ zIndex: 5000001, paddingTop: "22px" }}
             //  overlayClassName="custom-dropdown"
           >
-            <span>Account</span>
+            <span className="!text-white">Account</span>
           </Dropdown>
         </Menu.Item>
       ) : (
-        <Menu.Item key="login" icon={<UserOutlined />}>
+        <Menu.Item key="login" icon={<UserOutlined className="!text-white" />}>
           <Link to="/signin"></Link>
         </Menu.Item>
       )}
@@ -85,7 +85,7 @@ const Header = ({}) => {
 
   return (
     <>
-      <section className="shadow-sm  py-1 sticky top-0 !z-[5000000] bg-primary">
+      <section className="shadow-sm  py-1 sticky top-0 !z-[5000000] bg-secondary">
         <Container>
           <div className="flex justify-between flex-wrap">
             <Link to="/" className="navbar-left">

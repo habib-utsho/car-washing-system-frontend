@@ -140,7 +140,7 @@ const Services = () => {
               ))}
             </div>
 
-            <div className="rounded-md p-4 bg-primary/5 my-10 flex justify-center">
+            <div className="rounded-md p-4 bg-secondary/5 my-10 flex justify-center">
               <Pagination
                 current={pagination.page}
                 pageSize={pagination.limit}

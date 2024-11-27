@@ -48,7 +48,7 @@ const WhyChooseUs = () => {
           </div>
         </div>
       </Container>
-      <div className="bg-black text-white py-[72px] md:py-[95px] mt-2">
+      <div className="bg-secondary text-white py-[72px] md:py-[95px] mt-2">
         <Container className=" relative">
           <MyMotion x={-50}>
             <div className="!w-[330px] bg-primary-500 rounded-md my-shadow-1 space-y-4 p-6 absolute right-[35px] md:right-[80px] lg:right-[100px] xl:right-[140px] -top-[195px] hidden sm:block">
@@ -71,7 +71,7 @@ const WhyChooseUs = () => {
               <Button
                 size="large"
                 block
-                className="bg-black text-white"
+                className="bg-secondary text-white"
                 href="/services"
               >
                 Get Started Now

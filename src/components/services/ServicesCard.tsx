@@ -78,7 +78,7 @@ const ServiceCard: React.FC<TServiceCard> = ({ service }) => {
             icon={<BsCartPlus />}
             block
             type="default"
-            className="!absolute bottom-2 left-0 right-0 !w-[80%] mx-auto"
+            className="!absolute bottom-2 left-0 right-0 !w-[80%] mx-auto !text-primary !border-primary"
             disabled={service?.isDeleted}
           >
             Book slot

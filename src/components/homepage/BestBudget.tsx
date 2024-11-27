@@ -3,7 +3,7 @@ import Container from "../ui/Container";
 
 const BestBudget = () => {
   return (
-    <div className="bg-black">
+    <div className="bg-secondary">
       <Container className="grid grid-cols-12 p-4 space-y-2 col-span-8 items-center">
         <div className="col-span-12 sm:col-span-8 order-2 sm:order-1 text-white space-y-4">
           <h2 className="font-bold text-2xl md:text-5xl">

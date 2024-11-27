@@ -27,7 +27,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         components: {
           Button: {
             colorPrimary: "#FFC000",
-            fontWeight: "bold",
+            fontWeight: "semiBold",
           },
           Checkbox: {
             colorPrimary: "#FFC000",

@@ -149,7 +149,7 @@ const Testimonial = () => {
                         />
                       </div>
                       <div className="text-left">
-                        <p className="font-bold my-text-gradient-2 inline-block mb-1">
+                        <p className="font-bold text-secondary inline-block mb-1">
                           {review?.user?.name}
                         </p>
                         <p className="text-normal-desc">Honorable Customer</p>

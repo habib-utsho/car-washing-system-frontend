@@ -29,7 +29,7 @@ const Navbar = () => {
     setCurrent(e.key);
   };
   return (
-    <section className="shadow  bg-[#FEFEFF] py-2">
+    <section className="shadow  bg-[#FEFEFF] py-2 sticky top-[63px] !z-[5000000]">
       <Container>
         <div className="flex justify-between flex-wrap gap-4">
           <Menu
@@ -56,7 +56,7 @@ const Navbar = () => {
               size="large"
               type="primary"
             >
-              Book now
+              Book Now
             </Button>
           </Link>
         </div>

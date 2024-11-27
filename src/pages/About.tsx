@@ -176,7 +176,7 @@ const About = () => {
                     >
                       {member.name}
                     </Title>
-                    <Text className="text-secondary-200 font-semibold">
+                    <Text className="font-semibold">
                       {member.role}
                     </Text>
                     <Paragraph className="text-gray-500 text-center mt-2 leading-relaxed">

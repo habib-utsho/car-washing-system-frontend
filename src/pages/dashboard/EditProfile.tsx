@@ -91,6 +91,7 @@ const EditProfile = () => {
             </div>
             <Button
               type="primary"
+              block
               onClick={() => setIsEditMode(true)}
               className="mt-4"
             >
